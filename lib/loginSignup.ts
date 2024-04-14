@@ -19,8 +19,7 @@ async function loginSignupFn({
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }) {
   if (identifier === "login") {
-    const url = "https://a6d7-102-89-23-80.ngrok-free.app/api/v1/users/login";
-    console.log({ account_name, password, account_type });
+    const url = "https://139b-102-89-12-39.ngrok-free.app/api/v1/users/login";
 
     const res = await fetch(url, {
       method: "POST",
@@ -39,8 +38,6 @@ async function loginSignupFn({
       const errorMsgString = JSON.stringify(exactErrorMsg);
       const errorMsg = JSON.parse(errorMsgString).error;
 
-      console.log(errorMsg);
-
       // Set the error message in the state
       setErrMsg(errorMsg);
 
@@ -49,7 +46,6 @@ async function loginSignupFn({
     }
 
     const data: ResAuth = await res.json();
-    console.log({ data });
 
     const token = data.token;
 
@@ -68,8 +64,6 @@ async function loginSignupFn({
     return data.message;
   } else if (identifier === "signup") {
     const url = "https://a6d7-102-89-23-80.ngrok-free.app/api/v1/users";
-
-    console.log({ email, phone_number, account_name, password, account_type });
 
     const res = await fetch(url, {
       method: "POST",
@@ -90,8 +84,6 @@ async function loginSignupFn({
       const errorMsgString = JSON.stringify(exactErrorMsg);
       const errorMsg = JSON.parse(errorMsgString).error;
 
-      console.log(errorMsg);
-
       // Set the error message in the state
       setErrMsg(errorMsg);
 
@@ -100,7 +92,6 @@ async function loginSignupFn({
     }
 
     const data: ResAuth = await res.json();
-    console.log({ data });
 
     const token = data.token;
 

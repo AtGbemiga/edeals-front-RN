@@ -40,4 +40,6 @@ yarn-error.*
 # dev files
 zdoc.ts
 zissues.ts
+package.json
 package-lock.json
+assets

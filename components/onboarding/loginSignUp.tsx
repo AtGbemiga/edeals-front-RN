@@ -1,9 +1,10 @@
 import { ParamListBase } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import booleanTokenCheck from "../../lib/booleanTokenCheck";
 
 export const LoginSignUp = ({
   navigation,
@@ -12,7 +13,18 @@ export const LoginSignUp = ({
 }) => {
   const route = useRoute();
   const { screen } = route.params as { screen: "seller" | "buyer" };
-  console.log(screen);
+
+  const checkToken = async () => {
+    const tokenRes = await booleanTokenCheck();
+
+    if (tokenRes) {
+      navigation.navigate("HomeRoot");
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

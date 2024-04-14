@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ImageBackground,
@@ -14,11 +14,24 @@ import Img from "../../assets/undraw_successful_purchase_re_mpig 1.png";
 import ChevronLeft from "../../assets/chevron-left.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ParamListBase } from "@react-navigation/native";
+import booleanTokenCheck from "../../lib/booleanTokenCheck";
 export const Screen2 = ({
   navigation,
 }: {
   navigation: NativeStackNavigationProp<ParamListBase>;
 }) => {
+  const checkToken = async () => {
+    const tokenRes = await booleanTokenCheck();
+
+    if (tokenRes) {
+      navigation.navigate("Home");
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>

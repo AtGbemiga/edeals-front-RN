@@ -1,7 +1,7 @@
 import { ParamListBase } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ImageBackground,
@@ -13,12 +13,26 @@ import {
 } from "react-native";
 import Logo from "../assets/Ellipse_Ten.png";
 import Img from "../assets/undraw_interview_re_e5jn 1.png";
+import booleanTokenCheck from "../lib/booleanTokenCheck";
 
 export default function Start({
   navigation,
 }: {
   navigation: NativeStackNavigationProp<ParamListBase>;
 }) {
+  // check for token
+  const checkToken = async () => {
+    const tokenRes = await booleanTokenCheck();
+
+    if (tokenRes) {
+      navigation.navigate("HomeRoot");
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>

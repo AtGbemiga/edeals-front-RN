@@ -1,6 +1,6 @@
 import { ParamListBase, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -13,6 +13,7 @@ import {
 import { LoginF } from "../../types/users/loginF";
 import loginSignupFn from "../../lib/loginSignup";
 import { SignUpF } from "../../types/users/signUpF";
+import booleanTokenCheck from "../../lib/booleanTokenCheck";
 
 // TODO: handle case where screen is not part of the expected types of screens.
 // Figure out correct type for route
@@ -27,8 +28,18 @@ export const LoginSignUpF = ({
     screen: "seller" | "buyer";
     action: "login" | "signup";
   };
-  console.log(screen);
-  console.log(action);
+
+  const checkToken = async () => {
+    const tokenRes = await booleanTokenCheck();
+
+    if (tokenRes) {
+      navigation.navigate("HomeRoot");
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   if (action === "login" && (screen === "seller" || screen === "buyer")) {
     const [formItems, onChangeItems] = useState<LoginF>({
@@ -38,8 +49,6 @@ export const LoginSignUpF = ({
     const [errMsg, setErrMsg] = useState("");
 
     const handleSubmit = () => {
-      console.log("cliked");
-
       try {
         loginSignupFn({
           account_name: formItems.account_name,
@@ -49,10 +58,12 @@ export const LoginSignUpF = ({
           setErrMsg,
         }).then((res) => {
           if (res?.includes("successful")) {
-            navigation.navigate("Home"); // TODO: navigate to home page
+            navigation.navigate("HomeRoot"); // TODO: navigate to home page
           }
         });
-      } catch (error) {}
+      } catch (error) {
+        // disable empty object error
+      }
     };
 
     {
@@ -71,7 +82,6 @@ export const LoginSignUpF = ({
                 value={formItems.account_name}
                 onChangeText={(newText) => {
                   onChangeItems({ ...formItems, account_name: newText });
-                  console.log(formItems.account_name);
                 }}
                 maxLength={255}
               />
@@ -85,7 +95,6 @@ export const LoginSignUpF = ({
                 value={formItems.password}
                 onChangeText={(newText) => {
                   onChangeItems({ ...formItems, password: newText });
-                  console.log(formItems.password);
                 }}
                 maxLength={255}
               />
@@ -166,7 +175,6 @@ export const LoginSignUpF = ({
 
     const handleSubmit = () => {
       try {
-        console.log("cliked");
         loginSignupFn({
           account_name: formItems.account_name,
           account_type: screen,
@@ -178,10 +186,12 @@ export const LoginSignUpF = ({
         }).then((res) => {
           // TODO: error lies here: res?.includes
           if (res?.includes("successful")) {
-            navigation.navigate("Home");
+            navigation.navigate("HomeRoot");
           }
         });
-      } catch (error) {}
+      } catch (error) {
+        // disable empty object error
+      }
     };
     {
       return (
@@ -201,7 +211,6 @@ export const LoginSignUpF = ({
                   value={formItems.email}
                   onChangeText={(newText) => {
                     onChangeItems({ ...formItems, email: newText });
-                    console.log(formItems.email);
                   }}
                   maxLength={255}
                 />
@@ -213,7 +222,6 @@ export const LoginSignUpF = ({
                   value={formItems.phone_number}
                   onChangeText={(newText) => {
                     onChangeItems({ ...formItems, phone_number: newText });
-                    console.log(formItems.phone_number);
                   }}
                   maxLength={255}
                 />
@@ -225,7 +233,6 @@ export const LoginSignUpF = ({
                   value={formItems.password}
                   onChangeText={(newText) => {
                     onChangeItems({ ...formItems, password: newText });
-                    console.log(formItems.password);
                   }}
                   maxLength={255}
                 />
@@ -239,7 +246,6 @@ export const LoginSignUpF = ({
                   value={formItems.account_name}
                   onChangeText={(newText) => {
                     onChangeItems({ ...formItems, account_name: newText });
-                    console.log(formItems.account_name);
                   }}
                   maxLength={255}
                 />

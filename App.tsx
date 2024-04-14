@@ -1,16 +1,28 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CartIndex } from "./components/cart";
 import { LoginSignUpF } from "./components/forms/loginSignUpF";
-import Start from "./components/start";
+import { Home } from "./components/home/home";
 import { LoginSignUp } from "./components/onboarding/loginSignUp";
 import { Screen1 } from "./components/onboarding/screen1";
 import { Screen2 } from "./components/onboarding/screen2";
 import { AccountType } from "./components/onboarding/selectAccType";
 import { Privacy } from "./components/policy/privacy";
 import { Terms } from "./components/policy/terms";
-import { Home } from "./components/home/home";
+import { ProfileIndex } from "./components/profile";
+import { SellIndex } from "./components/sell";
+import Start from "./components/start";
+import { DynamicProduct } from "./components/dynamic/products";
+import { RootStackParamList } from "./types/global/root";
+import HomeIcon from "./assets/home.png";
+import CartIcon from "./assets/Vector.png";
+import SellIcon from "./assets/Vector (1).png";
+import ProfileIcon from "./assets/profile.png";
+import { Image } from "react-native";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
@@ -57,9 +69,83 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="HomeRoot"
           options={{ headerShown: false }}
+        >
+          {() => (
+            <Tab.Navigator initialRouteName="Home">
+              <Tab.Screen
+                name="Home"
+                component={Home}
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <Image
+                      source={HomeIcon}
+                      style={{
+                        width: focused ? 20 : 15,
+                        height: focused ? 20 : 15,
+                      }}
+                    />
+                  ),
+                  headerShown: false,
+                }}
+              />
+              <Tab.Screen
+                name="Cart"
+                component={CartIndex}
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <Image
+                      source={CartIcon}
+                      style={{
+                        width: focused ? 20 : 15,
+                        height: focused ? 20 : 15,
+                      }}
+                    />
+                  ),
+                  headerShown: false,
+                }}
+              />
+              <Tab.Screen
+                name="Sell"
+                component={SellIndex}
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <Image
+                      source={SellIcon}
+                      style={{
+                        width: focused ? 20 : 15,
+                        height: focused ? 20 : 15,
+                      }}
+                    />
+                  ),
+                  headerShown: false,
+                }}
+              />
+              <Tab.Screen
+                name="Profile"
+                component={ProfileIndex}
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <Image
+                      source={ProfileIcon}
+                      style={{
+                        width: focused ? 20 : 15,
+                        height: focused ? 20 : 15,
+                      }}
+                    />
+                  ),
+                  headerShown: false,
+                }}
+              />
+            </Tab.Navigator>
+          )}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Dynamic Product"
+          component={DynamicProduct}
+          options={{ headerShown: false }}
+          initialParams={{ id: undefined }}
         />
       </Stack.Navigator>
     </NavigationContainer>
