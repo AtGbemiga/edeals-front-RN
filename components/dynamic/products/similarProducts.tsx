@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ParamListBase } from "@react-navigation/native";
-import { InlineNotice } from "../../global/inlineNotice";
+import { FadeInlineNotice } from "../../global/inlineNotice";
 
 export const SimilarProducts = ({
   subIdentifier,
@@ -63,7 +63,7 @@ export const SimilarProducts = ({
   return (
     <View>
       {errMsg ? (
-        <InlineNotice
+        <FadeInlineNotice
           msg={errMsg}
           bgColor="blue"
           color="white"

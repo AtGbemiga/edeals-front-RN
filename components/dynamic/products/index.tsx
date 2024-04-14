@@ -19,7 +19,7 @@ import getFInfoFn from "../../../lib/products/getFInfo";
 import { RootStackParamList } from "../../../types/global/root";
 import { ResProductFInfo } from "../../../types/products/resProducts";
 import { CtaBtn } from "../../global/ctaBtn";
-import { InlineNotice } from "../../global/inlineNotice";
+import { FadeInlineNotice } from "../../global/inlineNotice";
 import { ReviewsFlatList } from "../../global/reviews";
 import { SimilarProducts } from "./similarProducts";
 
@@ -94,7 +94,7 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
         <View style={styles.container}>
           <View>
             {inlineMsg && (
-              <InlineNotice
+              <FadeInlineNotice
                 msg={inlineMsg}
                 color="#ffffff"
                 bgColor="#59AEFF"

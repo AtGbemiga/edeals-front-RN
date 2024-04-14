@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { ParamListBase } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   Dimensions,
   FlatList,
@@ -8,41 +9,20 @@ import {
   Text,
   View,
 } from "react-native";
-import getLInfoFn, { getLInfoFnProps } from "../../lib/products/getLInfo";
 import {
   OneProductLInfo,
   ResProductsLInfo,
 } from "../../types/products/resProducts";
-import { ParamListBase } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const screenWidth = Dimensions.get("window").width;
 
 export const CardLInfo = ({
-  identifierValue,
-  discountValue,
+  resProducts,
   navigation,
-}: getLInfoFnProps & {
+}: {
+  resProducts: ResProductsLInfo;
   navigation: NativeStackNavigationProp<ParamListBase>;
 }) => {
-  const [resProducts, setResProducts] = useState<ResProductsLInfo>();
-  const [errMsg, setErrMsg] = useState("");
-  useEffect(() => {
-    try {
-      (async () => {
-        const res = (await getLInfoFn({
-          identifier: identifierValue,
-          discountIdentifier: discountValue ?? undefined,
-          setErrMsg,
-        })) as ResProductsLInfo;
-
-        if (res && res.result.length > 0) {
-          setResProducts(res);
-        }
-      })();
-    } catch (error) {}
-  }, []);
-
   // Render individual items
   const renderItem = ({ item }: { item: OneProductLInfo }) => {
     return (

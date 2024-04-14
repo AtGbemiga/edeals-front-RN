@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { StatusBar, StyleSheet, Text, View } from "react-native";
 
-export const InlineNotice = ({
+export const FadeInlineNotice = ({
   msg,
   color,
   bgColor,
@@ -35,6 +35,31 @@ export const InlineNotice = ({
           {msg}
         </Text>
       )}
+    </View>
+  );
+};
+
+export const StaticInlineNotice = ({
+  msg,
+  color,
+  bgColor,
+}: {
+  msg: string;
+  color: string;
+  bgColor: string;
+}) => {
+  return (
+    <View style={styles.container}>
+      <Text
+        style={{
+          color: color,
+          backgroundColor: bgColor,
+          padding: 5,
+          borderRadius: 5,
+        }}
+      >
+        {msg}
+      </Text>
     </View>
   );
 };
