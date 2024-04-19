@@ -85,7 +85,7 @@ export const Home = ({
             </Text>
           </Pressable>
         </View>
-        <View style={{ borderWidth: 5, borderColor: "black" }}>{content}</View>
+        <View>{content}</View>
       </ScrollView>
     </SafeAreaView>
   );

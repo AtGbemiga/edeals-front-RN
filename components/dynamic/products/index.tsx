@@ -22,6 +22,8 @@ import { CtaBtn } from "../../global/ctaBtn";
 import { FadeInlineNotice } from "../../global/inlineNotice";
 import { ReviewsFlatList } from "../../global/reviews";
 import { SimilarProducts } from "./similarProducts";
+import { Res4ProductReviews } from "../../../types/products/resReviews";
+import getReviewsFn from "../../../lib/global/getReviews";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dynamic Product">;
 const screenWidth = Dimensions.get("window").width;
@@ -42,6 +44,9 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
 
   const [inlineMsg, setinlineMsg] = useState("");
 
+  // review state
+  const [resReviews, setResReviews] = useState<Res4ProductReviews>();
+
   useEffect(() => {
     if (scrollViewRef.current && !isMounted) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -53,6 +58,16 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
 
       if (resFProduct && resFProduct.result.length > 0) {
         setPersonalized_price(resFProduct.result[0].price.toString());
+
+        // get the reviews
+        (async () => {
+          const res = await getReviewsFn({
+            identifier: "products",
+            product_id: id.toString(),
+            setErrMsg,
+          });
+          setResReviews(res);
+        })();
       }
     })();
   }, [id, resFProduct, isMounted, route.params]);
@@ -430,10 +445,7 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
             />
           </View>
           <View>
-            <ReviewsFlatList
-              product_id={id.toString()}
-              identifier="products"
-            />
+            <ReviewsFlatList data={resReviews as Res4ProductReviews} />
           </View>
           <View>
             <SimilarProducts

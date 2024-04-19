@@ -11,5 +11,8 @@ export type RootStackParamList = {
   HomeRoot: undefined;
   "Dynamic Product": { id: number };
   Cart: undefined;
-  // Feed: { sort: 'latest' | 'top' } | undefined;
+  "Search Filiter": undefined;
+  DynamicProfile: { id: number };
+  More: undefined;
+  Profile: undefined;
 };

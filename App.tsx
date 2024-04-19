@@ -19,7 +19,11 @@ import HomeIcon from "./assets/home.png";
 import CartIcon from "./assets/Vector.png";
 import SellIcon from "./assets/Vector (1).png";
 import ProfileIcon from "./assets/profile.png";
+import moreIcon from "./assets/more.png";
 import { Image } from "react-native";
+import { SearchFiliter } from "./components/home/searchFiliter";
+import { DynamicProfile } from "./components/profile/dynamicProfile";
+import { More } from "./components/more";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -138,6 +142,22 @@ export default function App() {
                   headerShown: false,
                 }}
               />
+              <Tab.Screen
+                name="More"
+                component={More}
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <Image
+                      source={moreIcon}
+                      style={{
+                        width: focused ? 20 : 15,
+                        height: focused ? 20 : 15,
+                      }}
+                    />
+                  ),
+                  headerShown: false,
+                }}
+              />
             </Tab.Navigator>
           )}
         </Stack.Screen>
@@ -146,6 +166,16 @@ export default function App() {
           component={DynamicProduct}
           options={{ headerShown: false }}
           initialParams={{ id: undefined }}
+        />
+        <Stack.Screen
+          name="Search Filiter"
+          component={SearchFiliter}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DynamicProfile"
+          component={DynamicProfile}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

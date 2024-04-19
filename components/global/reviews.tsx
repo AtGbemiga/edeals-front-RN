@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -8,10 +7,9 @@ import {
   View,
 } from "react-native";
 import {
-  Res4ProductReviews,
   OneProductReview,
+  Res4ProductReviews,
 } from "../../types/products/resReviews";
-import getReviewsFn from "../../lib/global/getReviews";
 
 const oneReview = ({ item }: { item: OneProductReview }) => {
   return (
@@ -31,30 +29,15 @@ const oneReview = ({ item }: { item: OneProductReview }) => {
 };
 const screenWidth = Dimensions.get("window").width;
 type Props = {
-  product_id: string;
-  identifier: "products";
+  data: Res4ProductReviews;
+  headerStyle?: object;
 };
-export const ReviewsFlatList = ({ product_id, identifier }: Props) => {
-  const [resReviews, setResReviews] = useState<Res4ProductReviews>();
-  const [errMsg, setErrMsg] = useState("");
-
-  useEffect(() => {
-    try {
-      (async () => {
-        const res = await getReviewsFn({
-          identifier,
-          product_id,
-          setErrMsg,
-        });
-        setResReviews(res);
-      })();
-    } catch (error) {}
-  }, []);
-
+export const ReviewsFlatList = ({ data, headerStyle }: Props) => {
   return (
     <View>
+      <Text style={headerStyle}>Reviews</Text>
       <FlatList
-        data={resReviews?.finalResult[0]}
+        data={data?.finalResult[0]}
         renderItem={oneReview}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -83,6 +66,7 @@ const styles = StyleSheet.create({
     margin: 10,
     flexDirection: "column",
     rowGap: 10,
+    maxWidth: 300,
   },
   reviewHeader: {
     flexDirection: "row",

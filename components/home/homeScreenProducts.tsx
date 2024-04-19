@@ -14,10 +14,15 @@ import { ParamListBase } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import filterIcon from "../../assets/sliders.png";
-import { ResProductsLInfo } from "../../types/products/resProducts";
+import {
+  ResProductsLInfo,
+  ResSearchLInfo,
+} from "../../types/products/resProducts";
 import getLInfoFn from "../../lib/products/getLInfo";
 import { StaticInlineNotice } from "../global/inlineNotice";
 import searchFn from "../../lib/global/search";
+import backIcon from "../../assets/backIcon.png";
+import { SearchCardLInfo } from "../global/searchCardLInfo";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -27,7 +32,7 @@ export const HSProducts = ({
   navigation: NativeStackNavigationProp<ParamListBase>;
 }) => {
   const [resProducts, setResProducts] = useState<ResProductsLInfo>();
-  const [resSearch, setResSearch] = useState<ResProductsLInfo>();
+  const [resSearch, setResSearch] = useState<ResSearchLInfo>();
   const [searchValue, setSearchValue] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
@@ -68,87 +73,106 @@ export const HSProducts = ({
     }
   }
   return (
-    <View>
-      <>
-        <View>
-          <View style={styles.searchArea}>
-            <TextInput
-              placeholder="search for products"
-              value={searchValue}
-              onChangeText={(newText) => {
-                setSearchValue(newText);
-                console.log(newText);
+    <View style={styles.container}>
+      <View style={styles.searchArea}>
+        <TextInput
+          placeholder="search for products"
+          value={searchValue}
+          onChangeText={(newText) => {
+            setSearchValue(newText);
+            console.log(newText);
+          }}
+          style={styles.textInput}
+        />
+        <Pressable onPress={() => navigation.navigate("Search Filiter")}>
+          <Image
+            source={filterIcon}
+            style={styles.filterIcon}
+          />
+        </Pressable>
+
+        <Pressable onPress={handleSearch}>
+          <Image
+            source={searchIcon}
+            style={styles.searchIcon}
+          />
+        </Pressable>
+      </View>
+      {resSearch && resSearch.result.length > 0 ? (
+        <>
+          <View>
+            <Pressable
+              onPress={() => {
+                console.log("back");
+                setResSearch(undefined);
               }}
-              style={styles.textInput}
-            />
-            <Image
-              source={filterIcon}
-              style={styles.filterIcon}
-            />
-            <Pressable onPress={handleSearch}>
-              <Image
-                source={searchIcon}
-                style={styles.searchIcon}
+              style={{ padding: 5 }}
+            >
+              <Image source={backIcon} />
+            </Pressable>
+            {/* <Text>Bell here</Text> */}
+          </View>
+          <SearchCardLInfo
+            data={resSearch}
+            navigation={navigation}
+            searchValue={searchValue}
+          />
+        </>
+      ) : (
+        <>
+          <View>
+            <Text>Ad area</Text>
+          </View>
+          <View>
+            <Text>Categories</Text>
+
+            <CategoriesFlatList />
+          </View>
+          <View>
+            {errMsg ? (
+              <StaticInlineNotice
+                msg={errMsg}
+                bgColor="red"
+                color="white"
               />
+            ) : (
+              <CardLInfo
+                resProducts={resProducts as ResProductsLInfo}
+                navigation={navigation}
+              />
+            )}
+          </View>
+          <View>
+            <Pressable>
+              <Image source={require("../../assets/Banner default.png")} />
             </Pressable>
           </View>
-          {resSearch && resSearch.result.length > 0 ? (
-            <CardLInfo
-              resProducts={resSearch}
-              navigation={navigation}
-            />
-          ) : (
-            <>
-              <View>
-                <Text>Ad area</Text>
-              </View>
-              <View>
-                <Text>Categories</Text>
-
-                <CategoriesFlatList />
-              </View>
-              <View>
-                {errMsg ? (
-                  <StaticInlineNotice
-                    msg={errMsg}
-                    bgColor="red"
-                    color="white"
-                  />
-                ) : (
-                  <CardLInfo
-                    resProducts={resProducts as ResProductsLInfo}
-                    navigation={navigation}
-                  />
-                )}
-              </View>
-              <View>
-                <Pressable>
-                  <Image source={require("../../assets/Banner default.png")} />
-                </Pressable>
-              </View>
-              <View>
-                {errMsg ? (
-                  <StaticInlineNotice
-                    msg={errMsg}
-                    bgColor="red"
-                    color="white"
-                  />
-                ) : (
-                  <CardLInfo
-                    resProducts={resProducts as ResProductsLInfo}
-                    navigation={navigation}
-                  />
-                )}
-              </View>
-            </>
-          )}
-        </View>
-      </>
+          <View>
+            {errMsg ? (
+              <StaticInlineNotice
+                msg={errMsg}
+                bgColor="red"
+                color="white"
+              />
+            ) : (
+              <CardLInfo
+                resProducts={resProducts as ResProductsLInfo}
+                navigation={navigation}
+              />
+            )}
+          </View>
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    rowGap: 10,
+    marginVertical: 20,
+  },
   textInput: {
     height: 40,
     borderColor: "#cccccc",
@@ -167,7 +191,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     columnGap: 10,
-    borderColor: "red",
-    borderWidth: 5,
   },
 });

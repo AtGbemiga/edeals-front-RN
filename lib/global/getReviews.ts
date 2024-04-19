@@ -4,18 +4,22 @@ async function getReviewsFn({
   product_id,
   setErrMsg,
   identifier,
+  acc_id,
 }: {
-  product_id: string;
-  identifier: "products";
+  product_id?: string;
+  identifier: "products" | "sellerProfile";
+  acc_id?: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<Res4ProductReviews | undefined> {
-  if (identifier !== "products") {
+  if (identifier !== "products" && identifier !== "sellerProfile") {
     throw new Error("Invalid identifier");
   }
   let url;
 
   if (identifier === "products") {
-    url = `https://fav-work.loca.lt/api/v1/global/getReviews/${product_id}?identifier=products`;
+    url = `https://fav-work.loca.lt/api/v1/global/getReviews?identifier=products&product_id=${product_id}`;
+  } else if (identifier === "sellerProfile") {
+    url = `https://fav-work.loca.lt/api/v1/global/getReviews?identifier=sellerProfile&acc_id=${acc_id}`;
   } else {
     throw new Error("Invalid identifier");
   }

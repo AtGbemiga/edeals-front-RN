@@ -1,4 +1,4 @@
-import { ResProductsLInfo } from "../../types/products/resProducts";
+import { ResSearchLInfo } from "../../types/products/resProducts";
 
 type Props = {
   identifier: "products";
@@ -9,7 +9,7 @@ async function searchFn({
   searchValue,
   setErrMsg,
   identifier,
-}: Props): Promise<ResProductsLInfo | undefined> {
+}: Props): Promise<ResSearchLInfo | undefined> {
   if (identifier !== "products") {
     throw new Error("Invalid identifier");
   }
@@ -40,7 +40,7 @@ async function searchFn({
     return;
   }
 
-  const data: ResProductsLInfo = await res.json();
+  const data: ResSearchLInfo = await res.json();
 
   return data;
 }

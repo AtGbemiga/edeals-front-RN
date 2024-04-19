@@ -70,3 +70,19 @@ export type OneSimilarProduct = Omit<
 export interface ResSimilarProducts {
   result: OneSimilarProduct[];
 }
+
+/* search */
+export type OneSearchLInfo = Pick<
+  OneProductLInfo,
+  "id" | "name" | "first_img" | "rating" | "ratings_count"
+> & {
+  store_id: number;
+  account_name: string;
+  img: string;
+  verified: "0" | "1";
+  searchRes: string;
+};
+
+export interface ResSearchLInfo {
+  result: OneSearchLInfo[];
+}
