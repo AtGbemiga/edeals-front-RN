@@ -47,7 +47,11 @@ export const ProfileIndex = ({ navigation }: Props) => {
           source={{ uri: profile.img }}
           style={styles.profileImg}
         />
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("UpdateProfile", { id: profile.id });
+          }}
+        >
           <Image
             source={uploadIcon}
             style={styles.uploadIcon}
@@ -89,6 +93,7 @@ export const ProfileIndex = ({ navigation }: Props) => {
                 <MyLinks
                   id={resProfile?.result[0].id}
                   acc_type={resProfile?.result[0].account_type}
+                  navigation={navigation}
                 />
               )}
             </>

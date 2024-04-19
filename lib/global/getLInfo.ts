@@ -3,10 +3,10 @@ import {
   ResProductsLInfo,
 } from "../../types/products/resProducts";
 
-export interface getLInfoFnProps {
-  identifierValue: "products";
-  discountValue?: string;
-}
+// interface getLInfoFnProps {
+//   identifierValue: "products";
+//   discountValue?: string;
+// }
 
 async function getLInfoFn({
   identifier,
@@ -14,7 +14,7 @@ async function getLInfoFn({
   discountIdentifier,
   setErrMsg,
 }: {
-  identifier: "products" | "similarProducts";
+  identifier: "products" | "similarProducts" | "wishList";
   subIdentifier?: string;
   discountIdentifier?: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
@@ -31,6 +31,12 @@ async function getLInfoFn({
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&discountIdentifier=${discountIdentifier}`;
   } else if (
     identifier === "similarProducts" &&
+    !discountIdentifier &&
+    subIdentifier
+  ) {
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+  } else if (
+    identifier === "wishList" &&
     !discountIdentifier &&
     subIdentifier
   ) {

@@ -15,4 +15,6 @@ export type RootStackParamList = {
   DynamicProfile: { id: number };
   More: undefined;
   Profile: undefined;
+  UpdateProfile: { id: number };
+  readonly WishList: { id: number };
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getLInfoFn from "../../../lib/products/getLInfo";
+import getLInfoFn from "../../../lib/global/getLInfo";
 import {
   OneSimilarProduct,
   ResSimilarProducts,

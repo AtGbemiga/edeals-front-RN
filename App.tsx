@@ -24,6 +24,8 @@ import { Image } from "react-native";
 import { SearchFiliter } from "./components/home/searchFiliter";
 import { DynamicProfile } from "./components/profile/dynamicProfile";
 import { More } from "./components/more";
+// import { UpdateProfile } from "./components/profile/updateProfile";
+import { WishListIndex } from "./components/dynamic/wishList";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -175,6 +177,16 @@ export default function App() {
         <Stack.Screen
           name="DynamicProfile"
           component={DynamicProfile}
+          options={{ headerShown: false }}
+        />
+        {/* <Stack.Screen
+          name="UpdateProfile"
+          component={UpdateProfile}
+          options={{ headerShown: false }}
+        /> */}
+        <Stack.Screen
+          name="WishList"
+          component={WishListIndex}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

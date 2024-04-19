@@ -7,19 +7,23 @@ import groupsIcon from "../../assets/groupsIcon.png";
 import messagesIcon from "../../assets/messagesIcon.png";
 import logoutIcon from "../../assets/logoutIcon.png";
 import expandRightIcon from "../../assets/expandRightIcon.png";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/global/root";
 
 export const MyLinks = ({
   id,
   acc_type,
+  navigation,
 }: {
   id: number;
   acc_type: "seller" | "buyer";
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
   return (
     <View style={styles.container}>
       <View>
         <Pressable
-          onPress={() => console.log(id, acc_type)}
+          onPress={() => navigation.navigate("WishList", { id })}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? "#909090" : "#cecece",

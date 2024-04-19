@@ -18,7 +18,7 @@ import {
   ResProductsLInfo,
   ResSearchLInfo,
 } from "../../types/products/resProducts";
-import getLInfoFn from "../../lib/products/getLInfo";
+import getLInfoFn from "../../lib/global/getLInfo";
 import { StaticInlineNotice } from "../global/inlineNotice";
 import searchFn from "../../lib/global/search";
 import backIcon from "../../assets/backIcon.png";
