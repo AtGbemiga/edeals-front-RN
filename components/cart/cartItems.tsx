@@ -32,7 +32,9 @@ export const CartItemsFlatList = () => {
       }).then((res) => {
         res && setResCart(res);
       });
-    } catch (error) {}
+    } catch (error) {
+      // disable empty object error
+    }
   }, []);
 
   const totalCartItems = resCart?.finalResult[1].map((total) => total.total)[0];

@@ -23,6 +23,7 @@ import { StaticInlineNotice } from "../global/inlineNotice";
 import searchFn from "../../lib/global/search";
 import backIcon from "../../assets/backIcon.png";
 import { SearchCardLInfo } from "../global/searchCardLInfo";
+import { SuggestedGroups } from "../groups/suggested";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -160,6 +161,9 @@ export const HSProducts = ({
                 navigation={navigation}
               />
             )}
+          </View>
+          <View>
+            <SuggestedGroups />
           </View>
         </>
       )}

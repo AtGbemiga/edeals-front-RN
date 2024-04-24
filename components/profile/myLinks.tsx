@@ -98,7 +98,7 @@ export const MyLinks = ({
       </View>
       <View>
         <Pressable
-          onPress={() => console.log(id, acc_type)}
+          onPress={() => navigation.navigate("GroupsIndex")}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? "#909090" : "#cecece",

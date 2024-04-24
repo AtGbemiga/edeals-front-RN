@@ -26,6 +26,8 @@ import { DynamicProfile } from "./components/profile/dynamicProfile";
 import { More } from "./components/more";
 // import { UpdateProfile } from "./components/profile/updateProfile";
 import { WishListIndex } from "./components/dynamic/wishList";
+import { GroupsIndex } from "./components/dynamic/groups";
+import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -187,6 +189,16 @@ export default function App() {
         <Stack.Screen
           name="WishList"
           component={WishListIndex}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="GroupsIndex"
+          component={GroupsIndex}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="GroupFullInfo"
+          component={GroupFullInfo}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -17,4 +17,6 @@ export type RootStackParamList = {
   Profile: undefined;
   UpdateProfile: { id: number };
   readonly WishList: { id: number };
+  readonly GroupsIndex: undefined;
+  readonly GroupFullInfo: { id: number };
 };
