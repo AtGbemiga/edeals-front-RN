@@ -1,24 +1,72 @@
 import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
 import getCartFn from "../../lib/products/getCart";
 import { OneCart, ResGetCart } from "../../types/products/resGetCart";
 import { CtaBtn } from "../global/ctaBtn";
-const cartItem = ({ item }: { item: OneCart }) => {
+
+const CartItem = ({ item }: { item: OneCart }) => {
+  const [isSwiped, setIsSwiped] = useState(false);
+  const leftContent = (
+    <Button
+      title="Click me"
+      onPress={() => setIsSwiped(true)}
+    />
+  );
+
+  const SWIPE_THRESHOLD = 100; // Adjust threshold for swipe
+
+  const handleSwipe = (gestureEvent: PanGestureHandlerGestureEvent) => {
+    const { translationX } = gestureEvent.nativeEvent;
+    if (translationX > SWIPE_THRESHOLD) {
+      setIsSwiped(true);
+    } else if (translationX < -SWIPE_THRESHOLD) {
+      setIsSwiped(false);
+    }
+  };
+
+  const containerStyle = {
+    width: Dimensions.get("window").width, // Initial full width
+    backgroundColor: "white", // Adjust background color
+    transform: [
+      { translateX: isSwiped ? -SWIPE_THRESHOLD : 0 }, // Translate left on swipe
+    ],
+  };
+
   return (
-    <View style={styles.itemContainer}>
-      <View>
-        <Image
-          source={{ uri: item.first_img }}
-          style={styles.image}
-        />
-      </View>
-      <View>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.store}>{item.store_name}</Text>
-        <Text>{item.qty}</Text>
-        <Text style={styles.price}>&#8358;{item.price.toLocaleString()}</Text>
-      </View>
-    </View>
+    <GestureHandlerRootView>
+      <PanGestureHandler onGestureEvent={handleSwipe}>
+        <View style={[styles.itemContainer, containerStyle]}>
+          <View>
+            <Image
+              source={{ uri: item.first_img }}
+              style={styles.image}
+            />
+          </View>
+          <View>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.store}>{item.store_name}</Text>
+            <Text>{item.qty}</Text>
+            <Text style={styles.price}>
+              &#8358;{item.price.toLocaleString()}
+            </Text>
+          </View>
+          {isSwiped && leftContent}
+        </View>
+      </PanGestureHandler>
+    </GestureHandlerRootView>
   );
 };
 
@@ -58,7 +106,7 @@ export const CartItemsFlatList = () => {
       <View>
         <FlatList
           data={resCart?.finalResult[0]}
-          renderItem={cartItem}
+          renderItem={({ item }) => <CartItem item={item} />}
           decelerationRate="fast"
           keyExtractor={(item) => item.id.toString()}
           extraData={resCart?.finalResult[0]}

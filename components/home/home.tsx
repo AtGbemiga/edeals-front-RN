@@ -40,7 +40,7 @@ export const Home = ({
   }, []);
 
   function handleShowService() {
-    setContent(HSServices);
+    setContent(<HSServices navigation={navigation} />);
     setIsProductActiveBtn(false);
   }
 

@@ -2,6 +2,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ImageSourcePropType,
   StyleSheet,
   Text,
   View,
@@ -12,7 +13,13 @@ import Logo2 from "../../assets/Eggs.png";
 import Logo3 from "../../assets/Meat.png";
 import Logo4 from "../../assets/Groupg.png";
 
-const CATEGORIES_DATA = [
+interface CATEGORIES_DATAProps {
+  id: number;
+  name: string;
+  imgPath: ImageSourcePropType;
+  bgColor: string;
+}
+const CATEGORIES_DATA: CATEGORIES_DATAProps[] = [
   {
     id: 1,
     name: "Hotels",
@@ -45,19 +52,13 @@ const CATEGORIES_DATA = [
   },
 ];
 
-type CategoryProps = {
-  id: number;
-  name: string;
-  imgPath: string;
-  bgColor: string;
-};
-const Category = ({ id, name, imgPath, bgColor }: CategoryProps) => (
+const Category = ({ id, name, imgPath, bgColor }: CATEGORIES_DATAProps) => (
   <View
     key={id}
     style={[{ backgroundColor: bgColor }, styles.itemContainer]}
   >
     <Image
-      source={{ uri: imgPath.toString() }}
+      source={imgPath}
       style={styles.img}
     />
     <Text>{name}</Text>
@@ -89,18 +90,17 @@ export const CategoriesFlatList = () => (
 
 const styles = StyleSheet.create({
   flatListContainer: {
-    paddingVertical: 10, // Adjust as needed
+    paddingVertical: 10,
   },
   img: {
-    width: 70,
-    height: 70,
-    borderRadius: 10,
-    borderColor: "red",
+    width: 30,
+    height: 30,
   },
   itemContainer: {
-    width: screenWidth / 4, // Ensure each item occupies the full width of the screen
-    // paddingHorizontal: 10, // Adjust as needed
+    width: screenWidth / 4,
+    padding: 10,
     marginRight: 10,
-    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

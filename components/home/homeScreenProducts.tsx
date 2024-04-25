@@ -24,6 +24,7 @@ import searchFn from "../../lib/global/search";
 import backIcon from "../../assets/backIcon.png";
 import { SearchCardLInfo } from "../global/searchCardLInfo";
 import { SuggestedGroups } from "../groups/suggested";
+import { Banners } from "../hSServices/banners";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -122,7 +123,7 @@ export const HSProducts = ({
       ) : (
         <>
           <View>
-            <Text>Ad area</Text>
+            <Banners navigation={navigation} />
           </View>
           <View>
             <Text>Categories</Text>

@@ -146,7 +146,12 @@ export const SearchFiliter = ({
   );
 };
 
-const FASHION_CHECKBOXES = [
+interface FASHION_CHECKBOXESProps {
+  label: string;
+  value: string;
+}
+
+const FASHION_CHECKBOXES: FASHION_CHECKBOXESProps[] = [
   {
     label: "Shoes",
     value: "shoes",
