@@ -12,8 +12,8 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
-  const callback_url = "https://fav-work.loca.lt/ap1/v1/paystack/callbackurl";
-  const cancel_url = "https://fav-work.loca.lt/ap1/v1/paystack/cancelurl";
+  const callback_url = "https://fav-work.loca.lt/api/v1/paystack/callbackurl";
+  const cancel_url = "https://fav-work.loca.lt/api/v1/paystack/cancelurl";
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
     const { url } = state;
@@ -24,7 +24,7 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
       // get transaction reference from url, verify transaction, and redirect
 
       fetch(
-        `https://fav-work.loca.lt/ap1/v1/paystack/verify?referenceID=${referenceID}`,
+        `https://fav-work.loca.lt/api/v1/paystack/verify?referenceID=${referenceID}`,
         {
           method: "GET",
         }
