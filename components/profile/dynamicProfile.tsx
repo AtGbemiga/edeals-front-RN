@@ -79,7 +79,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
             </View>
           </View>
           <View>
-            {profile.verified === "0" && (
+            {profile.verified === "1" && (
               <VerifiedIcon
                 w={20}
                 h={20}
@@ -100,7 +100,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
           </View>
         )}
 
-        {profile.imgs ? (
+        {profile.imgs && profile.imgs.length > 0 ? (
           <View>
             <Text style={styles.boldTitle}>Pictures</Text>
             <FlatList
@@ -116,7 +116,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
               )}
               horizontal
               showsHorizontalScrollIndicator={false}
-              snapToInterval={screenWidth} // Width of each item
+              snapToInterval={screenWidth}
               decelerationRate="fast"
               keyExtractor={(item) => item}
               extraData={profile.imgs}
@@ -234,7 +234,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {errMsg ? (
+        {errMsg && (
           <>
             <StaticInlineNotice
               msg={errMsg}
@@ -242,12 +242,11 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
               bgColor="red"
             />
           </>
-        ) : (
-          <>
-            {/* <View>Back btn here</View> */}
-            {content}
-          </>
         )}
+        <>
+          {/* <View>Back btn here</View> */}
+          {content}
+        </>
       </ScrollView>
     </SafeAreaView>
   );

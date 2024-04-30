@@ -1,3 +1,5 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -7,31 +9,29 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { CardLInfo } from "../global/cardLInfo";
-import { CategoriesFlatList } from "./categories";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ParamListBase } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import backIcon from "../../assets/backIcon.png";
 import searchIcon from "../../assets/searchIcon.png";
 import filterIcon from "../../assets/sliders.png";
+import getLInfoFn from "../../lib/global/getLInfo";
+import globalSearchFn from "../../lib/global/search";
+import { RootStackParamList } from "../../types/global/root";
 import {
   ResProductsLInfo,
   ResSearchLInfo,
 } from "../../types/products/resProducts";
-import getLInfoFn from "../../lib/global/getLInfo";
+import { CardLInfo } from "../global/cardLInfo";
 import { StaticInlineNotice } from "../global/inlineNotice";
-import searchFn from "../../lib/global/search";
-import backIcon from "../../assets/backIcon.png";
 import { SearchCardLInfo } from "../global/searchCardLInfo";
 import { SuggestedGroups } from "../groups/suggested";
 import { Banners } from "../hSServices/banners";
+import { CategoriesFlatList } from "./categories";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
 export const HSProducts = ({
   navigation,
 }: {
-  navigation: NativeStackNavigationProp<ParamListBase>;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
   const [resProducts, setResProducts] = useState<ResProductsLInfo>();
   const [resSearch, setResSearch] = useState<ResSearchLInfo>();
@@ -43,7 +43,6 @@ export const HSProducts = ({
       (async () => {
         const res = (await getLInfoFn({
           identifier: "products",
-          discountIdentifier: "20" ?? undefined,
           setErrMsg,
         })) as ResProductsLInfo;
 
@@ -61,12 +60,16 @@ export const HSProducts = ({
 
     try {
       (async () => {
-        const res = await searchFn({
+        const res = await globalSearchFn({
           identifier: "products",
           searchValue: searchValue,
           setErrMsg,
         });
-        if (res && res.result.length > 0) {
+        if (
+          res &&
+          "productSearchData" in res &&
+          res.productSearchData.length > 0
+        ) {
           setResSearch(res);
         }
       })();
@@ -74,6 +77,7 @@ export const HSProducts = ({
       // disable empty object error
     }
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.searchArea}>
@@ -100,7 +104,7 @@ export const HSProducts = ({
           />
         </Pressable>
       </View>
-      {resSearch && resSearch.result.length > 0 ? (
+      {resSearch && resSearch.productSearchData.length > 0 ? (
         <>
           <View>
             <Pressable
@@ -134,8 +138,8 @@ export const HSProducts = ({
             {errMsg ? (
               <StaticInlineNotice
                 msg={errMsg}
-                bgColor="red"
-                color="white"
+                bgColor="#ff0000"
+                color="#ffffff"
               />
             ) : (
               <CardLInfo

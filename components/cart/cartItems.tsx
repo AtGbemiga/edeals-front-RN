@@ -1,9 +1,11 @@
+import { AntDesign, Feather } from "@expo/vector-icons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import {
-  Button,
   Dimensions,
   FlatList,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -13,27 +15,87 @@ import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
+import { payStackInitFn } from "../../lib/paystack/paymentInitialization";
+import deleteCartFn from "../../lib/products/delete";
 import getCartFn from "../../lib/products/getCart";
+import updateCartQtyFn from "../../lib/products/updateCartQty";
+import { RootStackParamList } from "../../types/global/root";
 import { OneCart, ResGetCart } from "../../types/products/resGetCart";
 import { CtaBtn } from "../global/ctaBtn";
+import { StaticInlineNotice } from "../global/inlineNotice";
 
-const CartItem = ({ item }: { item: OneCart }) => {
-  const [isSwiped, setIsSwiped] = useState(false);
+const CartItem = ({
+  item,
+  handleDelete,
+  handleQtyUpdate,
+}: {
+  item: OneCart;
+  handleDelete: (itemID: number) => void;
+  handleQtyUpdate: (itemID: number, newQty: number) => void;
+}) => {
+  const [showRightContent, setShowRightContent] = useState(false);
+  const [showLeftContent, setShowLeftContent] = useState(false);
+  const [qty, setQty] = useState(item.qty);
+  const [errMsg, setErrMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
   const leftContent = (
-    <Button
-      title="Click me"
-      onPress={() => setIsSwiped(true)}
-    />
+    <View>
+      <Pressable
+        onPress={() => {
+          handleQtyUpdate(item.id, qty + 1);
+          setQty(qty + 1);
+        }}
+      >
+        <AntDesign
+          name="plus"
+          size={24}
+          color="#000000"
+        />
+      </Pressable>
+      <Text>{qty}</Text>
+      <Pressable
+        onPress={() => {
+          if (qty <= 1) return;
+          handleQtyUpdate(item.id, qty - 1);
+          setQty(qty - 1);
+        }}
+      >
+        <AntDesign
+          name="minus"
+          size={24}
+          color="#000000"
+        />
+      </Pressable>
+    </View>
   );
 
-  const SWIPE_THRESHOLD = 100; // Adjust threshold for swipe
+  const rightContent = (
+    <Pressable onPress={() => handleDelete(item.id)}>
+      <View style={styles.deleteIconBox}>
+        <Feather
+          name="trash-2"
+          size={24}
+          color={"#ffffff"}
+        />
+      </View>
+    </Pressable>
+  );
 
+  const SWIPE_THRESHOLD = 50;
+
+  // Toggle left and right content on swipe
   const handleSwipe = (gestureEvent: PanGestureHandlerGestureEvent) => {
     const { translationX } = gestureEvent.nativeEvent;
-    if (translationX > SWIPE_THRESHOLD) {
-      setIsSwiped(true);
-    } else if (translationX < -SWIPE_THRESHOLD) {
-      setIsSwiped(false);
+    if (translationX < SWIPE_THRESHOLD) {
+      setShowRightContent(true);
+      setShowLeftContent(false);
+    } else if (translationX > -SWIPE_THRESHOLD) {
+      setShowLeftContent(true);
+      setShowRightContent(false);
+    } else {
+      setShowLeftContent(false);
+      setShowRightContent(false);
     }
   };
 
@@ -41,7 +103,7 @@ const CartItem = ({ item }: { item: OneCart }) => {
     width: Dimensions.get("window").width, // Initial full width
     backgroundColor: "white", // Adjust background color
     transform: [
-      { translateX: isSwiped ? -SWIPE_THRESHOLD : 0 }, // Translate left on swipe
+      { translateX: showRightContent ? -SWIPE_THRESHOLD : 0 }, // Translate left on swipe
     ],
   };
 
@@ -49,6 +111,7 @@ const CartItem = ({ item }: { item: OneCart }) => {
     <GestureHandlerRootView>
       <PanGestureHandler onGestureEvent={handleSwipe}>
         <View style={[styles.itemContainer, containerStyle]}>
+          {showLeftContent && leftContent}
           <View>
             <Image
               source={{ uri: item.first_img }}
@@ -58,19 +121,20 @@ const CartItem = ({ item }: { item: OneCart }) => {
           <View>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.store}>{item.store_name}</Text>
-            <Text>{item.qty}</Text>
             <Text style={styles.price}>
               &#8358;{item.price.toLocaleString()}
             </Text>
           </View>
-          {isSwiped && leftContent}
+
+          {showRightContent && rightContent}
         </View>
       </PanGestureHandler>
     </GestureHandlerRootView>
   );
 };
 
-export const CartItemsFlatList = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "Cart">;
+export const CartItemsFlatList = ({ navigation }: Props) => {
   const [resCart, setResCart] = useState<ResGetCart>();
   const [errMsg, setErrMsg] = useState("");
   useEffect(() => {
@@ -83,7 +147,7 @@ export const CartItemsFlatList = () => {
     } catch (error) {
       // disable empty object error
     }
-  }, []);
+  }, [resCart]);
 
   const totalCartItems = resCart?.finalResult[1].map((total) => total.total)[0];
 
@@ -94,50 +158,133 @@ export const CartItemsFlatList = () => {
 
   const checkOutPrice = totalPrice ? totalPrice + 600 : 0;
 
+  async function handleDelete(itemID: number) {
+    try {
+      const res = await deleteCartFn({
+        cart_id: itemID,
+        setErrMsg,
+      });
+
+      if (res && res.message.includes("success")) {
+        try {
+          getCartFn({
+            setErrMsg,
+          }).then((res) => {
+            res && setResCart(res);
+          });
+        } catch (error) {
+          // disable empty object error
+        }
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  }
+
+  async function handleQtyUpdate(itemID: number, newQty: number) {
+    try {
+      const res = await updateCartQtyFn({
+        qty: newQty,
+        cart_id: itemID,
+        setErrMsg,
+      });
+
+      if (res && res.message.includes("success")) {
+        try {
+          getCartFn({
+            setErrMsg,
+          }).then((res) => {
+            res && setResCart(res);
+          });
+        } catch (error) {
+          // disable empty object error
+        }
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  }
+
+  async function handlePayment() {
+    const formattedPrice = checkOutPrice * 100;
+    const res = await payStackInitFn({
+      email: "lG5s5@example.com",
+      amount: formattedPrice.toString(),
+    });
+
+    if (res) {
+      navigation.navigate("PaymentScreen", { res });
+      console.log(res.data.authorization_url);
+    }
+  }
+
   return (
-    <>
-      <View>
-        <Text style={styles.totalCartItems}>
-          {totalCartItems === 1
-            ? `${totalCartItems} item`
-            : `${totalCartItems} items`}
-        </Text>
-      </View>
-      <View>
-        <FlatList
-          data={resCart?.finalResult[0]}
-          renderItem={({ item }) => <CartItem item={item} />}
-          decelerationRate="fast"
-          keyExtractor={(item) => item.id.toString()}
-          extraData={resCart?.finalResult[0]}
-          style={styles.flatListContainer}
+    <View>
+      {errMsg ? (
+        <StaticInlineNotice
+          msg={errMsg}
+          color="white"
+          bgColor="red"
         />
-      </View>
-      <View style={styles.mathContainer}>
-        <View style={styles.math}>
-          <Text style={styles.mathText}>Subtotal</Text>
-          <Text style={styles.mathPrice}>
-            &#8358;{totalPrice?.toLocaleString() ?? "N/A"}
-          </Text>
-        </View>
-        <View style={styles.math}>
-          <Text style={styles.mathText}>Delivery</Text>
-          <Text style={styles.mathPrice}>&#8358;600</Text>
-        </View>
-        <View style={[styles.math, styles.lastMath]}>
-          <Text style={styles.checkOutText}>Total Cost</Text>
-          <Text style={styles.checkOutPrice}>
-            &#8358;{checkOutPrice?.toLocaleString()}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.btnContainer}>
-        <CtaBtn
-          text="Checkout"
-          onPressFn={() => {}}
-        />
-      </View>
-    </>
+      ) : (
+        <>
+          <View>
+            {errMsg && (
+              <StaticInlineNotice
+                msg={errMsg}
+                color="white"
+                bgColor="red"
+              />
+            )}
+            <Text style={styles.totalCartItems}>
+              {totalCartItems === 1
+                ? `${totalCartItems} item`
+                : `${totalCartItems} items`}
+            </Text>
+          </View>
+          <View>
+            <FlatList
+              data={resCart?.finalResult[0]}
+              renderItem={({ item }) => (
+                <CartItem
+                  item={item}
+                  handleDelete={handleDelete}
+                  handleQtyUpdate={handleQtyUpdate}
+                />
+              )}
+              decelerationRate="fast"
+              keyExtractor={(item) => item.id.toString()}
+              extraData={resCart?.finalResult[0]}
+              style={styles.flatListContainer}
+            />
+          </View>
+          <View style={styles.mathContainer}>
+            <View style={styles.math}>
+              <Text style={styles.mathText}>Subtotal</Text>
+              <Text style={styles.mathPrice}>
+                &#8358;{totalPrice?.toLocaleString() ?? "N/A"}
+              </Text>
+            </View>
+            <View style={styles.math}>
+              <Text style={styles.mathText}>Delivery</Text>
+              <Text style={styles.mathPrice}>&#8358;600</Text>
+            </View>
+            <View style={[styles.math, styles.lastMath]}>
+              <Text style={styles.checkOutText}>Total Cost</Text>
+              <Text style={styles.checkOutPrice}>
+                &#8358;{checkOutPrice?.toLocaleString()}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.btnContainer}>
+            <CtaBtn
+              text="Checkout"
+              onPressFn={handlePayment}
+            />
+          </View>
+        </>
+      )}
+    </View>
   );
 };
 
@@ -220,5 +367,12 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     alignItems: "center",
+  },
+  deleteIconBox: {
+    width: 106,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ff0000",
   },
 });

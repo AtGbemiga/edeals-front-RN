@@ -1,18 +1,18 @@
 import * as SecureStore from "expo-secure-store";
-import { ResProductFInfo } from "../../types/products/resProducts";
+import { ResSuccess } from "../../types/global/resSuccess";
 
-async function getFInfoFn({
-  product_id,
+async function deleteCartFn({
+  cart_id,
   setErrMsg,
 }: {
-  product_id: string;
+  cart_id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
-}): Promise<ResProductFInfo | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/products/getFInfo/${product_id}`;
+}): Promise<ResSuccess | undefined> {
+  const url = `https://fav-work.loca.lt/api/v1/products/deleteCartItem/${cart_id}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
-    method: "GET",
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -31,8 +31,8 @@ async function getFInfoFn({
     return;
   }
 
-  const data: ResProductFInfo = await res.json();
+  const data: ResSuccess = await res.json();
 
   return data;
 }
-export default getFInfoFn;
+export default deleteCartFn;

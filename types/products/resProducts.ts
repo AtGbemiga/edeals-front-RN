@@ -4,9 +4,12 @@ export interface OneProductLInfo {
   sub_heading: string;
   price: number;
   first_img: string;
-  rating?: string;
-  ratings_count?: number;
-  discount?: string;
+  rating: string;
+  ratings_count: number;
+  discount: string;
+  discount_price: string;
+  user_has_wishlisted: number;
+  wishlist_id: number | null;
 }
 
 export interface ResProductsLInfo {
@@ -43,18 +46,21 @@ export interface Size {
   sizes_id: number;
 }
 export interface OneProductFInfo {
-  id: number;
-  name: string;
-  sub_heading: string;
-  price: number;
-  imgs: string[];
-  rating: string;
-  ratings_count: number;
+  readonly id: number;
+  readonly name: string;
+  readonly sub_heading: string;
+  readonly price: number;
+  readonly imgs: string[];
+  readonly rating: string;
+  readonly ratings_count: number;
   discount: string;
-  description: string;
-  category: string;
-  sizes: Size[];
-  colors: Color[];
+  discount_price: string;
+  readonly description: string;
+  readonly category: string;
+  readonly wishlist_id?: number;
+  readonly user_has_wishlisted: number;
+  readonly sizes: Size[];
+  readonly colors: Color[];
 }
 
 export interface ResProductFInfo {
@@ -84,5 +90,5 @@ export type OneSearchLInfo = Pick<
 };
 
 export interface ResSearchLInfo {
-  result: OneSearchLInfo[];
+  productSearchData: OneSearchLInfo[];
 }

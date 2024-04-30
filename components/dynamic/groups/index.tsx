@@ -16,7 +16,7 @@ import getLInfoFn from "../../../lib/global/getLInfo";
 import { RootStackParamList } from "../../../types/global/root";
 import { OneGroup, ResGetGroups } from "../../../types/groups/resGetGroups";
 import { ResGroupSearch } from "../../../types/groups/resGroupSearch";
-import searchFn from "../../../lib/global/search";
+import globalSearchFn from "../../../lib/global/search";
 import backIcon from "../../../assets/backIcon.png";
 import { StaticInlineNotice } from "../../global/inlineNotice";
 
@@ -72,7 +72,7 @@ export const GroupsIndex = ({ navigation }: Props) => {
     }
     try {
       (async () => {
-        const res = await searchFn({
+        const res = await globalSearchFn({
           identifier: "groups",
           searchValue,
           setErrMsg,

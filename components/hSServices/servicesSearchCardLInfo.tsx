@@ -9,32 +9,32 @@ import {
   Text,
   View,
 } from "react-native";
+import { VerifiedIcon } from "../../assets/verifiedIcon.png";
 import { RootStackParamList } from "../../types/global/root";
 import {
-  OneSearchLInfo,
-  ResSearchLInfo,
-} from "../../types/products/resProducts";
-import { VerifiedIcon } from "./verifiedIcon";
+  OneSearchService,
+  ResSearchServices,
+} from "../../types/services/resSearch";
 
 const screenWidth = Dimensions.get("window").width;
 
-export const SearchCardLInfo = ({
+export const ServicesSearchCardLInfo = ({
   data,
   navigation,
   searchValue,
 }: {
-  data: ResSearchLInfo;
+  data: ResSearchServices;
   navigation: NativeStackNavigationProp<RootStackParamList>;
   searchValue: string;
 }) => {
   // Render individual items
-  const renderItem = ({ item }: { item: OneSearchLInfo }) => {
+  const renderItem = ({ item }: { item: OneSearchService }) => {
     return (
       <View style={styles.itemContainer}>
         <View>
           <Image
             source={{ uri: item.img }}
-            alt={`${item.name}`}
+            alt={`${item.img}`}
             style={styles.acc_img}
           />
         </View>
@@ -52,13 +52,13 @@ export const SearchCardLInfo = ({
             </View>
             <Text>KM away here</Text>
             <Text>
-              {item.rating} ({item.ratings_count})
+              {item.avg_rating} ({item.ratings_count})
             </Text>
           </View>
           <View>
             <Pressable
               onPress={() =>
-                navigation.navigate("DynamicProfile", { id: item.store_id })
+                navigation.navigate("DynamicProfile", { id: item.id })
               }
               style={styles.primaryBtn}
             >
@@ -67,13 +67,6 @@ export const SearchCardLInfo = ({
           </View>
         </View>
         <View style={styles.ctaArea}>
-          <View>
-            <Image
-              source={{ uri: item.first_img }}
-              style={styles.image}
-            />
-          </View>
-
           <View>
             <Pressable
               onPress={() =>
@@ -109,7 +102,7 @@ export const SearchCardLInfo = ({
         </LinearGradient>
       </View>
       <FlatList
-        data={data?.productSearchData}
+        data={data?.servicesFinalResult[0]}
         renderItem={renderItem}
         snapToInterval={screenWidth} // Width of each item
         decelerationRate="fast"

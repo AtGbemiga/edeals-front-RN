@@ -28,6 +28,8 @@ import { More } from "./components/more";
 import { WishListIndex } from "./components/dynamic/wishList";
 import { GroupsIndex } from "./components/dynamic/groups";
 import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
+import { PaymentScreen } from "./components/paystack/paymentScreen";
+import { Success } from "./components/paystack/success";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -199,6 +201,16 @@ export default function App() {
         <Stack.Screen
           name="GroupFullInfo"
           component={GroupFullInfo}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PaymentScreen"
+          component={PaymentScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Success"
+          component={Success}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

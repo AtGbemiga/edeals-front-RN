@@ -24,11 +24,16 @@ import { ReviewsFlatList } from "../../global/reviews";
 import { SimilarProducts } from "./similarProducts";
 import { Res4ProductReviews } from "../../../types/products/resReviews";
 import getReviewsFn from "../../../lib/global/getReviews";
+import { AntDesign } from "@expo/vector-icons";
+import addToWishListFn from "../../../lib/products/addToWishList";
+import deleteFromWishListFn from "../../../lib/products/deleteFromWishList";
+import StarRatings from "../../global/starRatings";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dynamic Product">;
 const screenWidth = Dimensions.get("window").width;
 
 // TODO: handle if no token
+// Add check to ensure qty, colour and size are not set when adding to cart
 export const DynamicProduct = ({ route, navigation }: Props) => {
   const { id } = route.params;
   const scrollViewRef = useRef<ScrollView>(null);
@@ -37,12 +42,17 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
 
   const [errMsg, setErrMsg] = useState("");
   const productId = id;
-  const [qty, setQty] = useState("1");
+  const [qty, setQty] = useState("Qty");
   const [personalized_price, setPersonalized_price] = useState("");
-  const [colour, setColour] = useState("blue");
-  const [size, setSize] = useState("s");
+  const [colour, setColour] = useState("Colour");
+  const [size, setSize] = useState("Size");
 
   const [inlineMsg, setinlineMsg] = useState("");
+  const [images, setImages] = useState<string[] | undefined>([]);
+  const [ratings, setRatings] = useState<string | undefined>("");
+  const [isWishListed, setisWishListed] = useState<number>(0);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [wishListID, setWishListID] = useState<number | undefined>(0);
 
   // review state
   const [resReviews, setResReviews] = useState<Res4ProductReviews>();
@@ -53,8 +63,22 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
       setIsMounted(true);
     }
     (async () => {
+      let resWishList: number | undefined;
+      let wishListID: number | undefined;
       const res = await getFInfoFn({ product_id: id.toString(), setErrMsg });
       setResFProduct(res);
+
+      setImages(resFProduct?.result[0].imgs);
+      setRatings(resFProduct?.result[0].rating);
+      if (res && res.result.length > 0) {
+        resWishList = res?.result.find(
+          (user) => user.user_has_wishlisted
+        )?.user_has_wishlisted;
+
+        wishListID = res?.result.find((user) => user.wishlist_id)?.wishlist_id;
+      }
+      setWishListID(wishListID);
+      setisWishListed(resWishList ? 1 : 0);
 
       if (resFProduct && resFProduct.result.length > 0) {
         setPersonalized_price(resFProduct.result[0].price.toString());
@@ -103,10 +127,39 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
     }
   };
 
+  const handleAddToWishList = async () => {
+    try {
+      const res = await addToWishListFn({ productID: id, setErrMsg });
+      if (res?.message.includes("success")) {
+        setSuccessMsg(res.message);
+        setisWishListed(1);
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  };
+
+  const handleDeleteFromWishList = async () => {
+    if (!wishListID) return;
+    try {
+      const res = await deleteFromWishListFn({
+        wishlistItemId: wishListID,
+        setErrMsg,
+      });
+      if (res?.message.includes("success")) {
+        setSuccessMsg(res.message);
+        setisWishListed(0);
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, paddingTop: StatusBar.currentHeight }}>
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
+          {successMsg && <Text>{successMsg}</Text>}
           <View>
             {inlineMsg && (
               <FadeInlineNotice
@@ -127,15 +180,12 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
           </View>
           <View>
             <FlatList
-              data={resFProduct.result}
+              data={images}
               renderItem={({ item }) => (
-                <View>
-                  <Image
-                    key={item.imgs[0]} // Add a unique key for each image
-                    source={{ uri: item.imgs[0] }}
-                    style={styles.image}
-                  />
-                </View>
+                <Image
+                  source={{ uri: item }}
+                  style={styles.image}
+                />
               )}
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -144,22 +194,26 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
               contentContainerStyle={styles.flatListContainer}
             />
           </View>
-          {/* TODO: Make the view below flex row . style={styles.optionsArea}*/}
-          <View>
-            <View>
+          <View style={styles.optionsArea}>
+            <View style={styles.options}>
               <Picker
                 selectedValue={size}
                 onValueChange={(itemValue) => {
                   setSize(itemValue);
                 }}
               >
+                <Picker.Item
+                  label="Size"
+                  value="size"
+                  enabled={false}
+                />
                 {resFProduct.result.map((item) =>
                   item.sizes.map((size) => {
                     if (size.s === "1") {
                       return (
                         <Picker.Item
                           key={size.sizes_id.toString()}
-                          label="s"
+                          label="sdf"
                           value="s"
                         />
                       );
@@ -239,13 +293,18 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
                 )}
               </Picker>
             </View>
-            <View>
+            <View style={styles.options}>
               <Picker
                 selectedValue={colour}
                 onValueChange={(itemValue) => {
                   setColour(itemValue);
                 }}
               >
+                <Picker.Item
+                  label="Colour"
+                  value=""
+                  enabled={false}
+                />
                 {resFProduct.result.map((item) =>
                   item.colors.map((color) => {
                     if (color.blue === "1") {
@@ -374,11 +433,16 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
                 )}
               </Picker>
             </View>
-            <View>
+            <View style={styles.options}>
               <Picker
                 selectedValue={qty}
                 onValueChange={(itemValue) => setQty(itemValue)}
               >
+                <Picker.Item
+                  label="Qty"
+                  value=""
+                  enabled={false}
+                />
                 <Picker.Item
                   label="1"
                   value="1"
@@ -421,18 +485,60 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
                 />
               </Picker>
             </View>
-          </View>
-          <View>
             <View>
-              <Text>{resFProduct.result.map((item) => item.name)}</Text>
-              <Text>{resFProduct.result.map((item) => item.sub_heading)}</Text>
-              <Text>
-                {resFProduct.result.map((item) => item.rating)} (
-                {resFProduct.result.map((item) => item.ratings_count)})
+              {isWishListed === 0 ? (
+                <Pressable onPress={() => handleAddToWishList()}>
+                  <AntDesign
+                    name="hearto"
+                    size={24}
+                    color="#000000"
+                  />
+                </Pressable>
+              ) : (
+                <Pressable onPress={() => handleDeleteFromWishList()}>
+                  <AntDesign
+                    name="heart"
+                    size={24}
+                    color="#ff0000"
+                  />
+                </Pressable>
+              )}
+            </View>
+          </View>
+          <View style={styles.details}>
+            <View>
+              <Text style={styles.boldText}>
+                {resFProduct.result.map((item) => item.name)}
               </Text>
+              <Text>{resFProduct.result.map((item) => item.sub_heading)}</Text>
+              <View style={styles.ratingsBox}>
+                {ratings && (
+                  <StarRatings
+                    ratings={ratings}
+                    size={24}
+                  />
+                )}
+                <Text>
+                  ({resFProduct.result.map((item) => item.ratings_count)})
+                </Text>
+              </View>
             </View>
             <View>
-              <Text>{resFProduct.result.map((item) => item.price)}</Text>
+              {resFProduct.result.map((item) => Number(item.discount) === 0) ? (
+                <Text style={styles.boldText}>
+                  &#8358;
+                  {resFProduct.result.map((item) =>
+                    Number(item.discount_price).toLocaleString()
+                  )}
+                </Text>
+              ) : (
+                <Text style={styles.boldText}>
+                  &#8358;
+                  {resFProduct.result.map((item) =>
+                    item.price.toLocaleString()
+                  )}
+                </Text>
+              )}
             </View>
           </View>
           <View>
@@ -445,7 +551,10 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
             />
           </View>
           <View>
-            <ReviewsFlatList data={resReviews as Res4ProductReviews} />
+            <ReviewsFlatList
+              data={resReviews as Res4ProductReviews}
+              errMsg={errMsg}
+            />
           </View>
           <View>
             <SimilarProducts
@@ -465,25 +574,49 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     rowGap: 50,
+    paddingHorizontal: 10,
   },
   flatListContainer: {
     paddingHorizontal: 10,
   },
   image: {
-    width: "100%",
+    width: screenWidth,
     height: 200,
-    resizeMode: "cover",
+    resizeMode: "stretch",
   },
-  // optionsArea: {
-  //   display: "flex",
-  //   flexDirection: "row",
-  //   // columnGap: 10,
-  //   borderColor: "red",
-  // },
+  optionsArea: {
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  options: {
+    borderColor: "black",
+    borderWidth: 1,
+    width: "47%",
+    borderRadius: 5,
+  },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+  },
+  details: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    columnGap: 10,
+  },
+  boldText: {
+    fontWeight: "700",
+    fontSize: 16,
+  },
+  ratingsBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    textAlign: "center",
   },
 });

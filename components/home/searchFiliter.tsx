@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import backIcon from "../../assets/backIcon.png";
-import searchFn from "../../lib/global/search";
+import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
 import { ResSearchLInfo } from "../../types/products/resProducts";
 import { StaticInlineNotice } from "../global/inlineNotice";
@@ -36,7 +36,7 @@ export const SearchFiliter = ({
     }
     try {
       (async () => {
-        const res = await searchFn({
+        const res = await globalSearchFn({
           identifier: "products",
           searchValue,
           setErrMsg,

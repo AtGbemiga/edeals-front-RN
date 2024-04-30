@@ -11,22 +11,25 @@ import {
   View,
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
+import CutCostBanner from "../../assets/hServicesCutCost.png";
 import searchIcon from "../../assets/searchIcon.png";
 import filterIcon from "../../assets/sliders.png";
-import searchFn from "../../lib/global/search";
-import { ResSearchLInfo } from "../../types/products/resProducts";
+import globalSearchFn from "../../lib/global/search";
+import { ResSearchServices } from "../../types/services/resSearch";
+import { StaticInlineNotice } from "../global/inlineNotice";
 import { Banners } from "../hSServices/banners";
 import { Categories } from "../hSServices/categories";
-import CutCostBanner from "../../assets/hServicesCutCost.png";
+import { ServicesSearchCardLInfo } from "../hSServices/servicesSearchCardLInfo";
+import { RootStackParamList } from "../../types/global/root";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
 export const HSServices = ({
   navigation,
 }: {
-  navigation: NativeStackNavigationProp<ParamListBase>;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
-  const [resSearch, setResSearch] = useState<ResSearchLInfo>();
+  const [resSearch, setResSearch] = useState<ResSearchServices>();
   const [searchValue, setSearchValue] = useState("");
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [errMsg, setErrMsg] = useState("");
@@ -36,13 +39,18 @@ export const HSServices = ({
 
     try {
       (async () => {
-        const res = await searchFn({
-          identifier: "products",
+        const res = await globalSearchFn({
+          identifier: "services",
           searchValue: searchValue,
           setErrMsg,
         });
-        if (res && res.result.length > 0) {
+        if (
+          res &&
+          "servicesFinalResult" in res &&
+          res.servicesFinalResult.length > 0
+        ) {
           setResSearch(res);
+          console.log(resSearch);
         }
       })();
     } catch (error) {
@@ -75,41 +83,55 @@ export const HSServices = ({
           />
         </Pressable>
       </View>
-      {resSearch && resSearch.result.length > 0 ? (
-        <>
-          <View>
-            <Pressable
-              onPress={() => {
-                console.log("back");
-                setResSearch(undefined);
-              }}
-              style={{ padding: 5 }}
-            >
-              <Image source={backIcon} />
-            </Pressable>
-            {/* <Text>Bell here</Text> */}
-          </View>
-          <Text>Search component goes here</Text>
-        </>
+      {errMsg ? (
+        <StaticInlineNotice
+          msg={errMsg}
+          color="#ffffff"
+          bgColor="#ff0000"
+        />
       ) : (
-        <>
-          <View>
-            <Banners navigation={navigation} />
-          </View>
-          <View></View>
-          <View>
-            <Text>Categories</Text>
-            <View>
-              <Categories />
-            </View>
-          </View>
-          <View>
-            <Image
-              source={CutCostBanner}
-              style={styles.cutCostBanner}
-            />
-          </View>
-        </>
+        <View>
+          {resSearch && resSearch.servicesFinalResult.length > 0 ? (
+            <>
+              <View>
+                <Pressable
+                  onPress={() => {
+                    console.log("back");
+                    setResSearch(undefined);
+                  }}
+                  style={{ padding: 5 }}
+                >
+                  <Image source={backIcon} />
+                </Pressable>
+                {/* <Text>Bell here</Text> */}
+              </View>
+              <ServicesSearchCardLInfo
+                data={resSearch}
+                navigation={navigation}
+                searchValue={searchValue}
+              />
+            </>
+          ) : (
+            <>
+              <View>
+                <Banners navigation={navigation} />
+              </View>
+              <View></View>
+              <View>
+                <Text>Categories</Text>
+                <View>
+                  <Categories />
+                </View>
+              </View>
+              <View>
+                <Image
+                  source={CutCostBanner}
+                  style={styles.cutCostBanner}
+                />
+              </View>
+            </>
+          )}
+        </View>
       )}
     </View>
   );

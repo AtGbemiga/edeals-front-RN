@@ -1,5 +1,7 @@
-import { ParamListBase } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import {
   Image,
   Pressable,
@@ -11,9 +13,12 @@ import {
   View,
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
+import { RootStackParamList } from "../../types/global/root";
 import { CartItemsFlatList } from "./cartItems";
 
-type Props = NativeStackScreenProps<ParamListBase>;
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, "Cart">;
+};
 export const CartIndex = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -29,7 +34,7 @@ export const CartIndex = ({ navigation }: Props) => {
             <Text>Bell here</Text>
           </View>
           <View>
-            <CartItemsFlatList />
+            <CartItemsFlatList navigation={navigation} />
           </View>
         </View>
       </ScrollView>

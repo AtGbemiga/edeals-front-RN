@@ -1,17 +1,24 @@
 import { ResGroupSearch } from "../../types/groups/resGroupSearch";
 import { ResSearchLInfo } from "../../types/products/resProducts";
+import { ResSearchServices } from "../../types/services/resSearch";
 
 type Props = {
-  identifier: "products" | "groups";
+  identifier: "products" | "groups" | "services";
   searchValue: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 };
-async function searchFn({
+async function globalSearchFn({
   searchValue,
   setErrMsg,
   identifier,
-}: Props): Promise<ResSearchLInfo | ResGroupSearch | undefined> {
-  if (identifier !== "products" && identifier !== "groups") {
+}: Props): Promise<
+  ResSearchLInfo | ResGroupSearch | ResSearchServices | undefined
+> {
+  if (
+    identifier !== "products" &&
+    identifier !== "groups" &&
+    identifier !== "services"
+  ) {
     throw new Error("Invalid identifier");
   }
   let url;
@@ -20,6 +27,8 @@ async function searchFn({
     url = `https://fav-work.loca.lt/api/v1/global/search?identifier=products&searchValue=${searchValue}`;
   } else if (identifier === "groups") {
     url = `https://fav-work.loca.lt/api/v1/global/search?identifier=groups&searchValue=${searchValue}`;
+  } else if (identifier === "services") {
+    url = `https://fav-work.loca.lt/api/v1/global/search?identifier=services&searchValue=${searchValue}`;
   } else {
     throw new Error("Invalid identifier");
   }
@@ -43,8 +52,9 @@ async function searchFn({
     return;
   }
 
-  const data: ResSearchLInfo | ResGroupSearch = await res.json();
+  const data: ResSearchLInfo | ResGroupSearch | ResSearchServices =
+    await res.json();
 
   return data;
 }
-export default searchFn;
+export default globalSearchFn;

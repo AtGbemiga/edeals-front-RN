@@ -11,7 +11,7 @@ import {
   Res4ProductReviews,
 } from "../../types/products/resReviews";
 
-const oneReview = ({ item }: { item: OneProductReview }) => {
+const OneReview = ({ item }: { item: OneProductReview }) => {
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewHeader}>
@@ -31,20 +31,25 @@ const screenWidth = Dimensions.get("window").width;
 type Props = {
   data: Res4ProductReviews;
   headerStyle?: object;
+  errMsg: string;
 };
-export const ReviewsFlatList = ({ data, headerStyle }: Props) => {
+export const ReviewsFlatList = ({ data, headerStyle, errMsg }: Props) => {
   return (
     <View>
       <Text style={headerStyle}>Reviews</Text>
-      <FlatList
-        data={data?.finalResult[0]}
-        renderItem={oneReview}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        snapToInterval={screenWidth}
-        decelerationRate="fast"
-        contentContainerStyle={styles.flatListContainer}
-      />
+      {errMsg ? (
+        <Text>{errMsg}</Text>
+      ) : (
+        <FlatList
+          data={data?.finalResult[0]}
+          renderItem={({ item }) => <OneReview item={item} />}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={screenWidth}
+          decelerationRate="fast"
+          contentContainerStyle={styles.flatListContainer}
+        />
+      )}
     </View>
   );
 };

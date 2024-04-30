@@ -1,48 +1,29 @@
+import * as SecureStore from "expo-secure-store";
 import { ResGetGroups } from "../../types/groups/resGetGroups";
 import {
   OneSimilarProduct,
   ResProductsLInfo,
 } from "../../types/products/resProducts";
 
-// interface getLInfoFnProps {
-//   identifierValue: "products";
-//   discountValue?: string;
-// }
-
 async function getLInfoFn({
   identifier,
   subIdentifier,
-  discountIdentifier,
   setErrMsg,
 }: {
   identifier: "products" | "similarProducts" | "wishList" | "groups";
   subIdentifier?: string;
-  discountIdentifier?: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }) {
+  const token = await SecureStore.getItemAsync("token");
   let url;
 
-  if (identifier === "products" && !discountIdentifier && !subIdentifier) {
+  if (identifier === "products" && !subIdentifier) {
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}`;
-  } else if (
-    identifier === "products" &&
-    discountIdentifier &&
-    !subIdentifier
-  ) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&discountIdentifier=${discountIdentifier}`;
-  } else if (
-    identifier === "similarProducts" &&
-    !discountIdentifier &&
-    subIdentifier
-  ) {
+  } else if (identifier === "similarProducts" && subIdentifier) {
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
-  } else if (
-    identifier === "wishList" &&
-    !discountIdentifier &&
-    subIdentifier
-  ) {
+  } else if (identifier === "wishList" && subIdentifier) {
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
-  } else if (identifier === "groups" && !discountIdentifier && !subIdentifier) {
+  } else if (identifier === "groups" && !subIdentifier) {
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=groups`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
@@ -52,6 +33,7 @@ async function getLInfoFn({
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 

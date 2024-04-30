@@ -49,7 +49,7 @@ export const StaticInlineNotice = ({
   bgColor: string;
 }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.containerOne}>
       <Text
         style={{
           color: color,
@@ -69,6 +69,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     position: "absolute",
+    top: StatusBar.currentHeight || 42,
+  },
+  containerOne: {
+    flexDirection: "row",
     top: StatusBar.currentHeight || 42,
   },
 });

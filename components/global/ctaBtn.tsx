@@ -14,7 +14,12 @@ export const CtaBtn = ({
   return (
     <Pressable
       onPress={onPressFn}
-      style={styles.container}
+      style={({ pressed }) => [
+        {
+          backgroundColor: pressed ? "#909090" : "#59AEFF",
+        },
+        styles.container,
+      ]}
     >
       <Text style={styles.btnText}>{text}</Text>
     </Pressable>
@@ -23,7 +28,6 @@ export const CtaBtn = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#59AEFF",
     borderRadius: 24,
     color: "#ffffff",
     flexShrink: 0,

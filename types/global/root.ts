@@ -1,3 +1,5 @@
+import { ResPaystackPaymentInit } from "../paystack/resPaymentInitialization";
+
 export type RootStackParamList = {
   Start: undefined;
   Home: undefined;
@@ -19,4 +21,6 @@ export type RootStackParamList = {
   readonly WishList: { id: number };
   readonly GroupsIndex: undefined;
   readonly GroupFullInfo: { id: number };
+  readonly PaymentScreen: { res: ResPaystackPaymentInit };
+  Success: undefined;
 };
