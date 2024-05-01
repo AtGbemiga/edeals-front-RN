@@ -8,7 +8,7 @@ async function leaveGroupFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/groups/leaveGroup/${groupID}`;
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/groups/leaveGroup/${groupID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

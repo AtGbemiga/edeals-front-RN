@@ -8,7 +8,7 @@
 //   groupPostID: number;
 //   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 // }): Promise<ResGroupPostComment | undefined> {
-//   const url = `https://fav-work.loca.lt/api/v1/groups/getGroupComments/${groupPostID}`;
+//   const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/groups/getGroupComments/${groupPostID}`;
 
 //   const res = await fetch(url, {
 //     method: "GET",

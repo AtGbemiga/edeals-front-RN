@@ -48,7 +48,7 @@ export interface Customer {
 export interface Data {
   id: number;
   domain: string;
-  status: string;
+  status: "success" | "declined" | "false" | "abandoned" | "failed";
   reference: string;
   amount: number;
   message: null;

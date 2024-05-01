@@ -6,7 +6,7 @@ async function getMyProfileFn({
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResMyProfile | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/users/myProfile`;
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/users/myProfile`;
 
   const token = await SecureStore.getItemAsync("token");
 

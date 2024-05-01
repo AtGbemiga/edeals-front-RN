@@ -12,8 +12,10 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
-  const callback_url = "https://fav-work.loca.lt/api/v1/paystack/callbackurl";
-  const cancel_url = "https://fav-work.loca.lt/api/v1/paystack/cancelurl";
+  const callback_url =
+    "https://wealthy-reliably-hare.ngrok-free.app/api/v1/paystack/callbackurl";
+  const cancel_url =
+    "https://wealthy-reliably-hare.ngrok-free.app/api/v1/paystack/cancelurl";
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
     const { url } = state;
@@ -21,31 +23,17 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
     if (!url) return;
 
     if (url === callback_url) {
-      // get transaction reference from url, verify transaction, and redirect
-
-      fetch(
-        `https://fav-work.loca.lt/api/v1/paystack/verify?referenceID=${referenceID}`,
-        {
-          method: "GET",
-        }
-      )
-        .then((response) => response.json())
-        .then((data: ResVerifyPayment) => {
-          if (data.data.gateway_response === "successful") {
-            console.log("payment successful");
-
-            const redirectTo = 'window.location = "' + callback_url + '"';
-            webviewRef.current?.injectJavaScript(redirectTo); // Access injectJavaScript method via ref
-          }
-        });
+      const redirectTo = 'window.location = "' + callback_url + '"';
+      webviewRef.current?.injectJavaScript(redirectTo); // Access injectJavaScript method via ref
     }
+
     if (url === cancel_url) {
       // Use a navigator to pop off the view
-      navigation.pop();
+      navigation.navigate("Cart");
     }
 
     if (url === "https://standard.paystack.co/close") {
-      navigation.pop();
+      navigation.navigate("Cart");
     }
   };
 

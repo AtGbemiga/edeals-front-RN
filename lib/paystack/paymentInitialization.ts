@@ -4,11 +4,13 @@ import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitializ
 export const payStackInitFn = async ({
   email,
   amount,
+  setErrMsg,
 }: {
   email: string;
   amount: string;
-}): Promise<ResPaystackPaymentInit> => {
-  const url = `https://fav-work.loca.lt/api/v1/paystack/payment?amount=${amount}&email=${email}`;
+  setErrMsg: React.Dispatch<React.SetStateAction<string>>;
+}): Promise<ResPaystackPaymentInit | undefined> => {
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/paystack/payment?amount=${amount}&email=${email}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
@@ -21,9 +23,14 @@ export const payStackInitFn = async ({
 
   if (!res.ok) {
     const exactErrorMsg = await res.json();
-    throw new Error(
-      `Request failed with status ${res.status}, ${exactErrorMsg}`
-    );
+    const errorMsgString = JSON.stringify(exactErrorMsg);
+    const errorMsg = JSON.parse(errorMsgString).error;
+
+    // Set the error message in the state
+    setErrMsg(errorMsg);
+
+    // Throw an error to stop further execution
+    return;
   }
 
   const data = await res.json();

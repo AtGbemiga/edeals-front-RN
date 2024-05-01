@@ -16,7 +16,7 @@ async function addToCartFn({
   size: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResAddToCart | undefined> {
-  const url = `https://139b-102-89-12-39.ngrok-free.app/api/v1/products/addToCart`;
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/products/addToCart`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

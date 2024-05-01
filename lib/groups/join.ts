@@ -8,7 +8,7 @@ async function joinGroupFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/groups/joinGroup/${groupID}`;
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/groups/joinGroup/${groupID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

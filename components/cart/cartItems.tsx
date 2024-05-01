@@ -206,10 +206,11 @@ export const CartItemsFlatList = ({ navigation }: Props) => {
   }
 
   async function handlePayment() {
-    const formattedPrice = checkOutPrice * 100;
+    const formattedPrice = checkOutPrice;
     const res = await payStackInitFn({
       email: "lG5s5@example.com",
       amount: formattedPrice.toString(),
+      setErrMsg,
     });
 
     if (res) {

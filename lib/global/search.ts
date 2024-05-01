@@ -24,11 +24,11 @@ async function globalSearchFn({
   let url;
 
   if (identifier === "products") {
-    url = `https://fav-work.loca.lt/api/v1/global/search?identifier=products&searchValue=${searchValue}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/search?identifier=products&searchValue=${searchValue}`;
   } else if (identifier === "groups") {
-    url = `https://fav-work.loca.lt/api/v1/global/search?identifier=groups&searchValue=${searchValue}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/search?identifier=groups&searchValue=${searchValue}`;
   } else if (identifier === "services") {
-    url = `https://fav-work.loca.lt/api/v1/global/search?identifier=services&searchValue=${searchValue}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/search?identifier=services&searchValue=${searchValue}`;
   } else {
     throw new Error("Invalid identifier");
   }

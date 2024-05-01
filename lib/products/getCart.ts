@@ -6,7 +6,7 @@ async function getCartFn({
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetCart | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/products/getCart`;
+  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/products/getCart`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

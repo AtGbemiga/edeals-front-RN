@@ -18,13 +18,13 @@ async function getLInfoFn({
   let url;
 
   if (identifier === "products" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}`;
   } else if (identifier === "similarProducts" && subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "wishList" && subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "groups" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=groups`;
+    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=groups`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
   }
