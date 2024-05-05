@@ -1,14 +1,17 @@
 import * as SecureStore from "expo-secure-store";
-import { ResGroupFInfo } from "../../types/groups/resGetFInfo";
+import { ResGetAccOwnerEmail } from "../../types/groups/resGetAccOwnerEmail";
 
-async function getGroupFInfoFn({
-  groupID,
-  setErrMsg,
+async function getAccOwnerEmail({
+  setNewErrMsg,
 }: {
-  groupID: number;
-  setErrMsg: React.Dispatch<React.SetStateAction<string>>;
-}): Promise<ResGroupFInfo | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/groups/getGroupFInfo/${groupID}`;
+  setNewErrMsg: React.Dispatch<
+    React.SetStateAction<{
+      getEmail: string;
+    }>
+  >;
+}): Promise<ResGetAccOwnerEmail | undefined> {
+  const url = `https://fav-work.loca.lt/api/v1/global/getAccOwnerEmail`;
+
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
@@ -25,14 +28,14 @@ async function getGroupFInfoFn({
     const errorMsg = JSON.parse(errorMsgString).error;
 
     // Set the error message in the state
-    setErrMsg(errorMsg);
+    setNewErrMsg((prev) => ({ ...prev, getEmail: errorMsg }));
 
     // Throw an error to stop further execution
     return;
   }
 
-  const data: ResGroupFInfo = await res.json();
+  const data: ResGetAccOwnerEmail = await res.json();
 
   return data;
 }
-export default getGroupFInfoFn;
+export default getAccOwnerEmail;

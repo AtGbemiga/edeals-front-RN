@@ -25,18 +25,27 @@ export const SimilarProducts = ({
 }) => {
   const [resSimilarProducts, setResSimilarProducts] =
     useState<ResSimilarProducts>();
-  const [errMsg, setErrMsg] = useState("");
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    similarProducts: "",
+  });
   useEffect(() => {
     console.log({ subIdentifier });
 
     try {
       (async () => {
-        const res = (await getLInfoFn({
+        const res = await getLInfoFn({
           identifier: "similarProducts",
           subIdentifier,
           setErrMsg,
-        })) as ResSimilarProducts;
-        setResSimilarProducts(res);
+        });
+
+        if (
+          res &&
+          "similarProductsRes" in res &&
+          res.similarProductsRes.length > 0
+        ) {
+          setResSimilarProducts(res);
+        }
       })();
     } catch (error) {
       // disable empty object error
@@ -62,15 +71,15 @@ export const SimilarProducts = ({
   };
   return (
     <View>
-      {errMsg ? (
+      {errMsg.similarProducts ? (
         <FadeInlineNotice
-          msg={errMsg}
+          msg={errMsg.similarProducts}
           bgColor="blue"
           color="white"
         />
       ) : (
         <FlatList
-          data={resSimilarProducts?.result}
+          data={resSimilarProducts?.similarProductsRes}
           renderItem={oneSimilarProduct}
           keyExtractor={(item) => item.id.toString()}
           extraData={resSimilarProducts}

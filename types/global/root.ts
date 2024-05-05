@@ -22,5 +22,6 @@ export type RootStackParamList = {
   readonly GroupsIndex: undefined;
   readonly GroupFullInfo: { id: number };
   readonly PaymentScreen: { res: ResPaystackPaymentInit };
-  Success: undefined;
+  Thanks: undefined;
+  Orders: undefined;
 };

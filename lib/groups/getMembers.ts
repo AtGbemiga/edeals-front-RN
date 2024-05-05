@@ -7,7 +7,7 @@ async function getGroupMembersFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetGroupMembers | undefined> {
-  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/groups/getGroupMembers/${groupID}`;
+  const url = `https://fav-work.loca.lt/api/v1/groups/getGroupMembers/${groupID}`;
 
   const res = await fetch(url, {
     method: "GET",

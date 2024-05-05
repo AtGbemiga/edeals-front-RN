@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -10,20 +11,22 @@ import {
   Text,
   View,
 } from "react-native";
+import getLInfoFn from "../../../lib/global/getLInfo";
 import { RootStackParamList } from "../../../types/global/root";
-import { useEffect, useState } from "react";
 import {
   OneProductLInfo,
-  ResProductsLInfo,
+  ResWishListLInfo,
 } from "../../../types/products/resProducts";
-import getLInfoFn from "../../../lib/global/getLInfo";
+import { StaticInlineNotice } from "../../global/inlineNotice";
 
 const screenWidth = Dimensions.get("window").width;
 type Props = NativeStackScreenProps<RootStackParamList, "WishList">;
 export const WishListIndex = ({ navigation, route }: Props) => {
   const { id } = route.params;
-  const [resProducts, setResProducts] = useState<ResProductsLInfo>();
-  const [errMsg, setErrMsg] = useState("");
+  const [resProducts, setResProducts] = useState<ResWishListLInfo>();
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    wishList: "",
+  });
 
   useEffect(() => {
     try {
@@ -32,9 +35,9 @@ export const WishListIndex = ({ navigation, route }: Props) => {
           identifier: "wishList",
           subIdentifier: id.toString(),
           setErrMsg,
-        })) as ResProductsLInfo;
+        })) as ResWishListLInfo;
 
-        if (res && res.result.length > 0) {
+        if (res && "wishListRes" in res && res.wishListRes.length > 0) {
           setResProducts(res);
         }
       })();
@@ -67,13 +70,21 @@ export const WishListIndex = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ borderWidth: 5, borderColor: "blue" }}>
-        <FlatList
-          data={resProducts?.result}
-          renderItem={renderItem}
-          snapToInterval={screenWidth} // Width of each item
-          decelerationRate="fast"
-          contentContainerStyle={styles.flatListContainer}
-        />
+        {errMsg.wishList ? (
+          <StaticInlineNotice
+            msg={errMsg.wishList}
+            bgColor="red"
+            color="white"
+          />
+        ) : (
+          <FlatList
+            data={resProducts?.wishListRes}
+            renderItem={renderItem}
+            snapToInterval={screenWidth} // Width of each item
+            decelerationRate="fast"
+            contentContainerStyle={styles.flatListContainer}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

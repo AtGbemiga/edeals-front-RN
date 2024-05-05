@@ -21,7 +21,9 @@ export const SuggestedGroups = () => {
     useNavigation<NativeStackScreenProps<ParamListBase>["navigation"]>();
   const [resGroups, setResGroups] = useState<ResGetGroups>();
 
-  const [errMsg, setErrMsg] = useState("");
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    groups: "",
+  });
 
   useEffect(() => {
     try {
@@ -31,7 +33,7 @@ export const SuggestedGroups = () => {
           setErrMsg,
         })) as ResGetGroups;
 
-        if (res && res.result.length > 0) {
+        if (res && "groupsRes" in res && res.groupsRes.length > 0) {
           setResGroups(res);
         }
       })();
@@ -62,10 +64,10 @@ export const SuggestedGroups = () => {
   return (
     <View>
       <Text>Groups you may like</Text>
-      {errMsg ? (
+      {errMsg.groups ? (
         <View>
           <StaticInlineNotice
-            msg={errMsg}
+            msg={errMsg.groups}
             color="red"
             bgColor="red"
           />
@@ -73,7 +75,7 @@ export const SuggestedGroups = () => {
       ) : (
         <View style={{ borderWidth: 5, borderColor: "blue" }}>
           <FlatList
-            data={resGroups?.result}
+            data={resGroups?.groupsRes}
             renderItem={renderItem}
             snapToInterval={screenWidth}
             horizontal

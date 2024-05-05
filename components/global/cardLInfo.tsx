@@ -151,7 +151,7 @@ export const CardLInfo = ({
   return (
     <View style={{ borderWidth: 5, borderColor: "blue" }}>
       <FlatList
-        data={resProducts?.result}
+        data={resProducts?.productsRes}
         renderItem={({ item }) => (
           <RenderItem
             item={item}

@@ -104,6 +104,7 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
     );
   }
 
+  // TODO: Add check for qty, colour and size
   const handleAddToCart = async () => {
     // check if resFProduct is not undefined
     if (resFProduct === undefined) {

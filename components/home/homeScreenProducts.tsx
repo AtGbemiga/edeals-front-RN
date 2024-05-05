@@ -36,7 +36,10 @@ export const HSProducts = ({
   const [resProducts, setResProducts] = useState<ResProductsLInfo>();
   const [resSearch, setResSearch] = useState<ResSearchLInfo>();
   const [searchValue, setSearchValue] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    products: "",
+  });
+  const [searchErrMsg, setSearchErrMsg] = useState("");
 
   useEffect(() => {
     try {
@@ -46,7 +49,7 @@ export const HSProducts = ({
           setErrMsg,
         })) as ResProductsLInfo;
 
-        if (res && res.result.length > 0) {
+        if (res && "productsRes" in res && res.productsRes.length > 0) {
           setResProducts(res);
         }
       })();
@@ -55,6 +58,7 @@ export const HSProducts = ({
     }
   }, []);
 
+  // TODO: handle error
   async function handleSearch() {
     console.log("search");
 
@@ -63,7 +67,7 @@ export const HSProducts = ({
         const res = await globalSearchFn({
           identifier: "products",
           searchValue: searchValue,
-          setErrMsg,
+          setErrMsg: setSearchErrMsg,
         });
         if (
           res &&
@@ -118,11 +122,19 @@ export const HSProducts = ({
             </Pressable>
             {/* <Text>Bell here</Text> */}
           </View>
-          <SearchCardLInfo
-            data={resSearch}
-            navigation={navigation}
-            searchValue={searchValue}
-          />
+          {searchErrMsg ? (
+            <StaticInlineNotice
+              msg={searchErrMsg}
+              bgColor="red"
+              color="white"
+            />
+          ) : (
+            <SearchCardLInfo
+              data={resSearch}
+              navigation={navigation}
+              searchValue={searchValue}
+            />
+          )}
         </>
       ) : (
         <>
@@ -135,9 +147,9 @@ export const HSProducts = ({
             <CategoriesFlatList />
           </View>
           <View>
-            {errMsg ? (
+            {errMsg.products ? (
               <StaticInlineNotice
-                msg={errMsg}
+                msg={errMsg.products}
                 bgColor="#ff0000"
                 color="#ffffff"
               />
@@ -154,9 +166,9 @@ export const HSProducts = ({
             </Pressable>
           </View>
           <View>
-            {errMsg ? (
+            {errMsg.products ? (
               <StaticInlineNotice
-                msg={errMsg}
+                msg={errMsg.products}
                 bgColor="red"
                 color="white"
               />

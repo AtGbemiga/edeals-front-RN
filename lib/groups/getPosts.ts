@@ -8,7 +8,7 @@ async function getGroupPostFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetPosts | undefined> {
-  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/groups/getGroupPosts/${groupID}`;
+  const url = `https://fav-work.loca.lt/api/v1/groups/getGroupPosts/${groupID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

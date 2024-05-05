@@ -8,7 +8,7 @@ async function addToWishListFn({
   productID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/products/addToWishList`;
+  const url = `https://fav-work.loca.lt/api/v1/products/addToWishList`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

@@ -23,6 +23,8 @@ import { RootStackParamList } from "../../types/global/root";
 import { OneCart, ResGetCart } from "../../types/products/resGetCart";
 import { CtaBtn } from "../global/ctaBtn";
 import { StaticInlineNotice } from "../global/inlineNotice";
+import getAccOwnerEmail from "../../lib/global/getEmail";
+import { ResGetAccOwnerEmail } from "../../types/groups/resGetAccOwnerEmail";
 
 const CartItem = ({
   item,
@@ -137,17 +139,29 @@ type Props = NativeStackScreenProps<RootStackParamList, "Cart">;
 export const CartItemsFlatList = ({ navigation }: Props) => {
   const [resCart, setResCart] = useState<ResGetCart>();
   const [errMsg, setErrMsg] = useState("");
+  const [accOwnerEmail, setAccOwnerEmail] = useState<
+    ResGetAccOwnerEmail | undefined
+  >();
+  const [newErrMsg, setNewErrMsg] = useState({
+    getEmail: "",
+  });
+
   useEffect(() => {
-    try {
-      getCartFn({
-        setErrMsg,
-      }).then((res) => {
-        res && setResCart(res);
-      });
-    } catch (error) {
-      // disable empty object error
+    async function fetchData() {
+      try {
+        const resCart = await getCartFn({
+          setErrMsg,
+        });
+        setResCart(resCart);
+
+        const accOwnerEmail = await getAccOwnerEmail({ setNewErrMsg });
+        setAccOwnerEmail(accOwnerEmail);
+      } catch (error) {
+        // disable empty object error
+      }
     }
-  }, [resCart]);
+    fetchData();
+  }, [resCart, accOwnerEmail]);
 
   const totalCartItems = resCart?.finalResult[1].map((total) => total.total)[0];
 
@@ -206,9 +220,13 @@ export const CartItemsFlatList = ({ navigation }: Props) => {
   }
 
   async function handlePayment() {
-    const formattedPrice = checkOutPrice;
+    if (!accOwnerEmail) {
+      setNewErrMsg({ ...newErrMsg, getEmail: "Please login first" });
+      return;
+    }
+    const formattedPrice = checkOutPrice * 100;
     const res = await payStackInitFn({
-      email: "lG5s5@example.com",
+      email: accOwnerEmail.result.email,
       amount: formattedPrice.toString(),
       setErrMsg,
     });
@@ -243,6 +261,13 @@ export const CartItemsFlatList = ({ navigation }: Props) => {
                 : `${totalCartItems} items`}
             </Text>
           </View>
+          {newErrMsg.getEmail && (
+            <StaticInlineNotice
+              msg={newErrMsg.getEmail}
+              color="white"
+              bgColor="red"
+            />
+          )}
           <View>
             <FlatList
               data={resCart?.finalResult[0]}
@@ -277,6 +302,7 @@ export const CartItemsFlatList = ({ navigation }: Props) => {
               </Text>
             </View>
           </View>
+
           <View style={styles.btnContainer}>
             <CtaBtn
               text="Checkout"

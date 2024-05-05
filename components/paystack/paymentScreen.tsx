@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
-import { WebView, WebViewNavigation } from "react-native-webview";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useRef } from "react";
+import { WebView, WebViewNavigation } from "react-native-webview";
 import { RootStackParamList } from "../../types/global/root";
-import { ResVerifyPayment } from "../../types/paystack/resVerifyPayment";
 
 type Props = NativeStackScreenProps<RootStackParamList, "PaymentScreen">;
 
@@ -12,19 +11,17 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
-  const callback_url =
-    "https://wealthy-reliably-hare.ngrok-free.app/api/v1/paystack/callbackurl";
-  const cancel_url =
-    "https://wealthy-reliably-hare.ngrok-free.app/api/v1/paystack/cancelurl";
+  const callback_url = "https://fav-work.loca.lt/api/v1/paystack/callbackurl";
+  const cancel_url = "https://fav-work.loca.lt/api/v1/paystack/cancelurl";
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
     const { url } = state;
+    console.log({ url });
 
     if (!url) return;
 
-    if (url === callback_url) {
-      const redirectTo = 'window.location = "' + callback_url + '"';
-      webviewRef.current?.injectJavaScript(redirectTo); // Access injectJavaScript method via ref
+    if (url.includes(callback_url)) {
+      navigation.navigate("Thanks"); // Change to Thanks page
     }
 
     if (url === cancel_url) {

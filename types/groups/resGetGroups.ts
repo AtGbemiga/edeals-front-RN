@@ -9,5 +9,5 @@ export interface OneGroup {
 }
 
 export interface ResGetGroups {
-  result: OneGroup[];
+  groupsRes: OneGroup[];
 }

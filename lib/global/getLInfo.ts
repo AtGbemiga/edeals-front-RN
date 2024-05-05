@@ -1,8 +1,10 @@
 import * as SecureStore from "expo-secure-store";
 import { ResGetGroups } from "../../types/groups/resGetGroups";
+import { ResGetOrders } from "../../types/orders/resGetOrders";
 import {
-  OneSimilarProduct,
   ResProductsLInfo,
+  ResSimilarProducts,
+  ResWishListLInfo,
 } from "../../types/products/resProducts";
 
 async function getLInfoFn({
@@ -10,21 +12,23 @@ async function getLInfoFn({
   subIdentifier,
   setErrMsg,
 }: {
-  identifier: "products" | "similarProducts" | "wishList" | "groups";
+  identifier: "products" | "similarProducts" | "wishList" | "groups" | "orders";
   subIdentifier?: string;
-  setErrMsg: React.Dispatch<React.SetStateAction<string>>;
+  setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }) {
   const token = await SecureStore.getItemAsync("token");
   let url;
 
   if (identifier === "products" && !subIdentifier) {
-    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}`;
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}`;
   } else if (identifier === "similarProducts" && subIdentifier) {
-    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "wishList" && subIdentifier) {
-    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "groups" && !subIdentifier) {
-    url = `https://wealthy-reliably-hare.ngrok-free.app/api/v1/global/getLInfo?identifier=groups`;
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=groups`;
+  } else if (identifier === "orders" && !subIdentifier) {
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=orders`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
   }
@@ -43,14 +47,18 @@ async function getLInfoFn({
     const errorMsg = JSON.parse(errorMsgString).error;
 
     // Set the error message in the state
-    setErrMsg(errorMsg);
+    setErrMsg((prev) => ({ ...prev, [identifier]: errorMsg }));
 
     // Throw an error to stop further execution
     return;
   }
 
-  const data: ResProductsLInfo | OneSimilarProduct | ResGetGroups =
-    await res.json();
+  const data:
+    | ResProductsLInfo
+    | ResSimilarProducts
+    | ResGetGroups
+    | ResGetOrders
+    | ResWishListLInfo = await res.json();
 
   return data;
 }

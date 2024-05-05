@@ -13,14 +13,13 @@ export interface OneProductLInfo {
 }
 
 export interface ResProductsLInfo {
-  result: OneProductLInfo[];
+  productsRes: OneProductLInfo[];
 }
 
-// type ModifiedOneProductLInfo = Omit<OneProductLInfo, "first_img">;
-// export interface OneProductFInfo extends ModifiedOneProductLInfo {
-//   description: string;
-//   imgs: string;
-// }
+/* wish list */
+export interface ResWishListLInfo {
+  wishListRes: OneProductLInfo[];
+}
 
 export interface Color {
   red: string;
@@ -74,7 +73,7 @@ export type OneSimilarProduct = Omit<
 >;
 
 export interface ResSimilarProducts {
-  result: OneSimilarProduct[];
+  similarProductsRes: OneSimilarProduct[];
 }
 
 /* search */
