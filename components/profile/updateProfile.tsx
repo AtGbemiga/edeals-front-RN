@@ -1,156 +1,186 @@
-// import { NativeStackScreenProps } from "@react-navigation/native-stack";
-// import { useCallback, useState } from "react";
-// import {
-//   Image,
-//   Platform,
-//   ScrollView,
-//   StyleSheet,
-//   Text,
-//   TouchableOpacity,
-//   View,
-// } from "react-native";
-// import * as ImagePicker from "react-native-image-picker";
-// import { RootStackParamList } from "../../types/global/root";
-// import { DemoButton } from "./demoBtn";
-// import { DemoResponse } from "./demoRes";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
+import {
+  Pressable,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import getMyProfileFn from "../../lib/users/profile/getMyProfile";
+import updateProfileFn from "../../lib/users/profile/update";
+import { RootStackParamList } from "../../types/global/root";
+import MultiImagePicker from "../global/multiImagePicker";
+// import { launchImageLibrary } from "react-native-image-picker";
+// import ImagePicker from "react-native-image-crop-picker";
+import * as ImagePicker from "expo-image-picker";
 
-// const includeExtra = true;
-// type Props = NativeStackScreenProps<RootStackParamList, "UpdateProfile">;
-// import DocumentPicker, {
-//   DocumentPickerResponse,
-// } from "react-native-document-picker";
+type Props = NativeStackScreenProps<RootStackParamList, "UpdateProfile">;
 
-// export const UpdateProfile = () => {
-//   const [singleFile, setSingleFile] = useState<DocumentPickerResponse[] | null>(
-//     null
-//   );
+export const UpdateProfile = () => {
+  const [address, setAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [email, setEmail] = useState("");
+  const [tag, setTag] = useState("");
+  const [formPostImg, setFormPostImg] = useState("");
 
-//   const uploadImage = async () => {
-//     // Check if any file is selected or not
-//     if (singleFile !== null) {
-//       // If file selected then create FormData
-//       const fileToUpload = singleFile;
-//       const data = new FormData();
-//       data.append("name", "Image Upload");
-//       data.append("file_attachment", fileToUpload);
-//       // Please change file upload URL
-//       const res = await fetch("http://localhost/upload.php", {
-//         method: "post",
-//         body: data,
-//         headers: {
-//           "Content-Type": "multipart/form-data; ",
-//         },
-//       });
-//       const responseJson = await res.json();
-//       if (responseJson.status == 1) {
-//         alert("Upload Successful");
-//       }
-//     } else {
-//       // If no file selected the show alert
-//       alert("Please Select File first");
-//     }
-//   };
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    profile: "",
+  });
 
-//   const selectFile = async () => {
-//     // Opening Document Picker to select one file
-//     try {
-//       const res = await DocumentPicker.pick({
-//         type: [DocumentPicker.types.images],
-//       });
-//       // Printing the log realted to the file
-//       console.log("res : " + JSON.stringify(res));
-//       // Setting the state to show single file attributes
-//       setSingleFile(res);
-//     } catch (err) {
-//       setSingleFile(null);
-//       // Handling any exception (If any)
-//       if (DocumentPicker.isCancel(err)) {
-//         // If user canceled the document selection
-//         alert("Canceled");
-//       } else {
-//         // For Unknown Error
-//         alert("Unknown Error: " + JSON.stringify(err));
-//         throw err;
-//       }
-//     }
-//   };
-//   return (
-//     <View style={styles.mainBody}>
-//       <View style={{ alignItems: "center" }}>
-//         <Text style={{ fontSize: 30, textAlign: "center" }}>
-//           React Native File Upload Example
-//         </Text>
-//         <Text
-//           style={{
-//             fontSize: 25,
-//             marginTop: 20,
-//             marginBottom: 30,
-//             textAlign: "center",
-//           }}
-//         >
-//           www.aboutreact.com
-//         </Text>
-//       </View>
-//       {/*Showing the data of selected Single file*/}
-//       {singleFile != null ? (
-//         <Text style={styles.textStyle}>
-//           File Name: {singleFile.name ? singleFile.name : ""}
-//           {"\n"}
-//           Type: {singleFile.type ? singleFile.type : ""}
-//           {"\n"}
-//           File Size: {singleFile.size ? singleFile.size : ""}
-//           {"\n"}
-//           URI: {singleFile.uri ? singleFile.uri : ""}
-//           {"\n"}
-//         </Text>
-//       ) : null}
-//       <TouchableOpacity
-//         style={styles.buttonStyle}
-//         activeOpacity={0.5}
-//         onPress={selectFile}
-//       >
-//         <Text style={styles.buttonTextStyle}>Select File</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.buttonStyle}
-//         activeOpacity={0.5}
-//         onPress={uploadImage}
-//       >
-//         <Text style={styles.buttonTextStyle}>Upload File</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
+  useEffect(() => {
+    try {
+      (async () => {
+        const res = await getMyProfileFn({
+          setErrMsg,
+        });
+        if (res && res.result[0].address && res.result[0].tag) {
+          // set each value to state
+          setAddress(res.result[0].address);
+          setPhoneNumber(res.result[0].phone_number);
+          setAccountName(res.result[0].account_name);
+          setEmail(res.result[0].email);
+          setTag(res.result[0].tag || "Users");
+          setFormPostImg(res.result[0].img);
+        }
+      })();
+    } catch (error) {
+      // disable empty object error
+    }
+  }, []);
 
-// const styles = StyleSheet.create({
-//   mainBody: {
-//     flex: 1,
-//     justifyContent: "center",
-//     padding: 20,
-//   },
-//   buttonStyle: {
-//     backgroundColor: "#307ecc",
-//     borderWidth: 0,
-//     color: "#FFFFFF",
-//     borderColor: "#307ecc",
-//     height: 40,
-//     alignItems: "center",
-//     borderRadius: 30,
-//     marginLeft: 35,
-//     marginRight: 35,
-//     marginTop: 15,
-//   },
-//   buttonTextStyle: {
-//     color: "#FFFFFF",
-//     paddingVertical: 10,
-//     fontSize: 16,
-//   },
-//   textStyle: {
-//     backgroundColor: "#fff",
-//     fontSize: 15,
-//     marginTop: 16,
-//     marginLeft: 35,
-//     marginRight: 35,
-//     textAlign: "center",
-//   },
-// });
+  const openImageLibraryKeyMessage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
+
+    if (status === "granted") {
+      const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+      });
+
+      if (!response.canceled) {
+        const ext = response.assets[0].uri.split(".").pop();
+        const arrEl = {
+          uri: response.assets[0].uri,
+          name: `file.${ext}`,
+          type: response.assets[0].type,
+        };
+
+        setFormPostImg(arrEl.uri);
+        console.log({ formPostImg });
+      }
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    console.log("clicked");
+    console.log({ formPostImg });
+
+    const formBody = new FormData();
+    formBody.append("address", address);
+    formBody.append("phone_number", phoneNumber);
+    formBody.append("account_name", accountName);
+    formBody.append("email", email);
+    formBody.append("tag", tag);
+    formBody.append("img", {
+      type: "image/jpeg",
+      uri: formPostImg,
+      name: "file.jpg",
+    } as unknown as Blob);
+    try {
+      const res = await updateProfileFn({
+        formBody,
+        setErrMsg,
+      });
+      if (res && res.message.includes("success")) {
+        console.log("success");
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.mainBox}>
+      {errMsg.profile && <Text>{errMsg.profile}</Text>}
+      <View>
+        <Text>Address</Text>
+        <TextInput
+          onChangeText={setAddress}
+          value={address}
+          placeholder="Enter address"
+          style={styles.textInput}
+        />
+      </View>
+      <View>
+        <Text>Phone Number</Text>
+        <TextInput
+          onChangeText={setPhoneNumber}
+          value={phoneNumber}
+          placeholder="Enter phone number"
+          style={styles.textInput}
+        />
+      </View>
+      <View>
+        <Text>Account Name</Text>
+        <TextInput
+          onChangeText={setAccountName}
+          value={accountName}
+          placeholder="Enter account name"
+          style={styles.textInput}
+        />
+      </View>
+      <View>
+        <Text>Email</Text>
+        <TextInput
+          onChangeText={setEmail}
+          value={email}
+          placeholder="Enter email"
+          style={styles.textInput}
+        />
+      </View>
+      <View>
+        <Text>Tag</Text>
+        <TextInput
+          onChangeText={setTag}
+          value={tag}
+          placeholder="Enter tag"
+          style={styles.textInput}
+        />
+      </View>
+
+      {/* <MultiImagePicker
+        formPostImg={formPostImg}
+        setFormPostImg={setFormPostImg}
+      /> */}
+
+      <Pressable onPress={openImageLibraryKeyMessage}>
+        <Text>Pick image</Text>
+      </Pressable>
+
+      <Pressable onPress={handleUpdateProfile}>
+        <Text>Update</Text>
+      </Pressable>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  mainBox: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight || 10,
+  },
+  textInput: {
+    height: 40,
+    borderColor: "#cccccc",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: "100%",
+  },
+});

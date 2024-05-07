@@ -1,21 +1,26 @@
 import * as SecureStore from "expo-secure-store";
-import { ResMyProfile } from "../../../types/users/profile/resGetProfile";
+import { ResSuccess } from "../../../types/global/resSuccess";
 
-async function getMyProfileFn({
+async function updateProfileFn({
+  formBody,
   setErrMsg,
 }: {
+  formBody: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
-}): Promise<ResMyProfile | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/users/myProfile`;
+}): Promise<ResSuccess | undefined> {
+  const url = `https://fav-work.loca.lt/api/v1/users/updateProfile`;
 
   const token = await SecureStore.getItemAsync("token");
+  console.log({ formBody });
 
   const res = await fetch(url, {
-    method: "GET",
+    method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
+    body: formBody,
   });
 
   if (!res.ok) {
@@ -30,8 +35,10 @@ async function getMyProfileFn({
     return;
   }
 
-  const data: ResMyProfile = await res.json();
+  const data: ResSuccess = await res.json();
+
+  console.log({ data });
 
   return data;
 }
-export default getMyProfileFn;
+export default updateProfileFn;

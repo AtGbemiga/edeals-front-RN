@@ -31,6 +31,7 @@ import { WishListIndex } from "./components/dynamic/wishList";
 import { Orders } from "./components/orders";
 import { PaymentScreen } from "./components/paystack/paymentScreen";
 import { Thanks } from "./components/paystack/thanks";
+import { UpdateProfile } from "./components/profile/updateProfile";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -184,11 +185,11 @@ export default function App() {
           component={DynamicProfile}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="UpdateProfile"
           component={UpdateProfile}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="WishList"
           component={WishListIndex}

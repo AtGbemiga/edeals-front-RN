@@ -43,6 +43,8 @@ export interface MyProfile {
   phone_number: string;
   account_type: "seller" | "buyer";
   email: string;
+  address?: string;
+  tag?: string;
 }
 
 export interface ResMyProfile {

@@ -22,7 +22,9 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 export const ProfileIndex = ({ navigation }: Props) => {
   const [resProfile, setResProfile] = useState<ResMyProfile>();
-  const [errMsg, setErrMsg] = useState("");
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    profile: "",
+  });
 
   useEffect(() => {
     try {
@@ -68,10 +70,10 @@ export const ProfileIndex = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {errMsg ? (
+        {errMsg.profile ? (
           <>
             <StaticInlineNotice
-              msg={errMsg}
+              msg={errMsg.profile}
               color="red"
               bgColor="red"
             />
