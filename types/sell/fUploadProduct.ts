@@ -54,22 +54,3 @@ export enum FUStatus {
   Nigerian = "Nigerian",
   Imported = "Imported",
 }
-
-export enum SizesAndColors {
-  xs = "xs",
-  s = "s",
-  m = "m",
-  l = "l",
-  xl = "xl",
-  xxl = "xxl",
-  x3l = "x3l",
-  blue = "blue",
-  red = "red",
-  yellow = "yellow",
-  green = "green",
-  brown = "brown",
-  orange = "orange",
-  white = "white",
-  black = "black",
-  purple = "purple",
-}

@@ -10,6 +10,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { OneImagePicker } from "../global/multiImagePicker";
 import uploadProductFn from "../../lib/products/upload";
+import { showMessage } from "react-native-flash-message";
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Sell">;
 };
@@ -19,7 +20,7 @@ export const UploadProduct = ({ navigation }: Props) => {
     name: "",
     subHeading: "",
     description: "",
-    category: "",
+    category: "others",
     price: undefined,
     stock_no: undefined,
     status: FUStatus.Nigerian,
@@ -53,50 +54,105 @@ export const UploadProduct = ({ navigation }: Props) => {
     console.log({ formData: formData });
   }
 
-  const handleSubmit = async () => {
-    console.log("clicked");
-    console.log({ "req.files": formPostImg });
+  const createFormData = (data: FProductUpload): FormData => {
+    const formData = new FormData();
 
-    // TODO: Add validation
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === "price" || key === "stock_no") {
+        formData.append(key, value?.toString() || "1");
+      } else if (key === "subHeading") {
+        formData.append("sub_heading", value);
+      } else {
+        formData.append(key, value);
+      }
+    });
 
-    const newFormData = new FormData();
-    newFormData.append("name", formData.name);
-    newFormData.append("sub_heading", formData.subHeading);
-    newFormData.append("description", formData.description);
-    newFormData.append("category", formData.category);
-    newFormData.append("price", formData.price?.toString() || "100");
-    newFormData.append("stock_no", formData.stock_no?.toString() || "1");
-    newFormData.append("status", formData.status);
-    newFormData.append("xs", formData.xs);
-    newFormData.append("s", formData.s);
-    newFormData.append("m", formData.m);
-    newFormData.append("l", formData.l);
-    newFormData.append("xl", formData.xl);
-    newFormData.append("xxl", formData.xxl);
-    newFormData.append("x3l", formData.x3l);
-    newFormData.append("blue", formData.blue);
-    newFormData.append("red", formData.red);
-    newFormData.append("yellow", formData.yellow);
-    newFormData.append("green", formData.green);
-    newFormData.append("brown", formData.brown);
-    newFormData.append("orange", formData.orange);
-    newFormData.append("white", formData.white);
-    newFormData.append("black", formData.black);
-    newFormData.append("purple", formData.purple);
-    newFormData.append("imgs", {
+    // Append image if available
+    formData.append("imgs", {
       type: "image/jpeg",
       uri: formPostImg,
       name: "file.jpg",
     } as unknown as Blob);
 
+    return formData;
+  };
+
+  const handleSubmit = async () => {
+    console.log("clicked");
+    console.log({ "req.files": formPostImg });
+
+    if (
+      formData.name === "" ||
+      formData.subHeading === "" ||
+      formData.description === "" ||
+      formData.price === undefined ||
+      formData.stock_no === undefined ||
+      formPostImg === "" ||
+      formData.category === "" ||
+      (formData.xs === "0" &&
+        formData.s === "0" &&
+        formData.m === "0" &&
+        formData.l === "0" &&
+        formData.xl === "0" &&
+        formData.x3l === "0" &&
+        formData.xxl === "0") ||
+      (formData.blue === "0" &&
+        formData.red === "0" &&
+        formData.yellow === "0" &&
+        formData.green === "0" &&
+        formData.brown === "0" &&
+        formData.orange === "0" &&
+        formData.white === "0" &&
+        formData.black === "0" &&
+        formData.purple === "0")
+    ) {
+      showMessage({
+        message: "Please fill in all required fields",
+        type: "danger",
+      });
+      return;
+    }
     try {
       const res = await uploadProductFn({
-        formData: newFormData,
+        formData: createFormData(formData),
         setErrMsg,
       });
 
       if (res && res.message.includes("success")) {
         console.log("success");
+        showMessage({
+          message: res.message,
+          type: "success",
+          duration: 8000,
+        });
+
+        // Reset form
+        setFormPostImg("");
+        setFormData({
+          name: "",
+          subHeading: "",
+          description: "",
+          category: "others",
+          price: undefined,
+          stock_no: undefined,
+          status: FUStatus.Nigerian,
+          xs: "0",
+          s: "0",
+          m: "0",
+          l: "0",
+          xl: "0",
+          xxl: "0",
+          x3l: "0",
+          blue: "0",
+          red: "0",
+          yellow: "0",
+          green: "0",
+          brown: "0",
+          orange: "0",
+          white: "0",
+          black: "0",
+          purple: "0",
+        });
       }
     } catch (error) {
       // disable empty object error
@@ -105,7 +161,16 @@ export const UploadProduct = ({ navigation }: Props) => {
 
   return (
     <View>
-      {errMsg.uploadProduct && <Text>{errMsg.uploadProduct}</Text>}
+      {errMsg.uploadProduct && errMsg.uploadProduct !== "" && (
+        <>
+          {showMessage({
+            message: errMsg.uploadProduct,
+            type: "danger",
+            hideOnPress: true,
+            autoHide: false,
+          })}
+        </>
+      )}
       <View style={styles.inputBox}>
         <Text>Name</Text>
         <TextInput
@@ -171,7 +236,7 @@ export const UploadProduct = ({ navigation }: Props) => {
         <Text>Price</Text>
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.price, value)}
-          value={formData.price ? formData.price.toString() : ""}
+          value={formData.price ? formData.price.toLocaleString() : ""}
           placeholder="Search"
           style={styles.textInput}
         />
