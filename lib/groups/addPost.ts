@@ -15,6 +15,7 @@ async function addGroupPostFn({
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
+      Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
     body: formDataBody,

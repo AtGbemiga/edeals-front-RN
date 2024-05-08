@@ -24,7 +24,6 @@ import { DynamicProfile } from "./components/profile/dynamicProfile";
 import { SellIndex } from "./components/sell";
 import Start from "./components/start";
 import { RootStackParamList } from "./types/global/root";
-// import { UpdateProfile } from "./components/profile/updateProfile";
 import { GroupsIndex } from "./components/dynamic/groups";
 import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
 import { WishListIndex } from "./components/dynamic/wishList";
@@ -32,6 +31,7 @@ import { Orders } from "./components/orders";
 import { PaymentScreen } from "./components/paystack/paymentScreen";
 import { Thanks } from "./components/paystack/thanks";
 import { UpdateProfile } from "./components/profile/updateProfile";
+import FlashMessage from "react-native-flash-message";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -221,6 +221,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }

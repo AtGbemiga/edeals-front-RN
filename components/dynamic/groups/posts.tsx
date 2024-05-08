@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Button,
   Image,
   Pressable,
   StyleSheet,
@@ -13,7 +14,9 @@ import addGroupPostFn from "../../../lib/groups/addPost";
 import getGroupPostFn from "../../../lib/groups/getPosts";
 import { ResGetPosts } from "../../../types/groups/resGetPost";
 import { formatTimestampDiff } from "../../global/formatTimeDiff";
-import MultiImagePicker from "../../global/multiImagePicker";
+import { MultiImagePicker } from "../../global/multiImagePicker";
+import { StaticInlineNotice } from "../../global/inlineNotice";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 export const GroupPosts = ({ id }: { id: number }) => {
   const [resPosts, setResPosts] = useState<ResGetPosts>();
@@ -43,14 +46,6 @@ export const GroupPosts = ({ id }: { id: number }) => {
             (user) => user.user_liked
           )?.user_liked;
           setPostLike(userLiked ? 1 : 0);
-
-          if (resPosts?.result) {
-            const resComments = await getGroupPostCommentsFn({
-              groupPostID: resPosts?.result[0].id,
-              setErrMsg,
-            });
-            setResComments(resComments);
-          }
         }
       } catch (error) {
         // Handle error
@@ -98,6 +93,30 @@ export const GroupPosts = ({ id }: { id: number }) => {
               <Text>{post.account_name}</Text>
               <Text>{formatTimestampDiff(post.created_at)}</Text>
             </View>
+
+            <View>
+              {post.imgs &&
+                post.imgs.length > 0 &&
+                post.imgs.map((img, index) => {
+                  // Check if img is not null
+                  if (img !== null) {
+                    return (
+                      <Image
+                        key={index.toString()}
+                        source={{ uri: img }}
+                        style={{
+                          width: 100,
+                          height: 100,
+                        }}
+                      />
+                    );
+                  } else {
+                    // Handle null case, you can render a placeholder image or do something else
+                    return null; // Or return a placeholder image
+                  }
+                })}
+            </View>
+
             <View>
               <Text>{post.post}</Text>
             </View>
@@ -130,13 +149,13 @@ export const GroupPosts = ({ id }: { id: number }) => {
           post.post_comments.map((comment) => {
             return (
               <View
-                style={styles.headerBox}
+                style={[styles.headerBox, styles.commentBox]}
                 key={comment.comment_id}
               >
                 <View>
                   <Image
                     source={{ uri: comment.commentator_img }}
-                    style={styles.owner_img}
+                    style={[styles.owner_img, { width: 30, height: 30 }]}
                   />
                 </View>
                 <View>
@@ -164,7 +183,11 @@ export const GroupPosts = ({ id }: { id: number }) => {
     const formData = new FormData();
     formData.append("post", formPost);
     formData.append("fk_group_id", id.toString());
-    formData.append("imgs", formPostImg);
+    formData.append("imgs", {
+      type: "image/jpeg",
+      uri: formPostImg,
+      name: "file.jpg",
+    } as unknown as Blob);
 
     try {
       const response = await addGroupPostFn({
@@ -172,13 +195,22 @@ export const GroupPosts = ({ id }: { id: number }) => {
         setErrMsg,
       });
       console.log(response);
+      response &&
+        showMessage({
+          message: response.message,
+          type: "info",
+        });
+
+      // Reset form
+      setFormPost("");
+      setFormPostImg("");
     } catch (error) {
-      console.error("Error adding group post:", error);
+      // disable empty object error
     }
   };
 
   return (
-    <>
+    <View>
       <View>
         <TextInput
           onChangeText={setFormPost}
@@ -194,20 +226,24 @@ export const GroupPosts = ({ id }: { id: number }) => {
           <Text>Post</Text>
         </Pressable>
       </View>
-      {postContent}
-    </>
+      {errMsg ? (
+        <StaticInlineNotice
+          msg={errMsg}
+          color="#fff"
+          bgColor="red"
+        />
+      ) : (
+        postContent
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   postContainer: {
-    // flexDirection: "column",
-    // rowGap: 10,
-    // padding: 10,
     backgroundColor: "#F7FBFF",
-    // marginVertical: 10,
     borderRadius: 10,
-    // height: "auto",
+    marginBottom: 10,
   },
   headerBox: {
     flexDirection: "row",
@@ -236,5 +272,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     columnGap: 5,
     alignItems: "center",
+  },
+  commentBox: {
+    marginVertical: 10,
   },
 });

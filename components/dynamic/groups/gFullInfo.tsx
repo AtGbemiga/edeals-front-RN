@@ -171,11 +171,9 @@ export const GroupFullInfo = ({ route }: Props) => {
 
 const styles = StyleSheet.create({
   mainBox: {
-    // flexDirection: "column",
-    // rowGap: 10,
-    paddingTop: StatusBar.currentHeight || 0,
-    // paddingHorizontal: 10,
-    // paddingBottom: 10,
+    paddingTop: StatusBar.currentHeight || 10,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   headerBox: {
     flexDirection: "column",

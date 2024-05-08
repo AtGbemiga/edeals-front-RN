@@ -1,4 +1,3 @@
-import { ParamListBase } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import {
@@ -10,6 +9,7 @@ import {
   View,
 } from "react-native";
 import booleanTokenCheck from "../../lib/booleanTokenCheck";
+import { RootStackParamList } from "../../types/global/root";
 import { HSProducts } from "./homeScreenProducts";
 import { HSServices } from "./homeScreenServices";
 
@@ -20,7 +20,7 @@ import { HSServices } from "./homeScreenServices";
 export const Home = ({
   navigation,
 }: {
-  navigation: NativeStackNavigationProp<ParamListBase>;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
   const [content, setContent] = useState(
     <HSProducts navigation={navigation} />

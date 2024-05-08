@@ -24,4 +24,5 @@ export type RootStackParamList = {
   readonly PaymentScreen: { res: ResPaystackPaymentInit };
   Thanks: undefined;
   Orders: undefined;
+  Sell: undefined;
 };

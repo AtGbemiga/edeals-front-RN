@@ -12,7 +12,7 @@ export interface OnePost {
   created_at: string;
   shares: number;
   views: number;
-  imgs: null | string;
+  imgs: Array<null | string>;
   account_name: string;
   owner_img: string;
   likes: number;

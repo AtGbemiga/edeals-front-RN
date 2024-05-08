@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -12,14 +13,12 @@ import {
 import getMyProfileFn from "../../lib/users/profile/getMyProfile";
 import updateProfileFn from "../../lib/users/profile/update";
 import { RootStackParamList } from "../../types/global/root";
-import MultiImagePicker from "../global/multiImagePicker";
-// import { launchImageLibrary } from "react-native-image-picker";
-// import ImagePicker from "react-native-image-crop-picker";
-import * as ImagePicker from "expo-image-picker";
+import { OneImagePicker } from "../global/multiImagePicker";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UpdateProfile">;
 
-export const UpdateProfile = () => {
+// TODO: Stop updateBtn from making API call if no changes have been made, navigate back to profile
+export const UpdateProfile = ({ navigation }: Props) => {
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [accountName, setAccountName] = useState("");
@@ -52,36 +51,8 @@ export const UpdateProfile = () => {
     }
   }, []);
 
-  const openImageLibraryKeyMessage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-    }
-
-    if (status === "granted") {
-      const response = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-      });
-
-      if (!response.canceled) {
-        const ext = response.assets[0].uri.split(".").pop();
-        const arrEl = {
-          uri: response.assets[0].uri,
-          name: `file.${ext}`,
-          type: response.assets[0].type,
-        };
-
-        setFormPostImg(arrEl.uri);
-        console.log({ formPostImg });
-      }
-    }
-  };
-
   const handleUpdateProfile = async () => {
-    console.log("clicked");
-    console.log({ formPostImg });
-
+    //TODO: Stop updateBtn from making API call if no changes have been made
     const formBody = new FormData();
     formBody.append("address", address);
     formBody.append("phone_number", phoneNumber);
@@ -100,6 +71,7 @@ export const UpdateProfile = () => {
       });
       if (res && res.message.includes("success")) {
         console.log("success");
+        navigation.navigate("Profile");
       }
     } catch (error) {
       // disable empty object error
@@ -108,65 +80,66 @@ export const UpdateProfile = () => {
 
   return (
     <SafeAreaView style={styles.mainBox}>
-      {errMsg.profile && <Text>{errMsg.profile}</Text>}
-      <View>
-        <Text>Address</Text>
-        <TextInput
-          onChangeText={setAddress}
-          value={address}
-          placeholder="Enter address"
-          style={styles.textInput}
-        />
-      </View>
-      <View>
-        <Text>Phone Number</Text>
-        <TextInput
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
-          placeholder="Enter phone number"
-          style={styles.textInput}
-        />
-      </View>
-      <View>
-        <Text>Account Name</Text>
-        <TextInput
-          onChangeText={setAccountName}
-          value={accountName}
-          placeholder="Enter account name"
-          style={styles.textInput}
-        />
-      </View>
-      <View>
-        <Text>Email</Text>
-        <TextInput
-          onChangeText={setEmail}
-          value={email}
-          placeholder="Enter email"
-          style={styles.textInput}
-        />
-      </View>
-      <View>
-        <Text>Tag</Text>
-        <TextInput
-          onChangeText={setTag}
-          value={tag}
-          placeholder="Enter tag"
-          style={styles.textInput}
-        />
-      </View>
-
-      {/* <MultiImagePicker
-        formPostImg={formPostImg}
-        setFormPostImg={setFormPostImg}
-      /> */}
-
-      <Pressable onPress={openImageLibraryKeyMessage}>
-        <Text>Pick image</Text>
-      </Pressable>
-
-      <Pressable onPress={handleUpdateProfile}>
-        <Text>Update</Text>
-      </Pressable>
+      <ScrollView>
+        <View style={styles.subBox}>
+          {errMsg.profile && <Text>{errMsg.profile}</Text>}
+          <View>
+            <Text>Address</Text>
+            <TextInput
+              onChangeText={setAddress}
+              value={address}
+              placeholder="Enter address"
+              style={styles.textInput}
+            />
+          </View>
+          <View>
+            <Text>Phone Number</Text>
+            <TextInput
+              onChangeText={setPhoneNumber}
+              value={phoneNumber}
+              placeholder="Enter phone number"
+              style={styles.textInput}
+            />
+          </View>
+          <View>
+            <Text>Account Name</Text>
+            <TextInput
+              onChangeText={setAccountName}
+              value={accountName}
+              placeholder="Enter account name"
+              style={styles.textInput}
+            />
+          </View>
+          <View>
+            <Text>Email</Text>
+            <TextInput
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Enter email"
+              style={styles.textInput}
+            />
+          </View>
+          <View>
+            <Text>Tag</Text>
+            <TextInput
+              onChangeText={setTag}
+              value={tag}
+              placeholder="Enter tag"
+              style={styles.textInput}
+            />
+          </View>
+          <OneImagePicker
+            formPostImg={formPostImg}
+            setFormPostImg={setFormPostImg}
+          />
+          <Pressable
+            onPress={handleUpdateProfile}
+            style={styles.updateBtn}
+          >
+            <Text style={styles.updateBtnText}>Update</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -175,6 +148,12 @@ const styles = StyleSheet.create({
   mainBox: {
     flex: 1,
     paddingTop: StatusBar.currentHeight || 10,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
+  subBox: {
+    flexDirection: "column",
+    rowGap: 10,
   },
   textInput: {
     height: 40,
@@ -182,5 +161,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     width: "100%",
+  },
+  updateBtn: {
+    backgroundColor: "#2196F3",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  updateBtnText: {
+    color: "#fff",
+    fontWeight: "500",
   },
 });
