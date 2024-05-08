@@ -18,9 +18,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Sell">;
 };
 export const SellIndex = ({ navigation }: Props) => {
-  const [content, setContent] = useState(
-    <UploadProduct navigation={navigation} />
-  );
+  const [content, setContent] = useState(<UploadProduct />);
 
   const [showUploadProduct, setShowUploadProduct] = useState(true);
 
@@ -43,7 +41,7 @@ export const SellIndex = ({ navigation }: Props) => {
   }
 
   function handleShowUProduct() {
-    setContent(<UploadProduct navigation={navigation} />);
+    setContent(<UploadProduct />);
     setShowUploadProduct(true);
   }
 

@@ -1,21 +1,24 @@
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { RootStackParamList } from "../../types/global/root";
+import { Picker } from "@react-native-picker/picker";
+import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { showMessage } from "react-native-flash-message";
+import uploadProductFn from "../../lib/products/upload";
 import {
   FInputNames,
   FProductUpload,
   FUStatus,
 } from "../../types/sell/fUploadProduct";
-import { Picker } from "@react-native-picker/picker";
-import { OneImagePicker } from "../global/multiImagePicker";
-import uploadProductFn from "../../lib/products/upload";
-import { showMessage } from "react-native-flash-message";
-type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Sell">;
-};
 
-export const UploadProduct = ({ navigation }: Props) => {
+export const UploadProduct = () => {
   const [formData, setFormData] = useState<FProductUpload>({
     name: "",
     subHeading: "",
@@ -42,7 +45,7 @@ export const UploadProduct = ({ navigation }: Props) => {
     purple: "0",
   });
 
-  const [formPostImg, setFormPostImg] = useState("");
+  const [formPostImg, setFormPostImg] = useState<string[]>([]);
   const [errMsg, setErrMsg] = useState<Record<string, string>>({
     uploadProduct: "",
   });
@@ -67,12 +70,14 @@ export const UploadProduct = ({ navigation }: Props) => {
       }
     });
 
-    // Append image if available
-    formData.append("imgs", {
-      type: "image/jpeg",
-      uri: formPostImg,
-      name: "file.jpg",
-    } as unknown as Blob);
+    // Append all selected images
+    formPostImg.forEach((uri) => {
+      formData.append("imgs", {
+        type: "image/jpeg",
+        uri,
+        name: "image.jpg", // Adjust name as needed (e.g., use original filenames)
+      } as unknown as Blob);
+    });
 
     return formData;
   };
@@ -87,7 +92,7 @@ export const UploadProduct = ({ navigation }: Props) => {
       formData.description === "" ||
       formData.price === undefined ||
       formData.stock_no === undefined ||
-      formPostImg === "" ||
+      formPostImg.length === 0 ||
       formData.category === "" ||
       (formData.xs === "0" &&
         formData.s === "0" &&
@@ -127,7 +132,7 @@ export const UploadProduct = ({ navigation }: Props) => {
         });
 
         // Reset form
-        setFormPostImg("");
+        setFormPostImg([]);
         setFormData({
           name: "",
           subHeading: "",
@@ -159,6 +164,59 @@ export const UploadProduct = ({ navigation }: Props) => {
     }
   };
 
+  //   const pickImage = () => {
+  //     console.log("launchImageLibrary:", launchImageLibrary);
+
+  //     try {
+  //       launchImageLibrary({
+  //         mediaType: "photo",
+  //         quality: 0.5,
+  //       })
+  //         .then((res) => {
+  //           if (res.assets && res.assets[0].uri) {
+  //             setFormPostImg(res.assets[0].uri);
+  //           }
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  const pickImage = async () => {
+    try {
+      const res = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+        copyToCacheDirectory: true,
+        multiple: true,
+      });
+
+      if (res.canceled) return;
+      const imgSize = res.assets.map((assest) => assest.size);
+      console.log({ imgSize });
+
+      // return if size is greater than 500kb
+      const sizeLimit = 500 * 1024;
+
+      if (imgSize && imgSize.some((size) => size && size > sizeLimit)) {
+        showMessage({
+          message: "Please select an image less than 500kb",
+          type: "warning",
+          hideOnPress: true,
+        });
+        return;
+      }
+      console.log(res);
+      if (res && res.assets[0] && res.assets[0].uri) {
+        const selectedImages = res.assets.map((asset) => asset.uri); // Extract URIs
+        setFormPostImg(selectedImages);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <View>
       {errMsg.uploadProduct && errMsg.uploadProduct !== "" && (
@@ -171,12 +229,23 @@ export const UploadProduct = ({ navigation }: Props) => {
           })}
         </>
       )}
+      <View style={{ margin: 10, padding: 10 }}>
+        <TouchableOpacity onPress={pickImage}>
+          <Text>Upload Images</Text>
+        </TouchableOpacity>
+      </View>
+      {formPostImg.map((uri) => (
+        <Image
+          key={uri}
+          source={{ uri }}
+          style={{ width: 200, height: 200 }}
+        />
+      ))}
       <View style={styles.inputBox}>
         <Text>Name</Text>
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.name, value)}
           value={formData.name}
-          placeholder="Search"
           style={styles.textInput}
         />
       </View>
@@ -185,7 +254,6 @@ export const UploadProduct = ({ navigation }: Props) => {
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.subHeading, value)}
           value={formData.subHeading}
-          placeholder="Search"
           style={styles.textInput}
         />
       </View>
@@ -194,7 +262,6 @@ export const UploadProduct = ({ navigation }: Props) => {
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.description, value)}
           value={formData.description}
-          placeholder="Search"
           style={styles.textInput}
         />
       </View>
@@ -237,8 +304,8 @@ export const UploadProduct = ({ navigation }: Props) => {
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.price, value)}
           value={formData.price ? formData.price.toLocaleString() : ""}
-          placeholder="Search"
           style={styles.textInput}
+          keyboardType="numeric"
         />
       </View>
       <View style={styles.inputBox}>
@@ -246,8 +313,8 @@ export const UploadProduct = ({ navigation }: Props) => {
         <TextInput
           onChangeText={(value) => handleChange(FInputNames.stock_no, value)}
           value={formData.stock_no ? formData.stock_no.toString() : ""}
-          placeholder="Search"
           style={styles.textInput}
+          keyboardType="numeric"
         />
       </View>
       <View>
@@ -546,12 +613,12 @@ export const UploadProduct = ({ navigation }: Props) => {
           </Picker>
         </View>
       </View>
-      <View>
+      {/* <View>
         <OneImagePicker
           formPostImg={formPostImg}
           setFormPostImg={setFormPostImg}
         />
-      </View>
+      </View> */}
       <View>
         <Pressable
           onPress={handleSubmit}

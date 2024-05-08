@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Button,
   Image,
   Pressable,
   StyleSheet,
@@ -8,15 +7,15 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import unlikedIcon from "../../../assets/bx_like.png";
 import likedIcon from "../../../assets/likeRed.png";
 import addGroupPostFn from "../../../lib/groups/addPost";
 import getGroupPostFn from "../../../lib/groups/getPosts";
 import { ResGetPosts } from "../../../types/groups/resGetPost";
 import { formatTimestampDiff } from "../../global/formatTimeDiff";
-import { MultiImagePicker } from "../../global/multiImagePicker";
 import { StaticInlineNotice } from "../../global/inlineNotice";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { MultiImagePicker } from "../../global/multiImagePicker";
 
 export const GroupPosts = ({ id }: { id: number }) => {
   const [resPosts, setResPosts] = useState<ResGetPosts>();
