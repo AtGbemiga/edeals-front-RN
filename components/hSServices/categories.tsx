@@ -53,14 +53,30 @@ const DATA: DATAProps[] = [
   },
 ];
 
-export const Categories = () => {
+// TODO: onPress only works on the 2nd click
+export const Categories = ({
+  searchValue,
+  setSearchValue,
+  handleSearch,
+}: {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: ({ searchValue }: { searchValue: string }) => void;
+}) => {
   return (
     <View>
       <FlatGrid
         itemDimension={130}
         data={DATA}
         renderItem={({ item }) => (
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              console.log(item.name);
+
+              setSearchValue(item.name);
+              handleSearch({ searchValue });
+            }}
+          >
             <View style={styles.imgBox}>
               <Image
                 source={item.imgPath}
