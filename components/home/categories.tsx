@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageSourcePropType,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -12,6 +13,9 @@ import Logo1 from "../../assets/Group.png";
 import Logo2 from "../../assets/Eggs.png";
 import Logo3 from "../../assets/Meat.png";
 import Logo4 from "../../assets/Groupg.png";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/global/root";
+import { ParamListBase } from "@react-navigation/native";
 
 interface CATEGORIES_DATAProps {
   id: number;
@@ -51,23 +55,30 @@ const CATEGORIES_DATA: CATEGORIES_DATAProps[] = [
     bgColor: "#E4F3EA",
   },
 ];
-
-const Category = ({ id, name, imgPath, bgColor }: CATEGORIES_DATAProps) => (
+type Props = {
+  navigation: NativeStackNavigationProp<ParamListBase>;
+};
+const Category = (
+  { id, name, imgPath, bgColor }: CATEGORIES_DATAProps,
+  { navigation }: Props
+) => (
   <View
     key={id}
     style={[{ backgroundColor: bgColor }, styles.itemContainer]}
   >
-    <Image
-      source={imgPath}
-      style={styles.img}
-    />
-    <Text>{name}</Text>
+    <Pressable onPress={() => navigation.navigate("DynamicSearch")}>
+      <Image
+        source={imgPath}
+        style={styles.img}
+      />
+      <Text>{name}</Text>
+    </Pressable>
   </View>
 );
 
 const screenWidth = Dimensions.get("window").width;
 
-export const CategoriesFlatList = () => (
+export const CategoriesFlatList = ({ navigation }: Props) => (
   <View>
     <FlatList
       data={CATEGORIES_DATA}
@@ -77,6 +88,7 @@ export const CategoriesFlatList = () => (
           name={item.name}
           imgPath={item.imgPath}
           bgColor={item.bgColor}
+          navigation={navigation}
         />
       )}
       horizontal

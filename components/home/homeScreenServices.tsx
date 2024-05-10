@@ -34,9 +34,9 @@ export const HSServices = ({
   const [showAllCategories, setShowAllCategories] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
-  async function handleSearch() {
+  async function handleSearch({ searchValue }: { searchValue?: string }) {
     console.log("search");
-
+    if (!searchValue) return;
     try {
       (async () => {
         const res = await globalSearchFn({
@@ -76,7 +76,7 @@ export const HSServices = ({
           />
         </Pressable>
 
-        <Pressable onPress={handleSearch}>
+        <Pressable onPress={() => handleSearch({ searchValue })}>
           <Image
             source={searchIcon}
             style={styles.searchIcon}
@@ -120,7 +120,11 @@ export const HSServices = ({
               <View>
                 <Text>Categories</Text>
                 <View>
-                  <Categories />
+                  <Categories
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    handleSearch={() => handleSearch({ searchValue })}
+                  />
                 </View>
               </View>
               <View>
