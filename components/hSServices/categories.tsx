@@ -58,10 +58,12 @@ export const Categories = ({
   searchValue,
   setSearchValue,
   handleSearch,
+  setShowSearch,
 }: {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  handleSearch: ({ searchValue }: { searchValue: string }) => void;
+  handleSearch: (searchValue: string) => void;
+  setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
     <View>
@@ -74,7 +76,8 @@ export const Categories = ({
               console.log(item.name);
 
               setSearchValue(item.name);
-              handleSearch({ searchValue });
+              handleSearch(item.name);
+              setShowSearch(true);
             }}
           >
             <View style={styles.imgBox}>

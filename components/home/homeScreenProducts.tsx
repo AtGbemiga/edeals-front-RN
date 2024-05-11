@@ -10,8 +10,8 @@ import {
   View,
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
-import searchIcon from "../../assets/searchIcon.png";
-import filterIcon from "../../assets/sliders.png";
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import getLInfoFn from "../../lib/global/getLInfo";
 import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
@@ -94,17 +94,36 @@ export const HSProducts = ({
           }}
           style={styles.textInput}
         />
-        <Pressable onPress={() => navigation.navigate("Search Filiter")}>
-          <Image
-            source={filterIcon}
-            style={styles.filterIcon}
+        <Pressable
+          onPress={() => navigation.navigate("Search Filiter")}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#909090" : "#ffffff",
+            },
+            styles.searchAreaBtn,
+          ]}
+        >
+          <Ionicons
+            name="filter"
+            size={24}
+            color="black"
           />
         </Pressable>
 
-        <Pressable onPress={handleSearch}>
-          <Image
-            source={searchIcon}
-            style={styles.searchIcon}
+        <Pressable
+          onPress={handleSearch}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#909090" : "#ffffff",
+            },
+            styles.searchAreaBtn,
+          ]}
+        >
+          <AntDesign
+            name="search1"
+            size={24}
+            color="black"
+            style={styles.searchAreaBtn}
           />
         </Pressable>
       </View>
@@ -144,7 +163,7 @@ export const HSProducts = ({
           <View>
             <Text>Categories</Text>
 
-            <CategoriesFlatList />
+            <CategoriesFlatList navigation={navigation} />
           </View>
           <View>
             {errMsg.products ? (
@@ -212,5 +231,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     columnGap: 10,
+  },
+  searchAreaBtn: {
+    padding: 5,
+    borderRadius: 50,
   },
 });

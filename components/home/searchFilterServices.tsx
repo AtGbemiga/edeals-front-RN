@@ -1,4 +1,4 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import {
@@ -16,17 +16,16 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import backIcon from "../../assets/backIcon.png";
 import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
-import { ResSearchLInfo } from "../../types/products/resProducts";
+import { ResSearchServices } from "../../types/services/resSearch";
 import { StaticInlineNotice } from "../global/inlineNotice";
-import { SearchCardLInfo } from "../global/searchCardLInfo";
-import { Ionicons } from "@expo/vector-icons";
+import { ServicesSearchCardLInfo } from "../hSServices/servicesSearchCardLInfo";
 
-export const SearchFiliter = ({
+export const SearchFilterServices = ({
   navigation,
 }: {
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
-  const [resSearch, setResSearch] = useState<ResSearchLInfo>();
+  const [resSearch, setResSearch] = useState<ResSearchServices>();
   const [searchValue, setSearchValue] = useState("");
   const [fashionSearch, setFashionSearch] = useState(false);
   const [errMsg, setErrMsg] = useState("");
@@ -39,14 +38,14 @@ export const SearchFiliter = ({
     }
     try {
       const res = await globalSearchFn({
-        identifier: "products",
+        identifier: "services",
         searchValue,
         setErrMsg,
       });
       if (
         res &&
-        "productSearchData" in res &&
-        res.productSearchData.length > 0
+        "servicesFinalResult" in res &&
+        res.servicesFinalResult.length > 0
       ) {
         console.log(resSearch);
         setResSearch(res);
@@ -108,7 +107,7 @@ export const SearchFiliter = ({
       <ScrollView>
         <View style={styles.searchBox}>
           <TextInput
-            placeholder="search for products"
+            placeholder="search for services"
             value={searchValue}
             onChangeText={(newText) => {
               setSearchValue(newText);
@@ -145,7 +144,7 @@ export const SearchFiliter = ({
             </View>
           ) : (
             <>
-              {resSearch && resSearch.productSearchData.length > 0 ? (
+              {resSearch && resSearch.servicesFinalResult.length > 0 ? (
                 <>
                   <View>
                     <Pressable
@@ -160,8 +159,8 @@ export const SearchFiliter = ({
                       <Image source={backIcon} />
                     </Pressable>
                   </View>
-                  <SearchCardLInfo
-                    data={resSearch}
+                  <ServicesSearchCardLInfo
+                    data={resSearch as ResSearchServices}
                     navigation={navigation}
                     searchValue={searchValue}
                   />
@@ -218,24 +217,28 @@ interface FASHION_CHECKBOXESProps {
 
 const FASHION_CHECKBOXES: FASHION_CHECKBOXESProps[] = [
   {
-    label: "Shoes",
-    value: "shoes",
+    label: "Plumber",
+    value: "plumber",
   },
   {
-    label: "Clothes",
-    value: "clothes",
+    label: "Repairer",
+    value: "repairer",
   },
   {
-    label: "Bags",
-    value: "bags",
+    label: "Make up",
+    value: "make up",
   },
   {
-    label: "Accessories",
-    value: "accessories",
+    label: "Electrician",
+    value: "electrician",
   },
   {
-    label: "Sport",
-    value: "sport",
+    label: "Mechanic",
+    value: "mechanic",
+  },
+  {
+    label: "Hairdresser",
+    value: "hairdresser",
   },
 ];
 

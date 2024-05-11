@@ -13,7 +13,7 @@ import {
 import getMyProfileFn from "../../lib/users/profile/getMyProfile";
 import updateProfileFn from "../../lib/users/profile/update";
 import { RootStackParamList } from "../../types/global/root";
-import { OneImagePicker } from "../global/multiImagePicker";
+import { OneImagePicker } from "../global/oneImagePicker";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UpdateProfile">;
 

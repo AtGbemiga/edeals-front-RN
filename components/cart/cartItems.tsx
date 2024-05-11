@@ -38,11 +38,9 @@ const CartItem = ({
   const [showRightContent, setShowRightContent] = useState(false);
   const [showLeftContent, setShowLeftContent] = useState(false);
   const [qty, setQty] = useState(item.qty);
-  const [errMsg, setErrMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
 
   const leftContent = (
-    <View>
+    <View style={styles.qtyBox}>
       <Pressable
         onPress={() => {
           handleQtyUpdate(item.id, qty + 1);
@@ -52,10 +50,10 @@ const CartItem = ({
         <AntDesign
           name="plus"
           size={24}
-          color="#000000"
+          color="#ffffff"
         />
       </Pressable>
-      <Text>{qty}</Text>
+      <Text style={styles.qty}>{qty}</Text>
       <Pressable
         onPress={() => {
           if (qty <= 1) return;
@@ -66,22 +64,22 @@ const CartItem = ({
         <AntDesign
           name="minus"
           size={24}
-          color="#000000"
+          color="#ffffff"
         />
       </Pressable>
     </View>
   );
 
   const rightContent = (
-    <Pressable onPress={() => handleDelete(item.id)}>
-      <View style={styles.deleteIconBox}>
+    <View style={styles.deleteIconBox}>
+      <Pressable onPress={() => handleDelete(item.id)}>
         <Feather
           name="trash-2"
           size={24}
           color={"#ffffff"}
         />
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 
   const SWIPE_THRESHOLD = 50;
@@ -332,6 +330,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderColor: "red",
     borderWidth: 5,
+    justifyContent: "space-between",
   },
   totalCartItems: {
     fontSize: 16,
@@ -396,10 +395,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deleteIconBox: {
-    width: 106,
+    width: "20%",
     height: 100,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#ff0000",
+  },
+  qtyBox: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#0000ff",
+    width: "20%",
+    height: 100,
+  },
+  qty: {
+    color: "#fff",
   },
 });

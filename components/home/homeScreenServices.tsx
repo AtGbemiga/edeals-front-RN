@@ -1,4 +1,3 @@
-import { ParamListBase } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import {
@@ -12,15 +11,15 @@ import {
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
 import CutCostBanner from "../../assets/hServicesCutCost.png";
-import searchIcon from "../../assets/searchIcon.png";
-import filterIcon from "../../assets/sliders.png";
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import globalSearchFn from "../../lib/global/search";
+import { RootStackParamList } from "../../types/global/root";
 import { ResSearchServices } from "../../types/services/resSearch";
 import { StaticInlineNotice } from "../global/inlineNotice";
 import { Banners } from "../hSServices/banners";
 import { Categories } from "../hSServices/categories";
 import { ServicesSearchCardLInfo } from "../hSServices/servicesSearchCardLInfo";
-import { RootStackParamList } from "../../types/global/root";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -31,10 +30,11 @@ export const HSServices = ({
 }) => {
   const [resSearch, setResSearch] = useState<ResSearchServices>();
   const [searchValue, setSearchValue] = useState("");
-  const [showAllCategories, setShowAllCategories] = useState(false);
+  // const [showAllCategories, setShowAllCategories] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
 
-  async function handleSearch({ searchValue }: { searchValue?: string }) {
+  async function handleSearch(searchValue?: string) {
     console.log("search");
     if (!searchValue) return;
     try {
@@ -69,17 +69,36 @@ export const HSServices = ({
           }}
           style={styles.textInput}
         />
-        <Pressable onPress={() => navigation.navigate("Search Filiter")}>
-          <Image
-            source={filterIcon}
-            style={styles.filterIcon}
+        <Pressable
+          onPress={() => navigation.navigate("SearchFilterServices")}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#909090" : "#ffffff",
+            },
+            styles.searchAreaBtn,
+          ]}
+        >
+          <Ionicons
+            name="filter"
+            size={24}
+            color="black"
           />
         </Pressable>
 
-        <Pressable onPress={() => handleSearch({ searchValue })}>
-          <Image
-            source={searchIcon}
-            style={styles.searchIcon}
+        <Pressable
+          onPress={() => handleSearch(searchValue)}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#909090" : "#ffffff",
+            },
+            styles.searchAreaBtn,
+          ]}
+        >
+          <AntDesign
+            name="search1"
+            size={24}
+            color="black"
+            style={styles.searchAreaBtn}
           />
         </Pressable>
       </View>
@@ -91,7 +110,8 @@ export const HSServices = ({
         />
       ) : (
         <View>
-          {resSearch && resSearch.servicesFinalResult.length > 0 ? (
+          {(resSearch && resSearch.servicesFinalResult.length > 0) ||
+          showSearch ? (
             <>
               <View>
                 <Pressable
@@ -106,7 +126,7 @@ export const HSServices = ({
                 {/* <Text>Bell here</Text> */}
               </View>
               <ServicesSearchCardLInfo
-                data={resSearch}
+                data={resSearch as ResSearchServices}
                 navigation={navigation}
                 searchValue={searchValue}
               />
@@ -123,7 +143,8 @@ export const HSServices = ({
                   <Categories
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
-                    handleSearch={() => handleSearch({ searchValue })}
+                    handleSearch={() => handleSearch(searchValue)}
+                    setShowSearch={setShowSearch}
                   />
                 </View>
               </View>
@@ -171,5 +192,9 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: "stretch",
     borderRadius: 10,
+  },
+  searchAreaBtn: {
+    padding: 5,
+    borderRadius: 50,
   },
 });

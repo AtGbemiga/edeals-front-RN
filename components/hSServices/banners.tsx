@@ -1,3 +1,4 @@
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   Dimensions,
   FlatList,
@@ -7,52 +8,60 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import BannerOne from "../../assets/seviceBanner1.jpg";
-import BannerFive from "../../assets/serviceBanner6.jpg";
 import BannerFour from "../../assets/serviceBanner4.jpg";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ParamListBase } from "@react-navigation/native";
+import BannerFive from "../../assets/serviceBanner6.jpg";
+import BannerOne from "../../assets/seviceBanner1.jpg";
+import { RootStackParamList } from "../../types/global/root";
 
 const screenWidth = Dimensions.get("window").width;
 const DATA = [
   {
-    id: 1,
+    id: 6,
     first_img: BannerOne,
   },
   {
-    id: 2,
+    id: 7,
     first_img: BannerFour,
   },
   {
-    id: 3,
+    id: 8,
     first_img: BannerFive,
   },
 ];
 
+type ItemProps = {
+  id: number;
+  first_img: ImageSourcePropType;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
+};
+const OneImg = ({ id, first_img, navigation }: ItemProps) => {
+  return (
+    <View style={styles.imgBox}>
+      <Pressable onPress={() => navigation.navigate("Dynamic Product", { id })}>
+        <Image
+          source={first_img}
+          style={styles.image}
+        />
+      </Pressable>
+    </View>
+  );
+};
 export const Banners = ({
   navigation,
 }: {
-  navigation: NativeStackNavigationProp<ParamListBase>;
+  navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
-  type ItemProps = { first_img: ImageSourcePropType };
-
-  const OneImg = ({ first_img }: ItemProps) => {
-    return (
-      <Pressable>
-        <View>
-          <Image
-            source={first_img}
-            style={styles.image}
-          />
-        </View>
-      </Pressable>
-    );
-  };
   return (
-    <View style={{ flexWrap: "wrap" }}>
+    <View>
       <FlatList
         data={DATA}
-        renderItem={({ item }) => <OneImg first_img={item.first_img} />}
+        renderItem={({ item }) => (
+          <OneImg
+            first_img={item.first_img}
+            navigation={navigation}
+            id={item.id}
+          />
+        )}
         keyExtractor={(item) => item.id.toString()}
         extraData={DATA}
         horizontal
@@ -64,9 +73,13 @@ export const Banners = ({
 };
 
 const styles = StyleSheet.create({
+  imgBox: {
+    marginRight: 10,
+  },
   image: {
-    width: 200,
+    width: screenWidth / 1.1,
     height: 200,
     resizeMode: "stretch",
+    borderRadius: 10,
   },
 });

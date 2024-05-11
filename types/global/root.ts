@@ -25,4 +25,6 @@ export type RootStackParamList = {
   Thanks: undefined;
   Orders: undefined;
   Sell: undefined;
+  DynamicSearch: undefined;
+  SearchFilterServices: undefined;
 };

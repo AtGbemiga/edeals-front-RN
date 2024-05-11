@@ -101,7 +101,7 @@ export const SearchCardLInfo = ({
           </Text>
 
           <Pressable
-            onPress={() => navigation.navigate("Stores")}
+            // onPress={() => navigation.navigate("Stores")} // Stores doesn't exsit
             style={styles.headerBtn}
           >
             <Text>Stores</Text>

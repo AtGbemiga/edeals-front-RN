@@ -15,7 +15,7 @@ import getGroupPostFn from "../../../lib/groups/getPosts";
 import { ResGetPosts } from "../../../types/groups/resGetPost";
 import { formatTimestampDiff } from "../../global/formatTimeDiff";
 import { StaticInlineNotice } from "../../global/inlineNotice";
-import { MultiImagePicker } from "../../global/multiImagePicker";
+import { MultiImagePicker } from "../../global/oneImagePicker";
 
 export const GroupPosts = ({ id }: { id: number }) => {
   const [resPosts, setResPosts] = useState<ResGetPosts>();

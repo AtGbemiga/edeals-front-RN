@@ -32,6 +32,8 @@ import { PaymentScreen } from "./components/paystack/paymentScreen";
 import { Thanks } from "./components/paystack/thanks";
 import { UpdateProfile } from "./components/profile/updateProfile";
 import FlashMessage from "react-native-flash-message";
+import { DynamicSearch } from "./components/global/dynamicSearch";
+import { SearchFilterServices } from "./components/home/searchFilterServices";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -218,6 +220,16 @@ export default function App() {
         <Stack.Screen
           name="Orders"
           component={Orders}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DynamicSearch"
+          component={DynamicSearch}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SearchFilterServices"
+          component={SearchFilterServices}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

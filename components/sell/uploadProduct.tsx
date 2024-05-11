@@ -1,15 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
-import * as DocumentPicker from "expo-document-picker";
+
 import { useState } from "react";
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import uploadProductFn from "../../lib/products/upload";
 import {
@@ -17,7 +9,9 @@ import {
   FProductUpload,
   FUStatus,
 } from "../../types/sell/fUploadProduct";
+import { MultiImagePicker } from "../global/multiImagePicker";
 
+// TODO: Handle error: VirtualizedList: You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. {"contentLength": 1780, "dt": 16134, "prevDt": 756}
 export const UploadProduct = () => {
   const [formData, setFormData] = useState<FProductUpload>({
     name: "",
@@ -46,6 +40,7 @@ export const UploadProduct = () => {
   });
 
   const [formPostImg, setFormPostImg] = useState<string[]>([]);
+  const [imgsLength, setImgsLength] = useState(0);
   const [errMsg, setErrMsg] = useState<Record<string, string>>({
     uploadProduct: "",
   });
@@ -82,6 +77,7 @@ export const UploadProduct = () => {
     return formData;
   };
 
+  // TODO: show error, reset image state if image length > 5
   const handleSubmit = async () => {
     console.log("clicked");
     console.log({ "req.files": formPostImg });
@@ -164,59 +160,18 @@ export const UploadProduct = () => {
     }
   };
 
-  //   const pickImage = () => {
-  //     console.log("launchImageLibrary:", launchImageLibrary);
+  // Imgs length content
+  let content: string = "";
+  if (imgsLength === 0) {
+    content = "No image selected";
+  } else if (imgsLength === 1) {
+    content = "1 image selected";
+  } else if (imgsLength >= 1 && imgsLength <= 5) {
+    content = `${imgsLength} images selected`;
+  } else {
+    content = "No image selected";
+  }
 
-  //     try {
-  //       launchImageLibrary({
-  //         mediaType: "photo",
-  //         quality: 0.5,
-  //       })
-  //         .then((res) => {
-  //           if (res.assets && res.assets[0].uri) {
-  //             setFormPostImg(res.assets[0].uri);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  const pickImage = async () => {
-    try {
-      const res = await DocumentPicker.getDocumentAsync({
-        type: "image/*",
-        copyToCacheDirectory: true,
-        multiple: true,
-      });
-
-      if (res.canceled) return;
-      const imgSize = res.assets.map((assest) => assest.size);
-      console.log({ imgSize });
-
-      // return if size is greater than 500kb
-      const sizeLimit = 500 * 1024;
-
-      if (imgSize && imgSize.some((size) => size && size > sizeLimit)) {
-        showMessage({
-          message: "Please select an image less than 500kb",
-          type: "warning",
-          hideOnPress: true,
-        });
-        return;
-      }
-      console.log(res);
-      if (res && res.assets[0] && res.assets[0].uri) {
-        const selectedImages = res.assets.map((asset) => asset.uri); // Extract URIs
-        setFormPostImg(selectedImages);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <View>
       {errMsg.uploadProduct && errMsg.uploadProduct !== "" && (
@@ -229,18 +184,7 @@ export const UploadProduct = () => {
           })}
         </>
       )}
-      <View style={{ margin: 10, padding: 10 }}>
-        <TouchableOpacity onPress={pickImage}>
-          <Text>Upload Images</Text>
-        </TouchableOpacity>
-      </View>
-      {formPostImg.map((uri) => (
-        <Image
-          key={uri}
-          source={{ uri }}
-          style={{ width: 200, height: 200 }}
-        />
-      ))}
+
       <View style={styles.inputBox}>
         <Text>Name</Text>
         <TextInput
@@ -613,12 +557,13 @@ export const UploadProduct = () => {
           </Picker>
         </View>
       </View>
-      {/* <View>
-        <OneImagePicker
-          formPostImg={formPostImg}
+      <View style={styles.fileBox}>
+        <MultiImagePicker
           setFormPostImg={setFormPostImg}
+          setImgsLength={setImgsLength}
         />
-      </View> */}
+        <Text>{content}</Text>
+      </View>
       <View>
         <Pressable
           onPress={handleSubmit}
@@ -654,5 +599,8 @@ const styles = StyleSheet.create({
   uploadBtnText: {
     color: "#fff",
     fontWeight: "500",
+  },
+  fileBox: {
+    marginVertical: 10,
   },
 });

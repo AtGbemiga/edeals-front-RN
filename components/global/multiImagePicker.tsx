@@ -1,105 +1,72 @@
-import * as ImagePicker from "expo-image-picker";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
+
 type Props = {
-  formPostImg: string;
-  setFormPostImg: React.Dispatch<React.SetStateAction<string>>;
+  setFormPostImg: React.Dispatch<React.SetStateAction<string[]>>;
+  setImgsLength: React.Dispatch<React.SetStateAction<number>>;
 };
-export function OneImagePicker({ formPostImg, setFormPostImg }: Props) {
+
+export const MultiImagePicker = ({ setFormPostImg, setImgsLength }: Props) => {
   const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-    }
-
-    if (status === "granted") {
-      // No permissions request is necessary for launching the image library
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+    try {
+      const res = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+        copyToCacheDirectory: true,
+        multiple: true,
       });
-      console.log(result);
 
-      if (!result.canceled) {
-        const uri = result.assets[0].uri;
-        setFormPostImg(uri);
-        console.log({ formPostImg: formPostImg });
+      if (res.canceled) return;
+      const imgSize = res.assets.map((assest) => assest.size);
+      console.log({ imgSize });
+
+      // return if more than 5 images are selected
+      if (imgSize && imgSize.length > 5) {
+        showMessage({
+          message: "Please select no more than 5 images",
+          type: "warning",
+          hideOnPress: true,
+        });
+        return;
       }
+
+      // return if size is greater than 500kb
+      const sizeLimit = 500 * 1024;
+
+      if (imgSize && imgSize.some((size) => size && size > sizeLimit)) {
+        showMessage({
+          message: "Please select an image less than 500kb",
+          type: "warning",
+          hideOnPress: true,
+        });
+        return;
+      }
+      console.log(res);
+      if (res && res.assets[0] && res.assets[0].uri) {
+        const selectedImages = res.assets.map((asset) => asset.uri); // Extract URIs
+        setFormPostImg(selectedImages);
+        setImgsLength(selectedImages.length);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
-
   return (
-    <View style={styles.container}>
+    <View style={styles.mainBox}>
       <Pressable
         onPress={pickImage}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Pick an image</Text>
+        <Text style={styles.buttonText}>Upload Image(s)</Text>
       </Pressable>
-      {formPostImg && (
-        <Image
-          source={{ uri: formPostImg }}
-          style={styles.image}
-        />
-      )}
     </View>
   );
-}
+};
 
-// Does not work
-export function MultiImagePicker({ formPostImg, setFormPostImg }: Props) {
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
-    }
-
-    if (status === "granted") {
-      // No permissions request is necessary for launching the image library
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        aspect: [4, 3],
-        quality: 1,
-        allowsMultipleSelection: true,
-        selectionLimit: 3,
-      });
-      console.log(result);
-
-      if (!result.canceled) {
-        const uri = result.assets[0].uri;
-        setFormPostImg(uri);
-        console.log({ formPostImg: formPostImg });
-      }
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <Pressable
-        onPress={pickImage}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Pick Multi images</Text>
-      </Pressable>
-      {formPostImg && (
-        <Image
-          source={{ uri: formPostImg }}
-          style={styles.image}
-        />
-      )}
-    </View>
-  );
-}
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  mainBox: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  image: {
-    width: 200,
-    height: 200,
   },
   button: {
     backgroundColor: "#2196F3",
