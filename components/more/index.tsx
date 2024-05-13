@@ -30,7 +30,11 @@ export const More = ({ navigation }: Props) => {
           </Pressable>
         </View>
         <View style={styles.body}>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("SettingsIndex");
+            }}
+          >
             <View style={styles.itemBox}>
               <Image source={settingsIcon} />
               <Text>Settings</Text>

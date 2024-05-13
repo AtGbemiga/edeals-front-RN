@@ -27,4 +27,6 @@ export type RootStackParamList = {
   Sell: undefined;
   DynamicSearch: undefined;
   SearchFilterServices: undefined;
+  SettingsIndex: undefined;
+  ChangePassword: undefined;
 };

@@ -34,6 +34,8 @@ import { UpdateProfile } from "./components/profile/updateProfile";
 import FlashMessage from "react-native-flash-message";
 import { DynamicSearch } from "./components/global/dynamicSearch";
 import { SearchFilterServices } from "./components/home/searchFilterServices";
+import { SettingsIndex } from "./components/settings";
+import { ChangePassword } from "./components/settings/changePassword";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -230,6 +232,16 @@ export default function App() {
         <Stack.Screen
           name="SearchFilterServices"
           component={SearchFilterServices}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SettingsIndex"
+          component={SettingsIndex}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -9,6 +9,9 @@ import logoutIcon from "../../assets/logoutIcon.png";
 import expandRightIcon from "../../assets/expandRightIcon.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
+import logOutFn from "../../lib/users/logOut";
+import { useState } from "react";
+import { showMessage } from "react-native-flash-message";
 
 export const MyLinks = ({
   id,
@@ -19,8 +22,32 @@ export const MyLinks = ({
   acc_type: "seller" | "buyer";
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }) => {
+  const [errMsg, setErrMsg] = useState<Record<string, string>>({
+    logout: "",
+  });
+  async function handleLogOut() {
+    try {
+      const res = await logOutFn({ setErrMsg });
+
+      if (res && res.message.includes("success")) {
+        navigation.navigate("Start");
+      }
+    } catch (err) {
+      // disable empty object error
+    }
+  }
   return (
     <View style={styles.container}>
+      {errMsg.logout && errMsg.logout !== "" && (
+        <>
+          {showMessage({
+            message: errMsg.logout,
+            type: "danger",
+            hideOnPress: true,
+            autoHide: false,
+          })}
+        </>
+      )}
       <View>
         <Pressable
           onPress={() => navigation.navigate("WishList", { id })}
@@ -164,7 +191,7 @@ export const MyLinks = ({
       )}
       <View>
         <Pressable
-          onPress={() => console.log(id, acc_type)}
+          onPress={handleLogOut}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? "#909090" : "#cecece",

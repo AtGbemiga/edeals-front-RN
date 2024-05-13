@@ -141,7 +141,7 @@ export const LoginSignUpF = ({
               onPress={() => handleSubmit()}
               style={[styles.btn, { backgroundColor: "#59AEFF" }]}
             >
-              <Text style={[styles.btnText, { color: "white" }]}>Log In</Text>
+              <Text style={[styles.btnText, { color: "white" }]}>Log Inn</Text>
             </Pressable>
           </View>
           <View>

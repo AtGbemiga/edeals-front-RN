@@ -19,7 +19,7 @@ async function loginSignupFn({
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }) {
   if (identifier === "login") {
-    const url = "https://139b-102-89-12-39.ngrok-free.app/api/v1/users/login";
+    const url = "https://fav-work.loca.lt/api/v1/users/login";
 
     const res = await fetch(url, {
       method: "POST",
