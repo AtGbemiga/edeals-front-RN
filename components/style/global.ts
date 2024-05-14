@@ -24,4 +24,12 @@ export const globalStyles = StyleSheet.create({
   textWhite: {
     color: "#ffffff",
   },
+  bellView: {
+    alignItems: "flex-end",
+    marginBottom: 10,
+  },
+  bellIcon: {
+    padding: 10,
+    borderRadius: 50,
+  },
 });

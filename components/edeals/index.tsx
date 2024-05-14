@@ -16,6 +16,7 @@ import { FAddDeal } from "../../types/edeals/fAddDeal";
 import { CtaBtn } from "../global/ctaBtn";
 import addDealFn from "../../lib/edeals/add";
 import { showMessage } from "react-native-flash-message";
+import updateNoticeFn from "../../lib/edeals/updateNotice";
 
 const OneDea = ({ need, price }: OneDeal) => {
   return (
@@ -40,6 +41,7 @@ export const EdealsIndex = () => {
   }>({
     getDeals: "",
   });
+  const [errUpdate, setErrUpdate] = useState("");
   const [deal, setDeal] = useState<FAddDeal>({
     need: "",
     price: "",
@@ -51,6 +53,10 @@ export const EdealsIndex = () => {
 
       if (res && res.result.length > 0) {
         setResDeals(res);
+
+        const updateRes = await updateNoticeFn({
+          setErrUpdate,
+        });
       }
     })();
   }, []);
