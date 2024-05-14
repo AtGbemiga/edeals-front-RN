@@ -36,6 +36,7 @@ import { DynamicSearch } from "./components/global/dynamicSearch";
 import { SearchFilterServices } from "./components/home/searchFilterServices";
 import { SettingsIndex } from "./components/settings";
 import { ChangePassword } from "./components/settings/changePassword";
+import { EdealsIndex } from "./components/edeals";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -243,6 +244,10 @@ export default function App() {
           name="ChangePassword"
           component={ChangePassword}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EDeals"
+          component={EdealsIndex}
         />
       </Stack.Navigator>
       <FlashMessage position="top" />

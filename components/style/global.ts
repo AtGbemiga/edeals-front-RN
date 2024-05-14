@@ -21,4 +21,7 @@ export const globalStyles = StyleSheet.create({
   errText: {
     color: "#FF0000",
   },
+  textWhite: {
+    color: "#ffffff",
+  },
 });

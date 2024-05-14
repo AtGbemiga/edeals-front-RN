@@ -80,7 +80,7 @@ export const MyLinks = ({
       </View>
       <View>
         <Pressable
-          onPress={() => console.log(id, acc_type)}
+          onPress={() => navigation.navigate("EDeals")}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? "#909090" : "#cecece",
@@ -89,7 +89,7 @@ export const MyLinks = ({
           ]}
         >
           <Image source={paymentIcon} />
-          <Text style={styles.listText}>Payment Method</Text>
+          <Text style={styles.listText}>E-deals</Text>
           <Image source={expandRightIcon} />
         </Pressable>
       </View>

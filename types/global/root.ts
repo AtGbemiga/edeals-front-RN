@@ -29,4 +29,5 @@ export type RootStackParamList = {
   SearchFilterServices: undefined;
   SettingsIndex: undefined;
   ChangePassword: undefined;
+  EDeals: undefined;
 };

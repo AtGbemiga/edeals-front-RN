@@ -7,19 +7,23 @@ const screenWidth = Dimensions.get("window").width;
 export const CtaBtn = ({
   onPressFn,
   text,
+  paddingHorizontal,
+  width,
 }: {
   onPressFn: () => void;
   text: string;
+  paddingHorizontal?: number;
+  width?: string;
 }) => {
   return (
     <Pressable
       onPress={onPressFn}
-      style={({ pressed }) => [
-        {
-          backgroundColor: pressed ? "#909090" : "#59AEFF",
-        },
-        styles.container,
-      ]}
+      style={({ pressed }) => ({
+        backgroundColor: pressed ? "#909090" : "#59AEFF",
+        ...styles.container,
+        paddingHorizontal: paddingHorizontal || 50,
+        width: width || screenWidth / 1.2,
+      })}
     >
       <Text style={styles.btnText}>{text}</Text>
     </Pressable>
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 6,
-    paddingHorizontal: 50,
+
     width: screenWidth / 1.2,
   },
   btnText: {
