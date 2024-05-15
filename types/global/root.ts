@@ -30,4 +30,5 @@ export type RootStackParamList = {
   SettingsIndex: undefined;
   ChangePassword: undefined;
   EDeals: undefined;
+  ContactPayScreen: { res: ResPaystackPaymentInit };
 };

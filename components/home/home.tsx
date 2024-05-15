@@ -11,17 +11,9 @@ import {
 } from "react-native";
 import booleanTokenCheck from "../../lib/booleanTokenCheck";
 import { RootStackParamList } from "../../types/global/root";
+import { BellIcon } from "../edeals/notice";
 import { HSProducts } from "./homeScreenProducts";
 import { HSServices } from "./homeScreenServices";
-import { Feather } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { globalStyles } from "../style/global";
-import getNoticeByUserIdFn from "../../lib/edeals/getNoticeByUserId";
-import { ResNoticeByUserId } from "../../types/edeals/resNoticeByUserId";
-
-export interface HomeErrs {
-  getNotice: string;
-}
 
 export const Home = ({
   navigation,
@@ -32,12 +24,6 @@ export const Home = ({
     <HSProducts navigation={navigation} />
   );
   const [isProductActiveBtn, setIsProductActiveBtn] = useState(true);
-  const [errMsg, setErrMsg] = useState<HomeErrs>({
-    getNotice: "",
-  });
-  const [noticeCount, setNoticeCount] = useState<ResNoticeByUserId>({
-    result: [],
-  });
 
   const checkToken = async () => {
     const tokenRes = await booleanTokenCheck();
@@ -50,16 +36,6 @@ export const Home = ({
 
   useEffect(() => {
     checkToken();
-
-    (async () => {
-      const res = await getNoticeByUserIdFn({
-        setErrMsg,
-      });
-
-      if (res) {
-        setNoticeCount(res);
-      }
-    })();
   }, []);
 
   function handleShowService() {
@@ -75,35 +51,9 @@ export const Home = ({
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={globalStyles.bellView}>
-          <Pressable
-            onPress={() => {
-              console.log("clikced");
-              navigation.navigate("EDeals");
-            }}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? "skyblue" : "white",
-              },
-
-              globalStyles.bellIcon,
-            ]}
-          >
-            {noticeCount.result[0] && noticeCount.result[0].unread === 0 ? (
-              <Feather
-                name="bell"
-                size={24}
-                color="black"
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="bell-plus"
-                size={24}
-                color="red"
-              />
-            )}
-          </Pressable>
-        </View>
+        <>
+          <BellIcon navigation={navigation} />
+        </>
         <View style={styles.toogleBtnArea}>
           <Pressable
             onPress={handleShowProduct}

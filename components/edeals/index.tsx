@@ -17,8 +17,47 @@ import { CtaBtn } from "../global/ctaBtn";
 import addDealFn from "../../lib/edeals/add";
 import { showMessage } from "react-native-flash-message";
 import updateNoticeFn from "../../lib/edeals/updateNotice";
+import { Picker } from "@react-native-picker/picker";
+import { payContactInitFn } from "../../lib/paystack/payInitContact";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/global/root";
+import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
+import { ResSuccess } from "../../types/global/resSuccess";
 
-const OneDea = ({ need, price }: OneDeal) => {
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, "EDeals">;
+};
+type UpdatedProps = Props & OneDeal;
+
+const OneDea = ({ need, price, navigation }: UpdatedProps) => {
+  const [errMsg, setErrMsg] = useState("");
+  async function handlePayment() {
+    try {
+      const res: ResPaystackPaymentInit | ResSuccess | undefined =
+        await payContactInitFn({
+          email: "egnQF@example.com",
+          amount: "10000",
+          setErrMsg,
+        });
+
+      if (!res) {
+        console.error("Payment initialization failed.");
+        return;
+      }
+
+      if (res.message.includes("success")) {
+        console.log(res);
+      } else if ("data" in res) {
+        navigation.navigate("ContactPayScreen", { res });
+        console.log(res.data.authorization_url);
+      } else {
+        console.error("Unexpected response format:", res);
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  }
+
   return (
     <View style={styles.oneDeal}>
       <View>
@@ -26,7 +65,10 @@ const OneDea = ({ need, price }: OneDeal) => {
         <Text>&#8358;{price.toLocaleString()}</Text>
       </View>
       <View>
-        <Pressable style={styles.contactBtn}>
+        <Pressable
+          style={styles.contactBtn}
+          onPress={handlePayment}
+        >
           <Text style={globalStyles.textWhite}>Contact</Text>
         </Pressable>
       </View>
@@ -34,7 +76,7 @@ const OneDea = ({ need, price }: OneDeal) => {
   );
 };
 
-export const EdealsIndex = () => {
+export const EdealsIndex = ({ navigation }: Props) => {
   const [resDeals, setResDeals] = useState<ResGetDeals>();
   const [errMsg, setErrMsg] = useState<{
     getDeals: string;
@@ -54,7 +96,7 @@ export const EdealsIndex = () => {
       if (res && res.result.length > 0) {
         setResDeals(res);
 
-        const updateRes = await updateNoticeFn({
+        await updateNoticeFn({
           setErrUpdate,
         });
       }
@@ -62,6 +104,14 @@ export const EdealsIndex = () => {
   }, []);
 
   async function handleAddDeal() {
+    if (deal.need === "" || deal.price === "") {
+      showMessage({
+        message: "Please fill in all fields",
+        type: "danger",
+        autoHide: true,
+      });
+      return;
+    }
     try {
       const res = await addDealFn({
         need: deal.need,
@@ -112,6 +162,42 @@ export const EdealsIndex = () => {
             keyboardType="numeric"
           />
         </View>
+        <View>
+          <Text>Tag</Text>
+          <Picker
+            selectedValue={deal.tag}
+            onValueChange={(itemValue) => setDeal({ ...deal, tag: itemValue })}
+          >
+            <Picker.Item
+              label="Products"
+              value="Products"
+            />
+            <Picker.Item
+              label="Make up Artist"
+              value="MakeupArtist"
+            />
+            <Picker.Item
+              label="Hairdresser"
+              value="Hairdresser"
+            />
+            <Picker.Item
+              label="Plumber"
+              value="Plumber"
+            />
+            <Picker.Item
+              label="Electrician"
+              value="Electrician"
+            />
+            <Picker.Item
+              label="Car Mechanic"
+              value="CarMechanic"
+            />
+            <Picker.Item
+              label="Repairer"
+              value="Repairer"
+            />
+          </Picker>
+        </View>
 
         <CtaBtn
           text="Add deal"
@@ -140,6 +226,7 @@ export const EdealsIndex = () => {
               need={item.need}
               price={item.price}
               tag={item.tag}
+              navigation={navigation}
             />
           )}
           keyExtractor={(item) => item.id.toString()}

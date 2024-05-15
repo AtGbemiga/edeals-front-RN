@@ -37,6 +37,7 @@ import { SearchFilterServices } from "./components/home/searchFilterServices";
 import { SettingsIndex } from "./components/settings";
 import { ChangePassword } from "./components/settings/changePassword";
 import { EdealsIndex } from "./components/edeals";
+import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -248,6 +249,11 @@ export default function App() {
         <Stack.Screen
           name="EDeals"
           component={EdealsIndex}
+        />
+        <Stack.Screen
+          name="ContactPayScreen"
+          component={ContactPayScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
       <FlashMessage position="top" />
