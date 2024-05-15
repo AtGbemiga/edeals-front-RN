@@ -23,20 +23,31 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
 import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { ResGetAccOwnerEmail } from "../../types/groups/resGetAccOwnerEmail";
+import getAccOwnerEmail from "../../lib/global/getEmail";
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "EDeals">;
 };
-type UpdatedProps = Props & OneDeal;
+type UpdatedProps = Props & OneDeal & { accOwnerEmail: ResGetAccOwnerEmail };
 
-const OneDea = ({ need, price, navigation }: UpdatedProps) => {
+const OneDea = ({
+  user_id,
+  need,
+  price,
+  navigation,
+  accOwnerEmail,
+}: UpdatedProps) => {
   const [errMsg, setErrMsg] = useState("");
   async function handlePayment() {
+    // console.log({ user_id });
+    // return;
+
     try {
       const res: ResPaystackPaymentInit | ResSuccess | undefined =
         await payContactInitFn({
-          email: "egnQF@example.com",
-          amount: "10000",
+          email: accOwnerEmail.result.email,
+          recipientID: user_id,
           setErrMsg,
         });
 
@@ -84,11 +95,18 @@ export const EdealsIndex = ({ navigation }: Props) => {
     getDeals: "",
   });
   const [errUpdate, setErrUpdate] = useState("");
+  const [accEmailErr, setAccEmailErr] = useState<{ getEmail: string }>({
+    getEmail: "",
+  });
   const [deal, setDeal] = useState<FAddDeal>({
     need: "",
     price: "",
     tag: "Products",
   });
+  const [accOwnerEmail, setAccOwnerEmail] = useState<
+    ResGetAccOwnerEmail | undefined
+  >();
+
   useEffect(() => {
     (async () => {
       const res = await getDealsFn({ setErrMsg });
@@ -99,6 +117,11 @@ export const EdealsIndex = ({ navigation }: Props) => {
         await updateNoticeFn({
           setErrUpdate,
         });
+
+        const accOwnerEmail = await getAccOwnerEmail({
+          setNewErrMsg: setAccEmailErr,
+        });
+        setAccOwnerEmail(accOwnerEmail);
       }
     })();
   }, []);
@@ -227,6 +250,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
               price={item.price}
               tag={item.tag}
               navigation={navigation}
+              accOwnerEmail={accOwnerEmail as ResGetAccOwnerEmail}
+              user_id={item.user_id}
             />
           )}
           keyExtractor={(item) => item.id.toString()}

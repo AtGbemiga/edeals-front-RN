@@ -11,7 +11,8 @@ export const ContactPayScreen = ({ navigation, route }: Props) => {
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
-  const callback_url = "https://fav-work.loca.lt/api/v1/paystack/callbackurl";
+  const callback_url =
+    "https://fav-work.loca.lt/api/v1/paystack/callbackurlcontact";
   const cancel_url = "https://fav-work.loca.lt/api/v1/paystack/cancelurl";
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
@@ -20,6 +21,7 @@ export const ContactPayScreen = ({ navigation, route }: Props) => {
 
     if (!url) return;
 
+    // navigate to messaging page
     // if (url.includes(callback_url)) {
     //   navigation.navigate("Thanks"); // Change to Thanks page
     // }

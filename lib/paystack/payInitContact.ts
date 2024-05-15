@@ -4,14 +4,14 @@ import { ResSuccess } from "../../types/global/resSuccess";
 
 export const payContactInitFn = async ({
   email,
-  amount,
   setErrMsg,
+  recipientID,
 }: {
   email: string;
-  amount: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
+  recipientID: number;
 }): Promise<ResPaystackPaymentInit | ResSuccess | undefined> => {
-  const url = `https://fav-work.loca.lt/api/v1/paystack/paymentContact?amount=${amount}&email=${email}&recipientID=9`;
+  const url = `https://fav-work.loca.lt/api/v1/paystack/paymentContact?email=${email}&recipientID=${recipientID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
