@@ -7,7 +7,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "ContactPayScreen">;
 
 export const ContactPayScreen = ({ navigation, route }: Props) => {
   const { authorization_url, reference: referenceID } = route.params.res.data;
-  console.log({ authorization_url, reference: referenceID });
+  const { user_id } = route.params;
+  console.log({ authorization_url, reference: referenceID, user_id });
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
@@ -22,9 +23,9 @@ export const ContactPayScreen = ({ navigation, route }: Props) => {
     if (!url) return;
 
     // navigate to messaging page
-    // if (url.includes(callback_url)) {
-    //   navigation.navigate("Thanks"); // Change to Thanks page
-    // }
+    if (url.includes(callback_url)) {
+      navigation.navigate("DynamicChat", { recipient_id: user_id });
+    }
 
     if (url === cancel_url) {
       // Use a navigator to pop off the view

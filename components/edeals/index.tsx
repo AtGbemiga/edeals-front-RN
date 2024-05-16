@@ -40,9 +40,6 @@ const OneDea = ({
 }: UpdatedProps) => {
   const [errMsg, setErrMsg] = useState("");
   async function handlePayment() {
-    // console.log({ user_id });
-    // return;
-
     try {
       const res: ResPaystackPaymentInit | ResSuccess | undefined =
         await payContactInitFn({
@@ -58,8 +55,9 @@ const OneDea = ({
 
       if (res.message.includes("success")) {
         console.log(res);
+        navigation.navigate("DynamicChat", { recipient_id: user_id });
       } else if ("data" in res) {
-        navigation.navigate("ContactPayScreen", { res });
+        navigation.navigate("ContactPayScreen", { res, user_id });
         console.log(res.data.authorization_url);
       } else {
         console.error("Unexpected response format:", res);

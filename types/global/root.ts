@@ -30,5 +30,6 @@ export type RootStackParamList = {
   SettingsIndex: undefined;
   ChangePassword: undefined;
   EDeals: undefined;
-  ContactPayScreen: { res: ResPaystackPaymentInit };
+  ContactPayScreen: { res: ResPaystackPaymentInit; user_id: number };
+  DynamicChat: { recipient_id: number };
 };
