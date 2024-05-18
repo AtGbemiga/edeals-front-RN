@@ -139,7 +139,6 @@ export const HSProducts = ({
             >
               <Image source={backIcon} />
             </Pressable>
-            {/* <Text>Bell here</Text> */}
           </View>
           {searchErrMsg ? (
             <StaticInlineNotice

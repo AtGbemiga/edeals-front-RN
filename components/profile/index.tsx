@@ -17,6 +17,7 @@ import uploadIcon from "../../assets/uploadIcon.png";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
 import backIcon from "../../assets/backIcon.png";
+import { BellIcon } from "../edeals/notice";
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -80,14 +81,13 @@ export const ProfileIndex = ({ navigation }: Props) => {
           </>
         ) : (
           <View style={styles.main}>
-            <View>
-              <Pressable
-                onPress={() => navigation.goBack()}
-                style={{ padding: 5 }}
-              >
+            <View style={styles.header1}>
+              <Pressable onPress={() => navigation.goBack()}>
                 <Image source={backIcon} />
               </Pressable>
-              <Text>Bell here</Text>
+              <>
+                <BellIcon navigation={navigation} />
+              </>
             </View>
             <View style={styles.header}>{content}</View>
             <>
@@ -116,6 +116,11 @@ const styles = StyleSheet.create({
   main: {
     flexDirection: "column",
     rowGap: 15,
+  },
+  header1: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   header: {
     flexDirection: "column",

@@ -123,7 +123,6 @@ export const HSServices = ({
                 >
                   <Image source={backIcon} />
                 </Pressable>
-                {/* <Text>Bell here</Text> */}
               </View>
               <ServicesSearchCardLInfo
                 data={resSearch as ResSearchServices}

@@ -15,6 +15,7 @@ import {
 import backIcon from "../../assets/backIcon.png";
 import { RootStackParamList } from "../../types/global/root";
 import { CartItemsFlatList } from "./cartItems";
+import { BellIcon } from "../edeals/notice";
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Cart">;
@@ -31,7 +32,9 @@ export const CartIndex = ({ navigation }: Props) => {
             >
               <Image source={backIcon} />
             </Pressable>
-            <Text>Bell here</Text>
+            <>
+              <BellIcon navigation={navigation} />
+            </>
           </View>
           <View>
             <CartItemsFlatList navigation={navigation} />

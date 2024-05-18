@@ -28,6 +28,7 @@ import { AntDesign } from "@expo/vector-icons";
 import addToWishListFn from "../../../lib/products/addToWishList";
 import deleteFromWishListFn from "../../../lib/products/deleteFromWishList";
 import StarRatings from "../../global/starRatings";
+import { BellIcon } from "../../edeals/notice";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dynamic Product">;
 const screenWidth = Dimensions.get("window").width;
@@ -177,7 +178,9 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
             >
               <Image source={backIcon} />
             </Pressable>
-            <Text>Bell here</Text>
+            <>
+              <BellIcon navigation={navigation} />
+            </>
           </View>
           <View>
             <FlatList

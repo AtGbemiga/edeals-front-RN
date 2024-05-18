@@ -11,7 +11,7 @@ export const payContactInitFn = async ({
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
   recipientID: number;
 }): Promise<ResPaystackPaymentInit | ResSuccess | undefined> => {
-  const url = `https://fav-work.loca.lt/api/v1/paystack/paymentContact?email=${email}&recipientID=${recipientID}`;
+  const url = `https://fav-work.loca.lt/api/v1/paystack/paymentContact?email=${email}&recipientID=${recipientID}&amount=300000`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
