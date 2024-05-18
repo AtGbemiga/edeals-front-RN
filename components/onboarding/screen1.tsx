@@ -75,9 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    // borderColor: "red",
-    borderWidth: 5,
-    borderStyle: "solid",
   },
   bgImg: {
     width: 300,
@@ -101,8 +98,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    borderColor: "red",
-    borderWidth: 2,
     alignItems: "center",
     gap: 150,
   },

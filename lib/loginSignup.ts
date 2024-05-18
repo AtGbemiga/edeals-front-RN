@@ -63,7 +63,7 @@ async function loginSignupFn({
 
     return data.message;
   } else if (identifier === "signup") {
-    const url = "https://a6d7-102-89-23-80.ngrok-free.app/api/v1/users";
+    const url = "https://fav-work.loca.lt/api/v1/users";
 
     const res = await fetch(url, {
       method: "POST",

@@ -26,6 +26,8 @@ export const MyLinks = ({
     logout: "",
   });
   async function handleLogOut() {
+    console.log("log out");
+
     try {
       const res = await logOutFn({ setErrMsg });
 

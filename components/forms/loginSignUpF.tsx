@@ -28,6 +28,7 @@ export const LoginSignUpF = ({
     screen: "seller" | "buyer";
     action: "login" | "signup";
   };
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const checkToken = async () => {
     const tokenRes = await booleanTokenCheck();
@@ -70,7 +71,7 @@ export const LoginSignUpF = ({
       return (
         <SafeAreaView style={styles.container}>
           <View style={styles.introView}>
-            <Text style={styles.boldHeaders}>Welcome back !!</Text>
+            <Text style={styles.boldHeaders}>Welcome back!</Text>
             <Text>Log In to continue</Text>
           </View>
           <View style={styles.formView}>
@@ -91,62 +92,52 @@ export const LoginSignUpF = ({
               <Text style={styles.boldHeaders}>Password</Text>
               <TextInput
                 style={styles.textInput}
-                // secureTextEntry
+                secureTextEntry={!isPasswordVisible}
                 value={formItems.password}
                 onChangeText={(newText) => {
                   onChangeItems({ ...formItems, password: newText });
                 }}
                 maxLength={255}
               />
+              <Pressable
+                onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              >
+                <Text>
+                  {isPasswordVisible ? "Hide password" : "Show password"}
+                </Text>
+              </Pressable>
             </View>
           </View>
           <View style={styles.policyAndMoreView}>
             <View style={styles.forgotPassView}>
-              <Text>Login with Fingerprint</Text>
+              {/* <Text>Login with Fingerprint</Text> */}
               <Text>Forgot Password</Text>
             </View>
-            <Text
-              style={styles.termsView}
-              // TODO: terms and privacy do not align horizontally with the rest of text
-            >
-              By continuing, you agree to our{" "}
-              <Pressable
-                onPress={() => navigation.navigate("Terms")}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  alignContent: "center",
-                  alignSelf: "center",
-                }}
-              >
+            <View style={styles.termsView}>
+              <Text>By continuing, you agree to our </Text>
+              <Pressable onPress={() => navigation.navigate("Terms")}>
                 <Text style={styles.termsText}>terms of services</Text>
-              </Pressable>{" "}
-              and{" "}
-              <Pressable
-                onPress={() => navigation.navigate("Privacy")}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  alignContent: "center",
-                  alignSelf: "center",
-                }}
-              >
+              </Pressable>
+              <Text>and </Text>
+              <Pressable onPress={() => navigation.navigate("Privacy")}>
                 <Text style={styles.termsText}>privacy policy</Text>
               </Pressable>
-            </Text>
+            </View>
           </View>
-          <View>
+          <View style={styles.btnBox}>
             <Pressable
               // TODO: call the handle login function
               onPress={() => handleSubmit()}
               style={[styles.btn, { backgroundColor: "#59AEFF" }]}
             >
-              <Text style={[styles.btnText, { color: "white" }]}>Log Inn</Text>
+              <Text style={[styles.btnText, { color: "white" }]}>Log In</Text>
             </Pressable>
           </View>
-          <View>
-            <Text style={styles.authOption}>
-              Don’t have an account?{" "}
+          <View style={styles.authOptionBox}>
+            <View>
+              <Text style={styles.authOption}>Don’t have an account?</Text>
+            </View>
+            <View>
               <Pressable
                 // TODO: Pass the correct account type param to the sign up page
                 onPress={() =>
@@ -155,7 +146,7 @@ export const LoginSignUpF = ({
               >
                 <Text style={styles.authCTA}>Sign up here.</Text>
               </Pressable>
-            </Text>
+            </View>
           </View>
         </SafeAreaView>
       );
@@ -174,6 +165,8 @@ export const LoginSignUpF = ({
     const [errMsg, setErrMsg] = useState("");
 
     const handleSubmit = () => {
+      console.log("clicked");
+
       try {
         loginSignupFn({
           account_name: formItems.account_name,
@@ -213,6 +206,7 @@ export const LoginSignUpF = ({
                     onChangeItems({ ...formItems, email: newText });
                   }}
                   maxLength={255}
+                  keyboardType="email-address"
                 />
               </View>
               <View>
@@ -230,12 +224,20 @@ export const LoginSignUpF = ({
                 <Text style={styles.boldHeaders}>Password</Text>
                 <TextInput
                   style={styles.textInput}
+                  secureTextEntry={!isPasswordVisible}
                   value={formItems.password}
                   onChangeText={(newText) => {
                     onChangeItems({ ...formItems, password: newText });
                   }}
                   maxLength={255}
                 />
+                <Pressable
+                  onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                >
+                  <Text>
+                    {isPasswordVisible ? "Hide password" : "Show password"}
+                  </Text>
+                </Pressable>
               </View>
               <View>
                 <Text style={styles.boldHeaders}>
@@ -251,36 +253,30 @@ export const LoginSignUpF = ({
                 />
               </View>
             </View>
-            <View style={styles.policyAndMoreView}>
-              <Text
-                style={styles.termsView}
-                // TODO: terms and privacy do not align horizontally with the rest of text
-              >
-                By continuing, you agree to our{" "}
-                <Pressable
-                  onPress={() => navigation.navigate("Terms")}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    alignContent: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  <Text style={styles.termsText}>terms of services</Text>
-                </Pressable>{" "}
-                and{" "}
-                <Pressable
-                  onPress={() => navigation.navigate("Privacy")}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    alignContent: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  <Text style={styles.termsText}>privacy policy</Text>
+            {/* <View style={styles.policyAndMoreView}>
+              <Text style={styles.termsView}>
+                By continuing, you agree to our
+                <Pressable onPress={() => navigation.navigate("Terms")}>
+                  <Text style={styles.termsText}> terms of services</Text>
+                </Pressable>
+                and
+                <Pressable onPress={() => navigation.navigate("Privacy")}>
+                  <Text style={styles.termsText}> privacy policy</Text>
                 </Pressable>
               </Text>
+            </View> */}
+
+            <View style={styles.policyAndMoreView}>
+              <View style={styles.termsView}>
+                <Text>By continuing, you agree to our </Text>
+                <Pressable onPress={() => navigation.navigate("Terms")}>
+                  <Text style={styles.termsText}>terms of services</Text>
+                </Pressable>
+                <Text>and </Text>
+                <Pressable onPress={() => navigation.navigate("Privacy")}>
+                  <Text style={styles.termsText}>privacy policy</Text>
+                </Pressable>
+              </View>
             </View>
             <View>
               <Pressable
@@ -292,18 +288,19 @@ export const LoginSignUpF = ({
                 </Text>
               </Pressable>
             </View>
-            <View>
-              <Text style={styles.authOption}>
-                Have an account?{" "}
+            <View style={styles.authOptionBox}>
+              <View>
+                <Text style={styles.authOption}>Have an account?</Text>
+              </View>
+              <View>
                 <Pressable
-                  // TODO: Pass the correct account type param to the sign up page
                   onPress={() =>
                     navigation.navigate("Log In/Sign Up", { screen })
                   }
                 >
                   <Text style={styles.authCTA}>Login In here.</Text>
                 </Pressable>
-              </Text>
+              </View>
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -319,8 +316,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
     padding: 15,
     flexDirection: "column",
     rowGap: 30,
@@ -330,11 +325,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontStyle: "normal",
     fontWeight: "700",
-    // line-height: normal,
   },
   introView: {
     marginTop: 50,
-    // marginBottom: 25,
   },
   formView: {
     flexDirection: "column",
@@ -356,13 +349,17 @@ const styles = StyleSheet.create({
   },
   termsView: {
     display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+  btnBox: {
+    width: "100%",
     alignItems: "center",
-    alignContent: "center",
-    alignSelf: "center",
+    justifyContent: "center",
     // backgroundColor: "red",
   },
   btn: {
-    width: 343,
+    width: "95%",
     height: 38,
     borderRadius: 20,
     borderWidth: 1,
@@ -382,14 +379,23 @@ const styles = StyleSheet.create({
     color: "#C23002",
     fontWeight: "400",
   },
+  authOptionBox: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 5,
+  },
   authOption: {
     color: "#333",
     fontSize: 17,
     fontStyle: "normal",
     fontWeight: "700",
+    // backgroundColor: "red",
+    alignContent: "center",
   },
   authCTA: {
     color: "#04940A",
+    // backgroundColor: "red",
   },
   errMsg: {
     color: "#ec0707",

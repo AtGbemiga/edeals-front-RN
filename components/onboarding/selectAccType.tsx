@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   },
   brandName: {
     color: "#111",
-    // fontFamily: '"Inter_700Bold"', // needs compatible react native font
     fontSize: 32,
     fontStyle: "normal",
     fontWeight: "700",
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     width: 343,
-    // marginTop: 20,
     gap: 20,
   },
   btn: {
@@ -107,6 +105,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: "700",
-    // line-height: normal;
   },
 });

@@ -94,8 +94,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10,
     paddingTop: StatusBar.currentHeight || 0,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   toogleBtnArea: {
     flexDirection: "row",

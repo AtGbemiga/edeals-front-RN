@@ -158,7 +158,7 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: StatusBar.currentHeight }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView ref={scrollViewRef}>
         <View style={styles.container}>
           {successMsg && <Text>{successMsg}</Text>}
@@ -574,10 +574,10 @@ export const DynamicProduct = ({ route, navigation }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: StatusBar.currentHeight || 42,
-    flex: 1,
+    paddingTop: StatusBar.currentHeight || 10,
+    // flex: 1,
     flexDirection: "column",
-    rowGap: 50,
+    rowGap: 10,
     paddingHorizontal: 10,
   },
   flatListContainer: {
