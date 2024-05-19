@@ -32,4 +32,5 @@ export type RootStackParamList = {
   EDeals: undefined;
   ContactPayScreen: { res: ResPaystackPaymentInit; user_id: number };
   DynamicChat: { recipient_id: number };
+  DynamicNews: { id: number };
 };

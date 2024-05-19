@@ -39,6 +39,7 @@ import { ChangePassword } from "./components/settings/changePassword";
 import { EdealsIndex } from "./components/edeals";
 import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
 import DynamicChat from "./components/messages";
+import { DynamicNews } from "./components/news/dynamicNews";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -259,6 +260,11 @@ export default function App() {
         <Stack.Screen
           name="DynamicChat"
           component={DynamicChat}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DynamicNews"
+          component={DynamicNews}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

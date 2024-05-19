@@ -32,4 +32,8 @@ export const globalStyles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
   },
+  d4VAlign: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });

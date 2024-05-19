@@ -7,6 +7,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import getLInfoFn from "../../lib/global/getLInfo";
@@ -17,13 +18,34 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
 import { formatDate } from "../global/formatTimeDiff";
 import { capitalizeFirstLetter } from "../global/capitalize1stLetter";
+import { globalStyles } from "../style/global";
+import { Picker } from "@react-native-picker/picker";
+import addRatingAndReviewFn from "../../lib/products/addRating&Review";
 
 const OrderItem = ({
   item,
   statusShown,
+  review,
+  rating,
+  setReview,
+  setRating,
+  handleReviewSubmit,
 }: {
   item: OneOrder;
   statusShown: boolean;
+  review: string;
+  rating: number;
+  setReview: (review: string) => void;
+  setRating: (rating: number) => void;
+  handleReviewSubmit: ({
+    review,
+    rating,
+    product_id,
+  }: {
+    review: string;
+    rating: number;
+    product_id: number;
+  }) => Promise<void>;
 }) => {
   let statusColor: string;
 
@@ -48,7 +70,7 @@ const OrderItem = ({
         />
       </View>
       <View style={{ borderColor: "red", borderWidth: 1, minWidth: "62%" }}>
-        <Text>{item.name}</Text>
+        <Text>{item.name}jkkh</Text>
         <Text style={styles.price}>&#8358;{item.price.toLocaleString()}</Text>
 
         <Text>Order Number: {item.reference_id}</Text>
@@ -59,6 +81,57 @@ const OrderItem = ({
             {capitalizeFirstLetter(item.order_status)}
           </Text>
         )}
+        <View>
+          <Picker
+            selectedValue={rating}
+            onValueChange={(itemValue) => setRating(itemValue)}
+          >
+            <Picker.Item
+              label="1"
+              value={1}
+            />
+            <Picker.Item
+              label="2"
+              value={2}
+            />
+            <Picker.Item
+              label="3"
+              value={3}
+            />
+            <Picker.Item
+              label="4"
+              value={4}
+            />
+            <Picker.Item
+              label="5"
+              value={5}
+            />
+          </Picker>
+        </View>
+        <View>
+          <Text>Write a review</Text>
+          <TextInput
+            onChangeText={(newText) => {
+              setReview(newText);
+            }}
+            placeholder="Write a review"
+            value={review}
+            style={globalStyles.textInput}
+          />
+        </View>
+        <View>
+          <Pressable
+            onPress={() => {
+              handleReviewSubmit({
+                review,
+                rating,
+                product_id: item.product_id,
+              });
+            }}
+          >
+            <Text>Submit</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -66,12 +139,21 @@ const OrderItem = ({
 
 type Props = NativeStackScreenProps<RootStackParamList, "Orders">;
 
+type OrderReview = {
+  review: string;
+  rating: number;
+};
+
 export const Orders = ({ navigation }: Props) => {
   const [resOrders, setResOrders] = useState<ResGetOrders>();
   const [statusShown, setStatusShown] = useState(false);
   const [errMsg, setErrMsg] = useState<Record<string, string>>({
     orders: "",
   });
+  const [orderReviews, setOrderReviews] = useState<Record<number, OrderReview>>(
+    {}
+  );
+  const [errMsgReviewRatings, setErrMsgReviewRatings] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -87,8 +169,57 @@ export const Orders = ({ navigation }: Props) => {
     })();
   }, []);
 
+  const setReview = (product_id: number) => (review: string) => {
+    setOrderReviews((prev) => ({
+      ...prev,
+      [product_id]: { ...prev[product_id], review },
+    }));
+  };
+
+  const setRating = (product_id: number) => (rating: number) => {
+    setOrderReviews((prev) => ({
+      ...prev,
+      [product_id]: { ...prev[product_id], rating },
+    }));
+  };
+
+  async function handleReviewSubmit({
+    review,
+    rating,
+    product_id,
+  }: {
+    review: string;
+    rating: number;
+    product_id: number;
+  }) {
+    console.log("clicked");
+
+    try {
+      const res = await addRatingAndReviewFn({
+        product_id,
+        review,
+        rating,
+        setErrMsg: setErrMsgReviewRatings,
+      });
+
+      if (res?.message.includes("success")) {
+        console.log({ res });
+        return;
+      }
+    } catch (error) {
+      // disable empty object error
+    }
+  }
+
   return (
     <SafeAreaView style={styles.mainBox}>
+      {errMsgReviewRatings && (
+        <StaticInlineNotice
+          msg={errMsgReviewRatings}
+          color="red"
+          bgColor="yellow"
+        />
+      )}
       <View>
         <Pressable onPress={() => navigation.goBack()}>
           <Image source={backIcon} />
@@ -144,6 +275,11 @@ export const Orders = ({ navigation }: Props) => {
                 <OrderItem
                   item={item}
                   statusShown={statusShown}
+                  review={orderReviews[item.product_id]?.review || ""}
+                  rating={orderReviews[item.product_id]?.rating || 1}
+                  setReview={setReview(item.product_id)}
+                  setRating={setRating(item.product_id)}
+                  handleReviewSubmit={handleReviewSubmit}
                 />
               )}
               keyExtractor={(item) => item.id.toString()}
@@ -204,6 +340,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 3.84,
+    height: "auto",
   },
   img: {
     width: 100,

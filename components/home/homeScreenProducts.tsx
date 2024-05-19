@@ -25,13 +25,17 @@ import { SearchCardLInfo } from "../global/searchCardLInfo";
 import { SuggestedGroups } from "../groups/suggested";
 import { Banners } from "../hSServices/banners";
 import { CategoriesFlatList } from "./categories";
+import { NewsCardLInfo } from "../news/newsCardLInfo";
+import { Route } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
 export const HSProducts = ({
   navigation,
+  route,
 }: {
   navigation: NativeStackNavigationProp<RootStackParamList>;
+  route: Route<string>;
 }) => {
   const [resProducts, setResProducts] = useState<ResProductsLInfo>();
   const [resSearch, setResSearch] = useState<ResSearchLInfo>();
@@ -179,7 +183,9 @@ export const HSProducts = ({
             )}
           </View>
           <View>
-            <Pressable>
+            <Pressable
+              onPress={() => navigation.navigate("Dynamic Product", { id: 6 })}
+            >
               <Image source={require("../../assets/Banner default.png")} />
             </Pressable>
           </View>
@@ -200,6 +206,12 @@ export const HSProducts = ({
           <View>
             <SuggestedGroups />
           </View>
+          <>
+            <NewsCardLInfo
+              navigation={navigation}
+              route={route}
+            />
+          </>
         </>
       )}
     </View>

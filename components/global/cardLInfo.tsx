@@ -149,7 +149,7 @@ export const CardLInfo = ({
   navigation: NativeStackNavigationProp<ParamListBase>;
 }) => {
   return (
-    <View style={{ borderWidth: 5, borderColor: "blue" }}>
+    <View>
       <FlatList
         data={resProducts?.productsRes}
         renderItem={({ item }) => (

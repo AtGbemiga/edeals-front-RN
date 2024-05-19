@@ -6,13 +6,20 @@ import {
   ResSimilarProducts,
   ResWishListLInfo,
 } from "../../types/products/resProducts";
+import { ResGetNews } from "../../types/news/resGet";
 
 async function getLInfoFn({
   identifier,
   subIdentifier,
   setErrMsg,
 }: {
-  identifier: "products" | "similarProducts" | "wishList" | "groups" | "orders";
+  identifier:
+    | "products"
+    | "similarProducts"
+    | "wishList"
+    | "groups"
+    | "orders"
+    | "news";
   subIdentifier?: string;
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }) {
@@ -29,6 +36,8 @@ async function getLInfoFn({
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=groups`;
   } else if (identifier === "orders" && !subIdentifier) {
     url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=orders`;
+  } else if (identifier === "news" && !subIdentifier) {
+    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=news`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
   }
@@ -58,7 +67,8 @@ async function getLInfoFn({
     | ResSimilarProducts
     | ResGetGroups
     | ResGetOrders
-    | ResWishListLInfo = await res.json();
+    | ResWishListLInfo
+    | ResGetNews = await res.json();
 
   return data;
 }

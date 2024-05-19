@@ -13,6 +13,9 @@ import {
 import getLInfoFn from "../../lib/global/getLInfo";
 import { OneGroup, ResGetGroups } from "../../types/groups/resGetGroups";
 import { StaticInlineNotice } from "../global/inlineNotice";
+import { globalStyles } from "../style/global";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -54,8 +57,22 @@ export const SuggestedGroups = () => {
             style={styles.image}
           />
           <Text>{item.name} </Text>
-          <Text>{item.member_total}</Text>
-          <Text>{item.total_post_last_24_hrs}</Text>
+          <View style={[globalStyles.d4VAlign, { columnGap: 5 }]}>
+            <Ionicons
+              name="people"
+              size={16}
+              color="black"
+            />
+            <Text>{item.member_total}</Text>
+          </View>
+          <View style={[globalStyles.d4VAlign, { columnGap: 5 }]}>
+            <AntDesign
+              name="message1"
+              size={16}
+              color="black"
+            />
+            <Text>{item.total_post_last_24_hrs}</Text>
+          </View>
         </View>
       </Pressable>
     );
@@ -63,7 +80,7 @@ export const SuggestedGroups = () => {
 
   return (
     <View>
-      <Text>Groups you may like</Text>
+      <Text style={globalStyles.boldText}>Groups you may like</Text>
       {errMsg.groups ? (
         <View>
           <StaticInlineNotice
@@ -73,7 +90,7 @@ export const SuggestedGroups = () => {
           />
         </View>
       ) : (
-        <View style={{ borderWidth: 5, borderColor: "blue" }}>
+        <View>
           <FlatList
             data={resGroups?.groupsRes}
             renderItem={renderItem}
