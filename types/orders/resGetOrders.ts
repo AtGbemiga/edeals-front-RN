@@ -10,6 +10,7 @@ export interface OneOrder {
   name: string;
   price: number;
   first_img: string;
+  user_has_rated: number;
 }
 
 export interface ResGetOrders {

@@ -21,6 +21,7 @@ import { capitalizeFirstLetter } from "../global/capitalize1stLetter";
 import { globalStyles } from "../style/global";
 import { Picker } from "@react-native-picker/picker";
 import addRatingAndReviewFn from "../../lib/products/addRating&Review";
+import { showMessage } from "react-native-flash-message";
 
 const OrderItem = ({
   item,
@@ -29,6 +30,7 @@ const OrderItem = ({
   rating,
   setReview,
   setRating,
+  hasUserRated,
   handleReviewSubmit,
 }: {
   item: OneOrder;
@@ -37,6 +39,7 @@ const OrderItem = ({
   rating: number;
   setReview: (review: string) => void;
   setRating: (rating: number) => void;
+  hasUserRated: boolean;
   handleReviewSubmit: ({
     review,
     rating,
@@ -69,8 +72,8 @@ const OrderItem = ({
           style={styles.img}
         />
       </View>
-      <View style={{ borderColor: "red", borderWidth: 1, minWidth: "62%" }}>
-        <Text>{item.name}jkkh</Text>
+      <View>
+        <Text>{item.name}</Text>
         <Text style={styles.price}>&#8358;{item.price.toLocaleString()}</Text>
 
         <Text>Order Number: {item.reference_id}</Text>
@@ -81,57 +84,63 @@ const OrderItem = ({
             {capitalizeFirstLetter(item.order_status)}
           </Text>
         )}
-        <View>
-          <Picker
-            selectedValue={rating}
-            onValueChange={(itemValue) => setRating(itemValue)}
-          >
-            <Picker.Item
-              label="1"
-              value={1}
-            />
-            <Picker.Item
-              label="2"
-              value={2}
-            />
-            <Picker.Item
-              label="3"
-              value={3}
-            />
-            <Picker.Item
-              label="4"
-              value={4}
-            />
-            <Picker.Item
-              label="5"
-              value={5}
-            />
-          </Picker>
-        </View>
-        <View>
-          <Text>Write a review</Text>
-          <TextInput
-            onChangeText={(newText) => {
-              setReview(newText);
-            }}
-            placeholder="Write a review"
-            value={review}
-            style={globalStyles.textInput}
-          />
-        </View>
-        <View>
-          <Pressable
-            onPress={() => {
-              handleReviewSubmit({
-                review,
-                rating,
-                product_id: item.product_id,
-              });
-            }}
-          >
-            <Text>Submit</Text>
-          </Pressable>
-        </View>
+        {!hasUserRated && (
+          <>
+            <Text>Rate this product</Text>
+            <View>
+              <Picker
+                selectedValue={rating}
+                onValueChange={(itemValue) => setRating(itemValue)}
+              >
+                <Picker.Item
+                  label="1"
+                  value={1}
+                />
+                <Picker.Item
+                  label="2"
+                  value={2}
+                />
+                <Picker.Item
+                  label="3"
+                  value={3}
+                />
+                <Picker.Item
+                  label="4"
+                  value={4}
+                />
+                <Picker.Item
+                  label="5"
+                  value={5}
+                />
+              </Picker>
+            </View>
+            <View>
+              <Text>Write a review</Text>
+              <TextInput
+                onChangeText={(newText) => {
+                  setReview(newText);
+                }}
+                placeholder="Write a review"
+                value={review}
+                style={globalStyles.textInput}
+              />
+            </View>
+            <View>
+              <Pressable
+                onPress={() => {
+                  handleReviewSubmit({
+                    review,
+                    rating,
+                    product_id: item.product_id,
+                  });
+                }}
+                style={styles.handleRatingBtn}
+              >
+                <Text style={styles.handleRatingBtnText}>Submit</Text>
+              </Pressable>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -162,7 +171,9 @@ export const Orders = ({ navigation }: Props) => {
           identifier: "orders",
           setErrMsg,
         });
-        res && "ordersRes" in res && setResOrders(res);
+        if (res && "ordersRes" in res) {
+          setResOrders(res);
+        }
       } catch (error) {
         // disable empty object error
       }
@@ -203,8 +214,26 @@ export const Orders = ({ navigation }: Props) => {
       });
 
       if (res?.message.includes("success")) {
-        console.log({ res });
-        return;
+        showMessage({
+          message: res.message,
+          type: "success",
+          autoHide: true,
+        });
+        setResOrders((prevResOrders) => {
+          if (!prevResOrders) return prevResOrders;
+
+          const updatedOrders: OneOrder[] = prevResOrders.ordersRes.map(
+            (order) =>
+              order.product_id === product_id
+                ? { ...order, user_has_rated: 1 }
+                : order
+          );
+
+          return { ...prevResOrders, ordersRes: updatedOrders };
+        });
+      } else {
+        // Handle error if the submission wasn't successful
+        setErrMsgReviewRatings("Failed to submit review. Please try again.");
       }
     } catch (error) {
       // disable empty object error
@@ -279,6 +308,7 @@ export const Orders = ({ navigation }: Props) => {
                   rating={orderReviews[item.product_id]?.rating || 1}
                   setReview={setReview(item.product_id)}
                   setRating={setRating(item.product_id)}
+                  hasUserRated={item.user_has_rated === 1}
                   handleReviewSubmit={handleReviewSubmit}
                 />
               )}
@@ -296,6 +326,7 @@ const styles = StyleSheet.create({
   mainBox: {
     flex: 1,
     paddingTop: StatusBar.currentHeight || 10,
+    marginBottom: 100,
   },
   ctaBox: {
     flexDirection: "row",
@@ -333,7 +364,7 @@ const styles = StyleSheet.create({
     columnGap: 10,
     padding: 10,
     borderRadius: 10,
-    shadowColor: "red",
+
     shadowOffset: {
       width: 0,
       height: 2,
@@ -352,5 +383,16 @@ const styles = StyleSheet.create({
   status: {
     textAlign: "right",
     fontWeight: "700",
+  },
+  handleRatingBtn: {
+    backgroundColor: "#0000ff",
+    width: 100,
+    columnGap: 5,
+    marginTop: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  handleRatingBtnText: {
+    color: "#fff",
   },
 });
