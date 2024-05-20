@@ -11,7 +11,7 @@ import {
 import { UploadProduct } from "./uploadProduct";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
-import { UploadService } from "./uploadService";
+// import { UploadService } from "./uploadService";
 import booleanTokenCheck from "../../lib/booleanTokenCheck";
 
 type Props = {
@@ -35,10 +35,10 @@ export const SellIndex = ({ navigation }: Props) => {
   }, []);
 
   // handleShowUService === handleShowUploadService. Etc.
-  function handleShowUService() {
-    setContent(<UploadService navigation={navigation} />);
-    setShowUploadProduct(false);
-  }
+  // function handleShowUService() {
+  //   setContent(<UploadService navigation={navigation} />);
+  //   setShowUploadProduct(false);
+  // }
 
   function handleShowUProduct() {
     setContent(<UploadProduct />);
@@ -62,7 +62,7 @@ export const SellIndex = ({ navigation }: Props) => {
             </Text>
           </Pressable>
           <Pressable
-            onPress={handleShowUService}
+            onPress={() => navigation.navigate("UploadShortVideo")}
             style={[
               styles.toogleBtn,
 
@@ -72,7 +72,7 @@ export const SellIndex = ({ navigation }: Props) => {
             <Text
               style={!showUploadProduct ? styles.activeToggleBtnText : null}
             >
-              Service
+              Upload video
             </Text>
           </Pressable>
         </View>

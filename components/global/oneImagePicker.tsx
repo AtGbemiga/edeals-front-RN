@@ -3,8 +3,21 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 type Props = {
   formPostImg: string;
   setFormPostImg: React.Dispatch<React.SetStateAction<string>>;
+  btnText?: string;
+  mediaTypeValue?: "Images" | "Videos" | "All";
 };
-export function OneImagePicker({ formPostImg, setFormPostImg }: Props) {
+export function OneImagePicker({
+  formPostImg,
+  setFormPostImg,
+  btnText,
+  mediaTypeValue,
+}: Props) {
+  const mediaTypes =
+    mediaTypeValue === "Images"
+      ? ImagePicker.MediaTypeOptions.Images
+      : mediaTypeValue === "Videos"
+      ? ImagePicker.MediaTypeOptions.Videos
+      : ImagePicker.MediaTypeOptions.All;
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -14,7 +27,7 @@ export function OneImagePicker({ formPostImg, setFormPostImg }: Props) {
     if (status === "granted") {
       // No permissions request is necessary for launching the image library
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: mediaTypes,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
@@ -35,7 +48,7 @@ export function OneImagePicker({ formPostImg, setFormPostImg }: Props) {
         onPress={pickImage}
         style={styles.button}
       >
-        <Text style={styles.buttonText}>Pick an image</Text>
+        <Text style={styles.buttonText}>{btnText || "Pick an image"}</Text>
       </Pressable>
       {formPostImg && (
         <Image

@@ -40,6 +40,7 @@ import { EdealsIndex } from "./components/edeals";
 import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
 import DynamicChat from "./components/messages";
 import { DynamicNews } from "./components/news/dynamicNews";
+import { UploadShortVideo } from "./components/shortVideos";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -265,6 +266,11 @@ export default function App() {
         <Stack.Screen
           name="DynamicNews"
           component={DynamicNews}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UploadShortVideo"
+          component={UploadShortVideo}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
