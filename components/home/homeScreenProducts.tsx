@@ -27,6 +27,8 @@ import { Banners } from "../hSServices/banners";
 import { CategoriesFlatList } from "./categories";
 import { NewsCardLInfo } from "../news/newsCardLInfo";
 import { Route } from "@react-navigation/native";
+import { VideosFlatList } from "../shortVideos/videosCardLInfo";
+import { globalStyles } from "../style/global";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -207,7 +209,15 @@ export const HSProducts = ({
             <SuggestedGroups />
           </View>
           <>
+            <Text style={globalStyles.boldText}>News</Text>
             <NewsCardLInfo
+              navigation={navigation}
+              route={route}
+            />
+          </>
+          <>
+            <Text style={globalStyles.boldText}>Short Videos</Text>
+            <VideosFlatList
               navigation={navigation}
               route={route}
             />

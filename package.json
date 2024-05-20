@@ -36,7 +36,8 @@
     "react-native-svg": "14.1.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-webview": "^13.6.4",
-    "version": "^0.1.2"
+    "version": "^0.1.2",
+    "expo-av": "~13.10.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
