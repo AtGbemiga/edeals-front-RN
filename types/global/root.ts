@@ -34,4 +34,5 @@ export type RootStackParamList = {
   DynamicChat: { recipient_id: number };
   DynamicNews: { id: number };
   UploadShortVideo: undefined;
+  DynamicShortVid: { id: number };
 };

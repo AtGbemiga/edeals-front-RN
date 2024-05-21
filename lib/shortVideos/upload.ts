@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import { ResSuccess } from "../types/global/resSuccess";
+import { ResSuccess } from "../../types/global/resSuccess";
 
 async function uploadShortVideoFn({
   formData,

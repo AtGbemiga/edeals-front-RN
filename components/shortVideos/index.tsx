@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { globalStyles } from "../style/global";
 import { OneImagePicker } from "../global/oneImagePicker";
-import uploadShortVideoFn from "../../lib/shortVideos";
+import uploadShortVideoFn from "../../lib/shortVideos/upload";
 import { showMessage } from "react-native-flash-message";
 
 export const UploadShortVideo = () => {

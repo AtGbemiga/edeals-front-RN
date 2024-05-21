@@ -41,6 +41,7 @@ import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
 import DynamicChat from "./components/messages";
 import { DynamicNews } from "./components/news/dynamicNews";
 import { UploadShortVideo } from "./components/shortVideos";
+import { DynamicShortVid } from "./components/shortVideos/dynamic";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -271,6 +272,11 @@ export default function App() {
         <Stack.Screen
           name="UploadShortVideo"
           component={UploadShortVideo}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DynamicShortVid"
+          component={DynamicShortVid}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

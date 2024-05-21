@@ -4,6 +4,7 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
 import {
@@ -25,7 +26,14 @@ const screenWidth = Dimensions.get("window").width;
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 type NewOneShortVid = OneShortVideo & Props;
-const OneShortVid = ({ video, views, likes, navigation }: NewOneShortVid) => {
+
+const OneShortVid = ({
+  id,
+  video,
+  views,
+  likes,
+  navigation,
+}: NewOneShortVid) => {
   const vid = useRef<Video>(null);
   const [status, setStatus] = useState<AVPlaybackStatus>(
     {} as AVPlaybackStatus
@@ -39,7 +47,7 @@ const OneShortVid = ({ video, views, likes, navigation }: NewOneShortVid) => {
 
   return (
     <View style={styles.container}>
-      <Pressable>
+      <Pressable onPress={() => navigation.navigate("DynamicShortVid", { id })}>
         <Video
           ref={vid}
           style={styles.video}
@@ -51,6 +59,10 @@ const OneShortVid = ({ video, views, likes, navigation }: NewOneShortVid) => {
           isLooping
           onPlaybackStatusUpdate={(status) => setStatus(status)}
         />
+        <View style={styles.overlay}>
+          <Text style={styles.text}>Views: {views}</Text>
+          <Text style={styles.text}>Likes: {likes}</Text>
+        </View>
       </Pressable>
       <View style={styles.buttons}>
         <Button
@@ -89,6 +101,8 @@ export const VideosFlatList = ({ navigation, route }: Props) => {
     }
   }, []);
 
+  if (errMsg.getVideos) return <Text>{errMsg.getVideos}</Text>;
+
   return (
     <FlatList
       data={resVids?.shortVideosRes}
@@ -116,14 +130,25 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   video: {
-    width: 300,
-    height: 200,
+    width: 180,
+    height: 320,
     borderRadius: 10,
   },
-  buttons: {
+  overlay: {
     position: "absolute",
-    bottom: 0,
-    right: 0,
-    margin: 10,
+    top: 10,
+    left: 10,
+    right: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    padding: 5,
+  },
+  text: {
+    color: "white",
+    fontSize: 14,
+  },
+  buttons: {
+    marginTop: 10,
   },
 });
