@@ -6,11 +6,15 @@ async function addDealFn({
   need,
   price,
   tag,
+  lg,
+  state,
   setErrMsg,
 }: {
   need: string;
   price: string;
   tag: OneDeal["tag"];
+  lg: string;
+  state: string;
   setErrMsg: React.Dispatch<
     React.SetStateAction<{
       getDeals: string;
@@ -27,7 +31,7 @@ async function addDealFn({
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ need, price, tag }),
+    body: JSON.stringify({ need, price, tag, lg, state }),
   });
 
   if (!res.ok) {

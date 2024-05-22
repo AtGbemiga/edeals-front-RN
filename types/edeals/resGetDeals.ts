@@ -2,6 +2,8 @@ export interface OneDeal {
   id: number;
   need: string;
   price: number;
+  lg: string;
+  state: string;
   tag:
     | "User"
     | "MakeupArtist"

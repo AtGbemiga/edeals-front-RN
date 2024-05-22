@@ -37,6 +37,8 @@ const OneDea = ({
   price,
   navigation,
   accOwnerEmail,
+  lg,
+  state,
 }: UpdatedProps) => {
   const [errMsg, setErrMsg] = useState("");
   async function handlePayment() {
@@ -72,6 +74,9 @@ const OneDea = ({
       <View>
         <Text>{need}</Text>
         <Text>&#8358;{price.toLocaleString()}</Text>
+        <Text>
+          {lg}, {state}
+        </Text>
       </View>
       <View>
         <Pressable
@@ -100,6 +105,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
     need: "",
     price: "",
     tag: "Products",
+    lg: "",
+    state: "",
   });
   const [accOwnerEmail, setAccOwnerEmail] = useState<
     ResGetAccOwnerEmail | undefined
@@ -138,6 +145,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
         need: deal.need,
         price: deal.price,
         tag: deal.tag,
+        lg: deal.lg,
+        state: deal.state,
         setErrMsg,
       });
 
@@ -151,6 +160,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
           need: "",
           price: "",
           tag: "Products",
+          lg: "",
+          state: "",
         });
       }
     } catch (error) {
@@ -181,6 +192,22 @@ export const EdealsIndex = ({ navigation }: Props) => {
             placeholder="&#8358;5000"
             style={globalStyles.textInput}
             keyboardType="numeric"
+          />
+        </View>
+        <View>
+          <Text>Local government</Text>
+          <TextInput
+            onChangeText={(newText) => setDeal({ ...deal, lg: newText })}
+            value={deal.lg}
+            style={globalStyles.textInput}
+          />
+        </View>
+        <View>
+          <Text>State</Text>
+          <TextInput
+            onChangeText={(newText) => setDeal({ ...deal, state: newText })}
+            value={deal.state}
+            style={globalStyles.textInput}
           />
         </View>
         <View>
@@ -249,6 +276,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
               tag={item.tag}
               navigation={navigation}
               accOwnerEmail={accOwnerEmail as ResGetAccOwnerEmail}
+              lg={item.lg}
+              state={item.state}
               user_id={item.user_id}
             />
           )}
