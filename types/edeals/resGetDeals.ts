@@ -14,6 +14,7 @@ export interface OneDeal {
     | "CarMechanic"
     | "Products";
   user_id: number;
+  deal_taker_id: number;
 }
 export interface ResGetDeals {
   result: OneDeal[];
