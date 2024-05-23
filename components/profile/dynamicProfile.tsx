@@ -100,7 +100,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
           </View>
         )}
 
-        {profile.imgs && profile.imgs.length > 0 ? (
+        {profile.imgs && profile.imgs[0] ? (
           <View>
             <Text style={styles.boldTitle}>Pictures</Text>
             <FlatList

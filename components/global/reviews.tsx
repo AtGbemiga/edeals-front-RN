@@ -40,15 +40,21 @@ export const ReviewsFlatList = ({ data, headerStyle, errMsg }: Props) => {
       {errMsg ? (
         <Text>{errMsg}</Text>
       ) : (
-        <FlatList
-          data={data?.finalResult[0]}
-          renderItem={({ item }) => <OneReview item={item} />}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={screenWidth}
-          decelerationRate="fast"
-          contentContainerStyle={styles.flatListContainer}
-        />
+        <>
+          {data?.finalResult[0]?.length > 0 ? (
+            <FlatList
+              data={data?.finalResult[0]}
+              renderItem={({ item }) => <OneReview item={item} />}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={screenWidth}
+              decelerationRate="fast"
+              contentContainerStyle={styles.flatListContainer}
+            />
+          ) : (
+            <Text>0 reviews yet</Text>
+          )}
+        </>
       )}
     </View>
   );
