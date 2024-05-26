@@ -29,19 +29,19 @@ async function getLInfoFn({
   let url;
 
   if (identifier === "products" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}`;
   } else if (identifier === "similarProducts" && subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "wishList" && subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "groups" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=groups`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=groups`;
   } else if (identifier === "orders" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=orders`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=orders`;
   } else if (identifier === "news" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=news`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=news`;
   } else if (identifier === "shortVideos" && !subIdentifier) {
-    url = `https://fav-work.loca.lt/api/v1/global/getLInfo?identifier=shortVideos`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=shortVideos`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
   }

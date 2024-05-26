@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import getNoticeByUserIdFn from "../../lib/edeals/getNoticeByUserId";
 import { ResNoticeByUserId } from "../../types/edeals/resNoticeByUserId";
-import { Pressable, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { globalStyles } from "../style/global";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -36,33 +36,39 @@ export const BellIcon = ({ navigation }: Props) => {
 
   return (
     <View style={globalStyles.bellView}>
-      <Pressable
-        onPress={() => {
-          console.log("clikced");
-          navigation.navigate("EDeals");
-        }}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? "skyblue" : "white",
-          },
-
-          globalStyles.bellIcon,
-        ]}
-      >
-        {noticeCount.result[0] && noticeCount.result[0].unread === 0 ? (
-          <Feather
-            name="bell"
-            size={24}
-            color="black"
-          />
-        ) : (
-          <MaterialCommunityIcons
-            name="bell-plus"
-            size={24}
-            color="red"
-          />
-        )}
-      </Pressable>
+      {noticeCount.result[0] && noticeCount.result[0].unread !== 0 && (
+        <View>
+          <Text>New Deal Available</Text>
+        </View>
+      )}
+      <View>
+        <Pressable
+          onPress={() => {
+            console.log("clikced");
+            navigation.navigate("EDeals");
+          }}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "skyblue" : "white",
+            },
+            globalStyles.bellIcon,
+          ]}
+        >
+          {noticeCount.result[0] && noticeCount.result[0].unread === 0 ? (
+            <Feather
+              name="bell"
+              size={24}
+              color="black"
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="bell-plus"
+              size={24}
+              color="red"
+            />
+          )}
+        </Pressable>
+      </View>
     </View>
   );
 };

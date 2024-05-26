@@ -6,7 +6,7 @@ async function updateNoticeFn({
 }: {
   setErrUpdate: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResNoticeByUserId | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/edeals/updateNotice`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/updateNotice`;
 
   const token = await SecureStore.getItemAsync("token");
 

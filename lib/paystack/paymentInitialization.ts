@@ -10,7 +10,7 @@ export const payStackInitFn = async ({
   amount: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResPaystackPaymentInit | undefined> => {
-  const url = `https://fav-work.loca.lt/api/v1/paystack/payment?amount=${amount}&email=${email}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/payment?amount=${amount}&email=${email}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

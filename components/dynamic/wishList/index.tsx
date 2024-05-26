@@ -69,7 +69,7 @@ export const WishListIndex = ({ navigation, route }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ borderWidth: 5, borderColor: "blue" }}>
+      <View>
         {errMsg.wishList ? (
           <StaticInlineNotice
             msg={errMsg.wishList}

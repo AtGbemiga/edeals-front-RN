@@ -15,14 +15,15 @@ import getGroupPostFn from "../../../lib/groups/getPosts";
 import { ResGetPosts } from "../../../types/groups/resGetPost";
 import { formatTimestampDiff } from "../../global/formatTimeDiff";
 import { StaticInlineNotice } from "../../global/inlineNotice";
-import { MultiImagePicker } from "../../global/oneImagePicker";
+import { MultiImagePicker } from "../../global/multiImagePicker";
 
 export const GroupPosts = ({ id }: { id: number }) => {
   const [resPosts, setResPosts] = useState<ResGetPosts>();
   const [postLike, setPostLike] = useState(0);
   const [formPost, setFormPost] = useState("");
-  const [formPostImg, setFormPostImg] = useState("");
+  const [formPostImg, setFormPostImg] = useState<string[]>([]);
   const [errMsg, setErrMsg] = useState("");
+  const [imgsLength, setImgsLength] = useState(0);
   // const [successMsg, setSuccessMsg] = useState("");
 
   // const [post, setPost] = useState("");
@@ -73,6 +74,17 @@ export const GroupPosts = ({ id }: { id: number }) => {
   //     setPostLike(newLikeState);
   //   }
   // };
+
+  let content: string = "";
+  if (imgsLength === 0) {
+    content = "No image selected";
+  } else if (imgsLength === 1) {
+    content = "1 image selected";
+  } else if (imgsLength >= 1 && imgsLength <= 5) {
+    content = `${imgsLength} images selected`;
+  } else {
+    content = "No image selected";
+  }
 
   const postContent = resPosts?.result.map((post) => {
     return (
@@ -177,16 +189,18 @@ export const GroupPosts = ({ id }: { id: number }) => {
     console.log("clicked");
     console.log({ "req.files": formPostImg });
 
-    if (formPost === "" && formPostImg === "") return;
+    if (formPost === "" && formPostImg.length === 0) return;
 
     const formData = new FormData();
     formData.append("post", formPost);
     formData.append("fk_group_id", id.toString());
-    formData.append("imgs", {
-      type: "image/jpeg",
-      uri: formPostImg,
-      name: "file.jpg",
-    } as unknown as Blob);
+    formData.forEach((uri) => {
+      formData.append("imgs", {
+        type: "image/jpeg",
+        uri,
+        name: "image.jpg", // Adjust name as needed (e.g., use original filenames)
+      } as unknown as Blob);
+    });
 
     try {
       const response = await addGroupPostFn({
@@ -202,7 +216,7 @@ export const GroupPosts = ({ id }: { id: number }) => {
 
       // Reset form
       setFormPost("");
-      setFormPostImg("");
+      setFormPostImg([]);
     } catch (error) {
       // disable empty object error
     }
@@ -218,9 +232,10 @@ export const GroupPosts = ({ id }: { id: number }) => {
           style={styles.textInput}
         />
         <MultiImagePicker
-          formPostImg={formPostImg}
+          setImgsLength={setImgsLength}
           setFormPostImg={setFormPostImg}
         />
+        <Text>{content}</Text>
         <Pressable onPress={handleSubmit}>
           <Text>Post</Text>
         </Pressable>

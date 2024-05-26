@@ -1,23 +1,21 @@
 import * as SecureStore from "expo-secure-store";
-import { ResSuccess } from "../../types/global/resSuccess";
+import { ResAccName } from "../../../types/users/profile/resAccName";
 
-async function addToWishListFn({
-  productID,
+async function getAccNameFn({
   setErrMsg,
 }: {
-  productID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
-}): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addToWishList`;
+}): Promise<ResAccName | undefined> {
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/getAccName`;
+
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ productID }),
   });
 
   if (!res.ok) {
@@ -32,8 +30,8 @@ async function addToWishListFn({
     return;
   }
 
-  const data: ResSuccess = await res.json();
+  const data: ResAccName = await res.json();
 
   return data;
 }
-export default addToWishListFn;
+export default getAccNameFn;

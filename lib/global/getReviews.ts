@@ -17,9 +17,9 @@ async function getReviewsFn({
   let url;
 
   if (identifier === "products") {
-    url = `https://fav-work.loca.lt/api/v1/global/getReviews?identifier=products&product_id=${product_id}`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getReviews?identifier=products&product_id=${product_id}`;
   } else if (identifier === "sellerProfile") {
-    url = `https://fav-work.loca.lt/api/v1/global/getReviews?identifier=sellerProfile&acc_id=${acc_id}`;
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getReviews?identifier=sellerProfile&acc_id=${acc_id}`;
   } else {
     throw new Error("Invalid identifier");
   }

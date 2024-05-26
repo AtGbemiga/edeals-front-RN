@@ -21,7 +21,7 @@ async function addDealFn({
     }>
   >;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/edeals/add`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/add`;
 
   const token = await SecureStore.getItemAsync("token");
 

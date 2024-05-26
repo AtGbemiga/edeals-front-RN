@@ -62,6 +62,16 @@ export const More = ({ navigation }: Props) => {
               <Text>Privacy Policy</Text>
             </View>
           </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("UploadNews");
+            }}
+          >
+            <View style={styles.itemBox}>
+              <Image source={privacyIcon} />
+              <Text>Add News</Text>
+            </View>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>

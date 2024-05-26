@@ -25,7 +25,7 @@ export type RootStackParamList = {
   Thanks: undefined;
   Orders: undefined;
   Sell: undefined;
-  DynamicSearch: undefined;
+  // DynamicSearch: undefined;
   SearchFilterServices: undefined;
   SettingsIndex: undefined;
   ChangePassword: undefined;
@@ -35,4 +35,8 @@ export type RootStackParamList = {
   DynamicNews: { id: number };
   UploadShortVideo: undefined;
   DynamicShortVid: { id: number };
+  UploadNews: undefined;
+  DynamicCategoriesSearch: { searchValue: string };
+  PostDealSuccess: undefined;
+  PaymentScreenPostDeal: { res: ResPaystackPaymentInit };
 };

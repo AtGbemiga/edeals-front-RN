@@ -90,7 +90,7 @@ export const SearchCardLInfo = ({
   };
 
   return (
-    <View style={[{ borderWidth: 5, borderColor: "blue" }, styles.container]}>
+    <View style={[styles.container]}>
       <View>
         <LinearGradient
           colors={["#4c669f", "#3b5998", "#192f6a"]}

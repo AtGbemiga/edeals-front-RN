@@ -10,7 +10,7 @@ async function getDealsFn({
     }>
   >;
 }): Promise<ResGetDeals | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/edeals/get`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/get`;
 
   const token = await SecureStore.getItemAsync("token");
 

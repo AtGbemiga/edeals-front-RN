@@ -21,6 +21,8 @@ import { StaticInlineNotice } from "../global/inlineNotice";
 import getReviewsFn from "../../lib/global/getReviews";
 import { Res4ProductReviews } from "../../types/products/resReviews";
 import { ReviewsFlatList } from "../global/reviews";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -52,6 +54,26 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
     })();
   }, []);
 
+  const shareUrl = async () => {
+    try {
+      const result = await Share.share({
+        message: "Check out this website: https://example.com",
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log("Shared with activity type: " + result.activityType);
+        } else {
+          console.log("Shared");
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log("Share dismissed");
+      }
+    } catch (error) {
+      console.log("Error sharing URL:", error);
+    }
+  };
+
   const content = resProfile?.result.map((profile) => {
     return (
       <View
@@ -70,8 +92,11 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
             <Text>{profile.phone_number}</Text>
             <Text>{profile.email}</Text>
             <View style={styles.mainCtaArea}>
-              <Pressable style={styles.mainCtaBtn}>
-                <Text style={styles.mainCtaText}>Call</Text>
+              <Pressable
+                style={styles.mainCtaBtn}
+                onPress={shareUrl}
+              >
+                <Text style={styles.mainCtaText}>Share</Text>
               </Pressable>
               <Pressable style={styles.mainCtaBtn}>
                 <Text style={styles.mainCtaText}>Chat</Text>
@@ -132,6 +157,7 @@ export const DynamicProfile = ({ route, navigation }: Props) => {
           <ReviewsFlatList
             data={resReviews as Res4ProductReviews}
             headerStyle={styles.boldTitle}
+            totalReviews={profile.total_raings_no}
           />
         </View>
         {profile.opening_hours && profile.opening_hours.length > 0 ? (

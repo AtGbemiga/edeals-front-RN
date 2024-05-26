@@ -8,7 +8,7 @@ async function updateProfileFn({
   formBody: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/users/updateProfile`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/updateProfile`;
 
   const token = await SecureStore.getItemAsync("token");
   console.log({ formBody });

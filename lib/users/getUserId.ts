@@ -6,7 +6,7 @@ async function getUserIdFn({
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetUserId | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/users/getUserId`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/getUserId`;
 
   const token = await SecureStore.getItemAsync("token");
 

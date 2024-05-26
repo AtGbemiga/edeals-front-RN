@@ -1,4 +1,5 @@
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -10,8 +11,6 @@ import {
   View,
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import getLInfoFn from "../../lib/global/getLInfo";
 import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
@@ -24,21 +23,16 @@ import { StaticInlineNotice } from "../global/inlineNotice";
 import { SearchCardLInfo } from "../global/searchCardLInfo";
 import { SuggestedGroups } from "../groups/suggested";
 import { Banners } from "../hSServices/banners";
-import { CategoriesFlatList } from "./categories";
 import { NewsCardLInfo } from "../news/newsCardLInfo";
-import { Route } from "@react-navigation/native";
 import { VideosFlatList } from "../shortVideos/videosCardLInfo";
 import { globalStyles } from "../style/global";
+import { CategoriesFlatList } from "./categories";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
-export const HSProducts = ({
-  navigation,
-  route,
-}: {
-  navigation: NativeStackNavigationProp<RootStackParamList>;
-  route: Route<string>;
-}) => {
+
+type Props = NativeStackScreenProps<RootStackParamList>;
+export const HSProducts = ({ navigation, route }: Props) => {
   const [resProducts, setResProducts] = useState<ResProductsLInfo>();
   const [resSearch, setResSearch] = useState<ResSearchLInfo>();
   const [searchValue, setSearchValue] = useState("");
@@ -168,7 +162,10 @@ export const HSProducts = ({
           <View>
             <Text>Categories</Text>
 
-            <CategoriesFlatList navigation={navigation} />
+            <CategoriesFlatList
+              navigation={navigation}
+              route={route}
+            />
           </View>
           <View>
             {errMsg.products ? (

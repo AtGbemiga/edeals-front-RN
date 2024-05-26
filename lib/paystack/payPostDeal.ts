@@ -1,23 +1,24 @@
 import * as SecureStore from "expo-secure-store";
-import { ResSuccess } from "../../types/global/resSuccess";
+import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
 
-async function addToWishListFn({
-  productID,
+export const payStackPostDealFn = async ({
+  email,
+  amount,
   setErrMsg,
 }: {
-  productID: number;
+  email: string;
+  amount: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
-}): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addToWishList`;
+}): Promise<ResPaystackPaymentInit | undefined> => {
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/paymentPostDeal?amount=${amount}&email=${email}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ productID }),
   });
 
   if (!res.ok) {
@@ -32,8 +33,9 @@ async function addToWishListFn({
     return;
   }
 
-  const data: ResSuccess = await res.json();
+  const data = await res.json();
+
+  console.log("function", data);
 
   return data;
-}
-export default addToWishListFn;
+};

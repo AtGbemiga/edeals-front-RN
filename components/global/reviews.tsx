@@ -32,11 +32,17 @@ type Props = {
   data: Res4ProductReviews;
   headerStyle?: object;
   errMsg: string;
+  totalReviews?: number;
 };
-export const ReviewsFlatList = ({ data, headerStyle, errMsg }: Props) => {
+export const ReviewsFlatList = ({
+  data,
+  headerStyle,
+  errMsg,
+  totalReviews,
+}: Props) => {
   return (
     <View>
-      <Text style={headerStyle}>Reviews</Text>
+      <Text style={headerStyle}>Reviews ({totalReviews})</Text>
       {errMsg ? (
         <Text>{errMsg}</Text>
       ) : (

@@ -25,7 +25,9 @@ export const globalStyles = StyleSheet.create({
     color: "#ffffff",
   },
   bellView: {
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     marginBottom: 10,
   },
   bellIcon: {
@@ -35,5 +37,8 @@ export const globalStyles = StyleSheet.create({
   d4VAlign: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  textRed: {
+    color: "#FF0000",
   },
 });

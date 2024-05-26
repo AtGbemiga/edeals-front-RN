@@ -8,7 +8,7 @@ async function getNewsFInfoFn({
   id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetNewsFInfo | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/news/getAll/${id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/news/getAll/${id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

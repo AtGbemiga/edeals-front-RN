@@ -7,7 +7,7 @@ async function getNoticeByUserIdFn({
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<HomeErrs>>;
 }): Promise<ResNoticeByUserId | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/edeals/noticeByUserTag`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/noticeByUserTag`;
 
   const token = await SecureStore.getItemAsync("token");
 

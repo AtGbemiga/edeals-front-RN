@@ -3,16 +3,19 @@ import { useRef } from "react";
 import { WebView, WebViewNavigation } from "react-native-webview";
 import { RootStackParamList } from "../../types/global/root";
 
-type Props = NativeStackScreenProps<RootStackParamList, "PaymentScreen">;
+type Props = NativeStackScreenProps<
+  RootStackParamList,
+  "PaymentScreenPostDeal"
+>;
 
-export const PaymentScreen = ({ navigation, route }: Props) => {
+export const PaymentScreenPostDeal = ({ navigation, route }: Props) => {
   const { authorization_url, reference: referenceID } = route.params.res.data;
   console.log({ authorization_url, reference: referenceID });
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
   const callback_url =
-    "https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/callbackurl";
+    "https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/postdealc";
   const cancel_url =
     "https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/cancelurl";
 
@@ -22,13 +25,13 @@ export const PaymentScreen = ({ navigation, route }: Props) => {
 
     if (!url) return;
 
-    if (url.includes(callback_url)) {
-      navigation.navigate("Thanks"); // Change to Thanks page
+    if (url.includes("postdealc") && url.includes("reference")) {
+      navigation.navigate("PostDealSuccess");
     }
 
     if (url === cancel_url) {
       // Use a navigator to pop off the view
-      navigation.navigate("Cart");
+      navigation.pop(1);
     }
 
     if (url === "https://standard.paystack.co/close") {

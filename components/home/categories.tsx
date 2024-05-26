@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Dimensions,
   FlatList,
@@ -8,14 +9,12 @@ import {
   Text,
   View,
 } from "react-native";
-import Logo0 from "../../assets/Vegetable 1.png";
-import Logo1 from "../../assets/Group.png";
 import Logo2 from "../../assets/Eggs.png";
-import Logo3 from "../../assets/Meat.png";
+import Logo1 from "../../assets/Group.png";
 import Logo4 from "../../assets/Groupg.png";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Logo3 from "../../assets/Meat.png";
+import Logo0 from "../../assets/Vegetable 1.png";
 import { RootStackParamList } from "../../types/global/root";
-import { ParamListBase } from "@react-navigation/native";
 
 interface CATEGORIES_DATAProps {
   id: number;
@@ -26,7 +25,7 @@ interface CATEGORIES_DATAProps {
 const CATEGORIES_DATA: CATEGORIES_DATAProps[] = [
   {
     id: 1,
-    name: "Hotels",
+    name: "Sport",
     imgPath: Logo0,
     bgColor: "#E4F3EA",
   },
@@ -55,18 +54,20 @@ const CATEGORIES_DATA: CATEGORIES_DATAProps[] = [
     bgColor: "#E4F3EA",
   },
 ];
-type Props = {
-  navigation: NativeStackNavigationProp<ParamListBase>;
-};
-const Category = (
-  { id, name, imgPath, bgColor }: CATEGORIES_DATAProps,
-  { navigation }: Props
-) => (
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+type NewProps = CATEGORIES_DATAProps & Props;
+
+const Category = ({ id, name, imgPath, bgColor, navigation }: NewProps) => (
   <View
     key={id}
     style={[{ backgroundColor: bgColor }, styles.itemContainer]}
   >
-    <Pressable onPress={() => navigation.navigate("DynamicSearch")}>
+    <Pressable
+      onPress={() =>
+        navigation.navigate("DynamicCategoriesSearch", { searchValue: name })
+      }
+    >
       <Image
         source={imgPath}
         style={styles.img}
@@ -78,7 +79,7 @@ const Category = (
 
 const screenWidth = Dimensions.get("window").width;
 
-export const CategoriesFlatList = ({ navigation }: Props) => (
+export const CategoriesFlatList = ({ navigation, route }: Props) => (
   <View>
     <FlatList
       data={CATEGORIES_DATA}
@@ -89,6 +90,7 @@ export const CategoriesFlatList = ({ navigation }: Props) => (
           imgPath={item.imgPath}
           bgColor={item.bgColor}
           navigation={navigation}
+          route={route}
         />
       )}
       horizontal

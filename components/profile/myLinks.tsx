@@ -95,7 +95,7 @@ export const MyLinks = ({
           <Image source={expandRightIcon} />
         </Pressable>
       </View>
-      <View>
+      {/* <View>
         <Pressable
           onPress={() => console.log(id, acc_type)}
           style={({ pressed }) => [
@@ -109,8 +109,8 @@ export const MyLinks = ({
           <Text style={styles.listText}>Address</Text>
           <Image source={expandRightIcon} />
         </Pressable>
-      </View>
-      <View>
+      </View> */}
+      {/* <View>
         <Pressable
           onPress={() => console.log(id, acc_type)}
           style={({ pressed }) => [
@@ -124,7 +124,7 @@ export const MyLinks = ({
           <Text style={styles.listText}>My Wallet</Text>
           <Image source={expandRightIcon} />
         </Pressable>
-      </View>
+      </View> */}
       <View>
         <Pressable
           onPress={() => navigation.navigate("GroupsIndex")}
@@ -141,7 +141,7 @@ export const MyLinks = ({
         </Pressable>
       </View>
 
-      <View>
+      {/* <View>
         <Pressable
           onPress={() => console.log(id, acc_type)}
           style={({ pressed }) => [
@@ -155,7 +155,7 @@ export const MyLinks = ({
           <Text style={styles.listText}>Messages</Text>
           <Image source={expandRightIcon} />
         </Pressable>
-      </View>
+      </View> */}
       {acc_type === "seller" && (
         <>
           <View>

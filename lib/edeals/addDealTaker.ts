@@ -11,7 +11,7 @@ async function addDealTakerFn({
   deal_taker_email: string;
   setErrMsg: Dispatch<SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/edeals/addDealTaker?fk_deal_id=${deal_id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/addDealTaker?fk_deal_id=${deal_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

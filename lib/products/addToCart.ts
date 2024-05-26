@@ -16,7 +16,7 @@ async function addToCartFn({
   size: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResAddToCart | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/products/addToCart`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addToCart`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

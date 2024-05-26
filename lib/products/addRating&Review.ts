@@ -13,7 +13,7 @@ async function addRatingAndReviewFn({
 
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/products/addRatingAndReview/${product_id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addRatingAndReview/${product_id}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

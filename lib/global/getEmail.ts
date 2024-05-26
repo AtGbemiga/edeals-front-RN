@@ -10,7 +10,7 @@ async function getAccOwnerEmail({
     }>
   >;
 }): Promise<ResGetAccOwnerEmail | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/global/getAccOwnerEmail`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getAccOwnerEmail`;
 
   const token = await SecureStore.getItemAsync("token");
 

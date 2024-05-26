@@ -8,7 +8,7 @@ async function getAllShortVidFn({
   id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResShortVideoFInfo | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/shortVideos/getAllInfo?video_id=${id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/shortVideos/getAllInfo?video_id=${id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

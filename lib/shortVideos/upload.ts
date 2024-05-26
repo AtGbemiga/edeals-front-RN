@@ -8,7 +8,7 @@ async function uploadShortVideoFn({
   formData: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/shortVideos`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/shortVideos`;
 
   const token = await SecureStore.getItemAsync("token");
 

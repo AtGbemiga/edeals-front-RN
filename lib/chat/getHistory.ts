@@ -10,7 +10,7 @@ async function getChatHistoryFn({
   fk_recipient_id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<Res4ChatHistory | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/chat?fk_sender_id=${fk_sender_id}&fk_recipient_id=${fk_recipient_id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/chat?fk_sender_id=${fk_sender_id}&fk_recipient_id=${fk_recipient_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

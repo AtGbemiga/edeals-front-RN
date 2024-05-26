@@ -8,7 +8,7 @@ async function getProfileFn({
   acc_id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetProfile | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/users/profile/${acc_id}`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/profile/${acc_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

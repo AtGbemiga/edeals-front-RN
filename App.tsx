@@ -2,46 +2,49 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native";
+import FlashMessage from "react-native-flash-message";
 import SellIcon from "./assets/Vector (1).png";
 import CartIcon from "./assets/Vector.png";
 import HomeIcon from "./assets/home.png";
 import moreIcon from "./assets/more.png";
 import ProfileIcon from "./assets/profile.png";
 import { CartIndex } from "./components/cart";
+import { GroupsIndex } from "./components/dynamic/groups";
+import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
 import { DynamicProduct } from "./components/dynamic/products";
+import { WishListIndex } from "./components/dynamic/wishList";
+import { EdealsIndex } from "./components/edeals";
 import { LoginSignUpF } from "./components/forms/loginSignUpF";
+import { DynamicCategoriesSearch } from "./components/home/dynamicCategoriesSearch";
 import { Home } from "./components/home/home";
 import { SearchFiliter } from "./components/home/searchFiliter";
+import { SearchFilterServices } from "./components/home/searchFilterServices";
+import DynamicChat from "./components/messages";
 import { More } from "./components/more";
+import { DynamicNews } from "./components/news/dynamicNews";
+import { UploadNews } from "./components/news/upload";
 import { LoginSignUp } from "./components/onboarding/loginSignUp";
 import { Screen1 } from "./components/onboarding/screen1";
 import { Screen2 } from "./components/onboarding/screen2";
 import { AccountType } from "./components/onboarding/selectAccType";
+import { Orders } from "./components/orders";
+import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
+import { PaymentScreen } from "./components/paystack/paymentScreen";
+import { Thanks } from "./components/paystack/thanks";
 import { Privacy } from "./components/policy/privacy";
 import { Terms } from "./components/policy/terms";
 import { ProfileIndex } from "./components/profile";
 import { DynamicProfile } from "./components/profile/dynamicProfile";
-import { SellIndex } from "./components/sell";
-import Start from "./components/start";
-import { RootStackParamList } from "./types/global/root";
-import { GroupsIndex } from "./components/dynamic/groups";
-import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
-import { WishListIndex } from "./components/dynamic/wishList";
-import { Orders } from "./components/orders";
-import { PaymentScreen } from "./components/paystack/paymentScreen";
-import { Thanks } from "./components/paystack/thanks";
 import { UpdateProfile } from "./components/profile/updateProfile";
-import FlashMessage from "react-native-flash-message";
-import { DynamicSearch } from "./components/global/dynamicSearch";
-import { SearchFilterServices } from "./components/home/searchFilterServices";
+import { SellIndex } from "./components/sell";
 import { SettingsIndex } from "./components/settings";
 import { ChangePassword } from "./components/settings/changePassword";
-import { EdealsIndex } from "./components/edeals";
-import { ContactPayScreen } from "./components/paystack/contactPaymentScreen";
-import DynamicChat from "./components/messages";
-import { DynamicNews } from "./components/news/dynamicNews";
 import { UploadShortVideo } from "./components/shortVideos";
 import { DynamicShortVid } from "./components/shortVideos/dynamic";
+import Start from "./components/start";
+import { RootStackParamList } from "./types/global/root";
+import { PostDealSuccess } from "./components/paystack/paymentSuccessPostDeal";
+import { PaymentScreenPostDeal } from "./components/paystack/paymentScreenPostDeal";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -231,11 +234,6 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="DynamicSearch"
-          component={DynamicSearch}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="SearchFilterServices"
           component={SearchFilterServices}
           options={{ headerShown: false }}
@@ -277,6 +275,26 @@ export default function App() {
         <Stack.Screen
           name="DynamicShortVid"
           component={DynamicShortVid}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UploadNews"
+          component={UploadNews}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DynamicCategoriesSearch"
+          component={DynamicCategoriesSearch}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PostDealSuccess"
+          component={PostDealSuccess}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PaymentScreenPostDeal"
+          component={PaymentScreenPostDeal}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

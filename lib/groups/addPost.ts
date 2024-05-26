@@ -8,7 +8,7 @@ async function addGroupPostFn({
   formDataBody: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://fav-work.loca.lt/api/v1/groups/addGroupPost`;
+  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/groups/addGroupPost`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {
