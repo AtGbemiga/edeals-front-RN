@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
@@ -33,6 +34,7 @@ import { payStackInitFn } from "../../lib/paystack/paymentInitialization";
 import { payStackPostDealFn } from "../../lib/paystack/payPostDeal";
 import getAccNameFn from "../../lib/users/profile/getAccName";
 import { ResAccName } from "../../types/users/profile/resAccName";
+import Autocomplete from "react-native-autocomplete-input";
 
 const screenHeight = Dimensions.get("window").height;
 
@@ -179,6 +181,9 @@ export const EdealsIndex = ({ navigation }: Props) => {
   const [accName, setAccName] = useState<ResAccName | undefined>();
   const [errAccName, setErrAccName] = useState("");
 
+  // in test
+  const [query, setQuery] = useState("");
+
   useEffect(() => {
     (async () => {
       const res = await getDealsFn({ setErrMsg });
@@ -316,6 +321,20 @@ export const EdealsIndex = ({ navigation }: Props) => {
     }
   }
 
+  const items = [
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+    { label: "Cherry", value: "cherry" },
+    { label: "Date", value: "date" },
+    { label: "Grape", value: "grape" },
+  ];
+
+  const filteredItems = query
+    ? items.filter((item) =>
+        item.label.toLowerCase().includes(query.toLowerCase())
+      )
+    : [];
+
   return (
     <SafeAreaView style={globalStyles.mainBox}>
       <>
@@ -373,22 +392,38 @@ export const EdealsIndex = ({ navigation }: Props) => {
                     />
                   </View>
                   <View>
-                    <Text>Local government</Text>
+                    <Text>State</Text>
+                    <Autocomplete
+                      data={
+                        filteredItems.length === 1 &&
+                        filteredItems[0].label === query
+                          ? []
+                          : filteredItems
+                      }
+                      defaultValue={query}
+                      onChangeText={(text) => setQuery(text)}
+                      placeholder="Type to search..."
+                      flatListProps={{
+                        keyExtractor: (item) => item.value,
+                        renderItem: ({ item }) => (
+                          <TouchableOpacity
+                            onPress={() => setQuery(item.label)}
+                          >
+                            <Text>{item.label}</Text>
+                          </TouchableOpacity>
+                        ),
+                      }}
+                      // inputContainerStyle={styles.inputContainer}
+                      // listStyle={styles.listStyle}
+                    />
+                  </View>
+                  <View>
+                    <Text>City</Text>
                     <TextInput
                       onChangeText={(newText) =>
                         setDeal({ ...deal, lg: newText })
                       }
                       value={deal.lg}
-                      style={globalStyles.textInput}
-                    />
-                  </View>
-                  <View>
-                    <Text>State</Text>
-                    <TextInput
-                      onChangeText={(newText) =>
-                        setDeal({ ...deal, state: newText })
-                      }
-                      value={deal.state}
                       style={globalStyles.textInput}
                     />
                   </View>
