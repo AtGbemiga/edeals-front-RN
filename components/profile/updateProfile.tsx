@@ -25,6 +25,8 @@ export const UpdateProfile = ({ navigation }: Props) => {
   const [email, setEmail] = useState("");
   const [tag, setTag] = useState("");
   const [formPostImg, setFormPostImg] = useState("");
+  const [lg, setLg] = useState("");
+  const [state, setState] = useState("");
 
   const [errMsg, setErrMsg] = useState<Record<string, string>>({
     profile: "",
@@ -128,14 +130,29 @@ export const UpdateProfile = ({ navigation }: Props) => {
               style={styles.textInput}
             />
           </View>
+          <View>
+            <Text>City</Text>
+            <TextInput
+              onChangeText={setLg}
+              value={lg}
+              placeholder="Enter city"
+              style={styles.textInput}
+            />
+          </View>
+          <View>
+            <Text>State</Text>
+            <TextInput
+              onChangeText={setState}
+              value={state}
+              placeholder="Enter state"
+              style={styles.textInput}
+            />
+          </View>
           <OneImagePicker
             formPostImg={formPostImg}
             setFormPostImg={setFormPostImg}
           />
-          <Pressable
-            onPress={handleUpdateProfile}
-            style={styles.updateBtn}
-          >
+          <Pressable onPress={handleUpdateProfile} style={styles.updateBtn}>
             <Text style={styles.updateBtnText}>Update</Text>
           </Pressable>
         </View>

@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Autocomplete from "react-native-autocomplete-input";
 import { showMessage } from "react-native-flash-message";
 import addDealFn from "../../lib/edeals/add";
 import addDealTakerFn from "../../lib/edeals/addDealTaker";
@@ -20,21 +21,20 @@ import getDealsFn from "../../lib/edeals/get";
 import updateNoticeFn from "../../lib/edeals/updateNotice";
 import getAccOwnerEmail from "../../lib/global/getEmail";
 import { payContactInitFn } from "../../lib/paystack/payInitContact";
+import { payStackPostDealFn } from "../../lib/paystack/payPostDeal";
 import getUserIdFn from "../../lib/users/getUserId";
+import getAccNameFn from "../../lib/users/profile/getAccName";
 import { FAddDeal } from "../../types/edeals/fAddDeal";
 import { OneDeal, ResGetDeals } from "../../types/edeals/resGetDeals";
 import { ResSuccess } from "../../types/global/resSuccess";
 import { RootStackParamList } from "../../types/global/root";
 import { ResGetAccOwnerEmail } from "../../types/groups/resGetAccOwnerEmail";
 import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
+import { ResAccName } from "../../types/users/profile/resAccName";
 import { ResGetUserId } from "../../types/users/resGetUserId";
 import { StaticInlineNotice } from "../global/inlineNotice";
+import { State, getCitiesForState, ngStates } from "../global/ngLocations";
 import { globalStyles } from "../style/global";
-import { payStackInitFn } from "../../lib/paystack/paymentInitialization";
-import { payStackPostDealFn } from "../../lib/paystack/payPostDeal";
-import getAccNameFn from "../../lib/users/profile/getAccName";
-import { ResAccName } from "../../types/users/profile/resAccName";
-import Autocomplete from "react-native-autocomplete-input";
 
 const screenHeight = Dimensions.get("window").height;
 
@@ -102,10 +102,7 @@ const OneDea = ({
   if (deal_taker_id === 0) {
     ctaBtn = (
       <View>
-        <Pressable
-          style={styles.contactBtn}
-          onPress={handlePayment}
-        >
+        <Pressable style={styles.contactBtn} onPress={handlePayment}>
           <Text style={globalStyles.textWhite}> Accept Deal</Text>
         </Pressable>
       </View>
@@ -113,10 +110,7 @@ const OneDea = ({
   } else if (deal_taker_id === accOwnerId) {
     ctaBtn = (
       <View>
-        <Pressable
-          style={styles.contactBtn}
-          onPress={handlePayment}
-        >
+        <Pressable style={styles.contactBtn} onPress={handlePayment}>
           <Text style={globalStyles.textWhite}> Contact</Text>
         </Pressable>
       </View>
@@ -183,6 +177,8 @@ export const EdealsIndex = ({ navigation }: Props) => {
 
   // in test
   const [query, setQuery] = useState("");
+  const [cityQuery, setCityQuery] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<State | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -321,24 +317,22 @@ export const EdealsIndex = ({ navigation }: Props) => {
     }
   }
 
-  const items = [
-    { label: "Apple", value: "apple" },
-    { label: "Banana", value: "banana" },
-    { label: "Cherry", value: "cherry" },
-    { label: "Date", value: "date" },
-    { label: "Grape", value: "grape" },
-  ];
-
-  const filteredItems = query
-    ? items.filter((item) =>
-        item.label.toLowerCase().includes(query.toLowerCase())
+  const filteredStates = query
+    ? ngStates.filter((state) =>
+        state.label.toLowerCase().includes(query.toLowerCase())
       )
     : [];
+
+  const filteredCities = cityQuery
+    ? getCitiesForState(selectedState?.value || "").filter((city) =>
+        city.label.toLowerCase().includes(cityQuery.toLowerCase())
+      )
+    : getCitiesForState(selectedState?.value || "");
 
   return (
     <SafeAreaView style={globalStyles.mainBox}>
       <>
-        {errMsg.getDeals ? (
+        {errMsg.getDeals && (
           <>
             <StaticInlineNotice
               msg={errMsg.getDeals}
@@ -346,192 +340,182 @@ export const EdealsIndex = ({ navigation }: Props) => {
               color="#842029"
             />
           </>
-        ) : (
-          <>
-            <FlatList
-              data={resDeals?.result}
-              ListHeaderComponent={
+        )}
+
+        <>
+          <FlatList
+            data={resDeals?.result}
+            ListHeaderComponent={
+              <View>
                 <View>
-                  <View>
-                    <Text style={{ marginBottom: 15 }}>
-                      {accName
-                        ? accName.result.map((item, index) => (
-                            <Text
-                              key={index}
-                              style={[globalStyles.boldText, { fontSize: 20 }]}
-                            >
-                              {item.account_name}
-                              {index < accName.result.length - 1 ? ", " : ""}
-                            </Text>
-                          ))
-                        : "bskd"}
-                    </Text>
-                    <Text style={globalStyles.boldText}> Add a deal</Text>
-                    <View>
-                      <Text>I want to buy</Text>
-                      <TextInput
-                        onChangeText={(newText) =>
-                          setDeal({ ...deal, need: newText })
-                        }
-                        value={deal.need}
-                        placeholder="a bike, an iPhone, a designer service, etc."
-                        style={globalStyles.textInput}
-                      />
-                    </View>
-                  </View>
-                  <View>
-                    <Text>My price is</Text>
-                    <TextInput
-                      onChangeText={(newText) =>
-                        setDeal({ ...deal, price: newText })
-                      }
-                      value={deal.price}
-                      placeholder="&#8358;5000"
-                      style={globalStyles.textInput}
-                      keyboardType="numeric"
-                    />
-                  </View>
-                  <View>
-                    <Text>State</Text>
-                    <Autocomplete
-                      data={
-                        filteredItems.length === 1 &&
-                        filteredItems[0].label === query
-                          ? []
-                          : filteredItems
-                      }
-                      defaultValue={query}
-                      onChangeText={(text) => setQuery(text)}
-                      placeholder="Type to search..."
-                      flatListProps={{
-                        keyExtractor: (item) => item.value,
-                        renderItem: ({ item }) => (
-                          <TouchableOpacity
-                            onPress={() => setQuery(item.label)}
+                  <Text style={{ marginBottom: 15 }}>
+                    {accName
+                      ? accName.result.map((item, index) => (
+                          <Text
+                            key={index}
+                            style={[globalStyles.boldText, { fontSize: 20 }]}
                           >
-                            <Text>{item.label}</Text>
-                          </TouchableOpacity>
-                        ),
-                      }}
-                      // inputContainerStyle={styles.inputContainer}
-                      // listStyle={styles.listStyle}
-                    />
-                  </View>
+                            {item.account_name}
+                            {index < accName.result.length - 1 ? ", " : ""}
+                          </Text>
+                        ))
+                      : "bskd"}
+                  </Text>
+                  <Text style={globalStyles.boldText}> Add a deal</Text>
                   <View>
-                    <Text>City</Text>
+                    <Text>I want to buy</Text>
                     <TextInput
                       onChangeText={(newText) =>
-                        setDeal({ ...deal, lg: newText })
+                        setDeal({ ...deal, need: newText })
                       }
-                      value={deal.lg}
+                      value={deal.need}
+                      placeholder="a bike, an iPhone, a designer service, etc."
                       style={globalStyles.textInput}
                     />
-                  </View>
-                  <View>
-                    <Text>Tag</Text>
-                    <Picker
-                      selectedValue={deal.tag}
-                      onValueChange={(itemValue) =>
-                        setDeal({ ...deal, tag: itemValue })
-                      }
-                    >
-                      <Picker.Item
-                        label="Products"
-                        value="Products"
-                      />
-                      <Picker.Item
-                        label="Make up Artist"
-                        value="MakeupArtist"
-                      />
-                      <Picker.Item
-                        label="Hairdresser"
-                        value="Hairdresser"
-                      />
-                      <Picker.Item
-                        label="Plumber"
-                        value="Plumber"
-                      />
-                      <Picker.Item
-                        label="Electrician"
-                        value="Electrician"
-                      />
-                      <Picker.Item
-                        label="Car Mechanic"
-                        value="CarMechanic"
-                      />
-                      <Picker.Item
-                        label="Repairer"
-                        value="Repairer"
-                      />
-                    </Picker>
-                  </View>
-                  <View>
-                    <Pressable
-                      onPress={() => setShowPayWall(true)}
-                      style={styles.addPostBtn}
-                    >
-                      <Text style={globalStyles.textWhite}>Add Deal Post</Text>
-                    </Pressable>
                   </View>
                 </View>
-              }
-              renderItem={({ item }) => (
-                <OneDea
-                  id={item.id}
-                  need={item.need}
-                  price={item.price}
-                  tag={item.tag}
-                  navigation={navigation}
-                  accOwnerEmail={accOwnerEmail as ResGetAccOwnerEmail}
-                  lg={item.lg}
-                  state={item.state}
-                  user_id={item.user_id}
-                  deal_taker_id={item.deal_taker_id}
-                  accOwnerId={(accOwnerId as ResGetUserId)?.user_id}
-                />
-              )}
-              keyExtractor={(item) => item.id.toString()}
-              extraData={resDeals?.result}
-            />
+                <View>
+                  <Text>My price is</Text>
+                  <TextInput
+                    onChangeText={(newText) =>
+                      setDeal({ ...deal, price: newText })
+                    }
+                    value={deal.price}
+                    placeholder="&#8358;5000"
+                    style={globalStyles.textInput}
+                    keyboardType="numeric"
+                  />
+                </View>
+                <View>
+                  <Text>State</Text>
+                  <Autocomplete
+                    data={
+                      filteredStates.length === 1 &&
+                      filteredStates[0].label === query
+                        ? []
+                        : filteredStates
+                    }
+                    defaultValue={query}
+                    onChangeText={(text) => setQuery(text)}
+                    placeholder="Type to search..."
+                    flatListProps={{
+                      keyExtractor: (item) => item.value,
+                      renderItem: ({ item }) => (
+                        <TouchableOpacity
+                          onPress={() => {
+                            setQuery(item.label);
+                            setSelectedState(item);
+                            setCityQuery(""); // Reset city query when a new state is selected
+                          }}
+                        >
+                          <Text>{item.label}</Text>
+                        </TouchableOpacity>
+                      ),
+                    }}
+                  />
+                </View>
+                <View>
+                  <Text>City</Text>
+                  <Autocomplete
+                    data={
+                      filteredCities.length === 1 &&
+                      filteredCities[0].label === cityQuery
+                        ? []
+                        : filteredCities
+                    }
+                    defaultValue={cityQuery}
+                    onChangeText={(text) => setCityQuery(text)}
+                    placeholder="Type to search..."
+                    flatListProps={{
+                      keyExtractor: (item) => item.value,
+                      renderItem: ({ item }) => (
+                        <TouchableOpacity
+                          onPress={() => setCityQuery(item.label)}
+                        >
+                          <Text>{item.label}</Text>
+                        </TouchableOpacity>
+                      ),
+                    }}
+                  />
+                </View>
 
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={showPayWall}
-              onRequestClose={() => {
-                setShowPayWall(false);
-              }}
-            >
-              <View style={styles.modalOverlay}>
-                <View style={styles.modalContent}>
-                  <View style={{ marginBottom: 40 }}>
-                    <Text>Choose to pay now or pay later to mechant</Text>
-                  </View>
-                  <View>
-                    <Pressable onPress={() => setShowPayWall(false)}>
-                      <Text>Cancel</Text>
-                    </Pressable>
-                  </View>
-                  <View style={styles.modalHeader}>
-                    <Text style={globalStyles.boldText}>Paywall</Text>
-                  </View>
-                  <Pressable
-                    onPress={handlePayments}
-                    style={styles.payBtn}
+                <View>
+                  <Text>Tag</Text>
+                  <Picker
+                    selectedValue={deal.tag}
+                    onValueChange={(itemValue) =>
+                      setDeal({ ...deal, tag: itemValue })
+                    }
                   >
-                    <Text style={globalStyles.textWhite}>Pay Now</Text>
-                  </Pressable>
+                    <Picker.Item label="Products" value="Products" />
+                    <Picker.Item label="Make up Artist" value="MakeupArtist" />
+                    <Picker.Item label="Hairdresser" value="Hairdresser" />
+                    <Picker.Item label="Plumber" value="Plumber" />
+                    <Picker.Item label="Electrician" value="Electrician" />
+                    <Picker.Item label="Car Mechanic" value="CarMechanic" />
+                    <Picker.Item label="Repairer" value="Repairer" />
+                  </Picker>
+                </View>
+                <View>
                   <Pressable
-                    onPress={handleAddDeal}
-                    style={styles.payLaterBtn}
+                    onPress={() => setShowPayWall(true)}
+                    style={styles.addPostBtn}
                   >
-                    <Text>Pay Later</Text>
+                    <Text style={globalStyles.textWhite}>Add Deal Post</Text>
                   </Pressable>
                 </View>
               </View>
-            </Modal>
-          </>
-        )}
+            }
+            renderItem={({ item }) => (
+              <OneDea
+                id={item.id}
+                need={item.need}
+                price={item.price}
+                tag={item.tag}
+                navigation={navigation}
+                accOwnerEmail={accOwnerEmail as ResGetAccOwnerEmail}
+                lg={item.lg}
+                state={item.state}
+                user_id={item.user_id}
+                deal_taker_id={item.deal_taker_id}
+                accOwnerId={(accOwnerId as ResGetUserId)?.user_id}
+              />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            extraData={resDeals?.result}
+          />
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={showPayWall}
+            onRequestClose={() => {
+              setShowPayWall(false);
+            }}
+          >
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <View style={{ marginBottom: 40 }}>
+                  <Text>Choose to pay now or pay later to mechant</Text>
+                </View>
+                <View>
+                  <Pressable onPress={() => setShowPayWall(false)}>
+                    <Text>Cancel</Text>
+                  </Pressable>
+                </View>
+                <View style={styles.modalHeader}>
+                  <Text style={globalStyles.boldText}>Paywall</Text>
+                </View>
+                <Pressable onPress={handlePayments} style={styles.payBtn}>
+                  <Text style={globalStyles.textWhite}>Pay Now</Text>
+                </Pressable>
+                <Pressable onPress={handleAddDeal} style={styles.payLaterBtn}>
+                  <Text>Pay Later</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        </>
       </>
     </SafeAreaView>
   );

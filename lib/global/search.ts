@@ -6,11 +6,15 @@ type Props = {
   identifier: "products" | "groups" | "services";
   searchValue: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
+  lgIdentifier?: string;
+  stateIdentifier?: string;
 };
 async function globalSearchFn({
   searchValue,
   setErrMsg,
   identifier,
+  lgIdentifier,
+  stateIdentifier,
 }: Props): Promise<
   ResSearchLInfo | ResGroupSearch | ResSearchServices | undefined
 > {
@@ -23,11 +27,13 @@ async function globalSearchFn({
   }
   let url;
 
-  if (identifier === "products") {
+  if (identifier === "products" && !lgIdentifier && !stateIdentifier) {
     url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=products&searchValue=${searchValue}`;
-  } else if (identifier === "groups") {
+  } else if (identifier === "products" && lgIdentifier && stateIdentifier) {
+    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=products&searchValue=${searchValue}&lgIdentifier=${lgIdentifier}&stateIdentifier=${stateIdentifier}`;
+  } else if (identifier === "groups" && !lgIdentifier && !stateIdentifier) {
     url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=groups&searchValue=${searchValue}`;
-  } else if (identifier === "services") {
+  } else if (identifier === "services" && !lgIdentifier && !stateIdentifier) {
     url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=services&searchValue=${searchValue}`;
   } else {
     throw new Error("Invalid identifier");

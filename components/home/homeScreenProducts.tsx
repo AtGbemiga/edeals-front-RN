@@ -40,6 +40,8 @@ export const HSProducts = ({ navigation, route }: Props) => {
     products: "",
   });
   const [searchErrMsg, setSearchErrMsg] = useState("");
+  const [lgIdentifier, setLgIdentifier] = useState("");
+  const [stateIdentifier, setStateIdentifier] = useState("");
 
   useEffect(() => {
     try {
@@ -103,11 +105,7 @@ export const HSProducts = ({ navigation, route }: Props) => {
             styles.searchAreaBtn,
           ]}
         >
-          <Ionicons
-            name="filter"
-            size={24}
-            color="black"
-          />
+          <Ionicons name="filter" size={24} color="black" />
         </Pressable>
 
         <Pressable
@@ -126,6 +124,26 @@ export const HSProducts = ({ navigation, route }: Props) => {
             style={styles.searchAreaBtn}
           />
         </Pressable>
+      </View>
+      <View style={{ flexDirection: "column", rowGap: 5 }}>
+        <TextInput
+          placeholder="search for city"
+          value={lgIdentifier}
+          onChangeText={(newText) => {
+            setLgIdentifier(newText);
+            console.log(newText);
+          }}
+          style={styles.textInput}
+        />
+        <TextInput
+          placeholder="search for state"
+          value={stateIdentifier}
+          onChangeText={(newText) => {
+            setStateIdentifier(newText);
+            console.log(newText);
+          }}
+          style={styles.textInput}
+        />
       </View>
       {resSearch && resSearch.productSearchData.length > 0 ? (
         <>
@@ -162,10 +180,7 @@ export const HSProducts = ({ navigation, route }: Props) => {
           <View>
             <Text>Categories</Text>
 
-            <CategoriesFlatList
-              navigation={navigation}
-              route={route}
-            />
+            <CategoriesFlatList navigation={navigation} route={route} />
           </View>
           <View>
             {errMsg.products ? (
@@ -207,17 +222,11 @@ export const HSProducts = ({ navigation, route }: Props) => {
           </View>
           <>
             <Text style={globalStyles.boldText}>News</Text>
-            <NewsCardLInfo
-              navigation={navigation}
-              route={route}
-            />
+            <NewsCardLInfo navigation={navigation} route={route} />
           </>
           <>
             <Text style={globalStyles.boldText}>Short Videos</Text>
-            <VideosFlatList
-              navigation={navigation}
-              route={route}
-            />
+            <VideosFlatList navigation={navigation} route={route} />
           </>
         </>
       )}
