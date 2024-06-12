@@ -1,12 +1,13 @@
 import * as SecureStore from "expo-secure-store";
 import { ResNoticeByUserId } from "../../types/edeals/resNoticeByUserId";
+import { baseURL } from "../global/baseURL";
 
 async function updateNoticeFn({
   setErrUpdate,
 }: {
   setErrUpdate: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResNoticeByUserId | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/updateNotice`;
+  const url = `${baseURL}/edeals/updateNotice`;
 
   const token = await SecureStore.getItemAsync("token");
 

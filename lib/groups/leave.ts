@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function leaveGroupFn({
   groupID,
@@ -8,7 +9,7 @@ async function leaveGroupFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/groups/leaveGroup/${groupID}`;
+  const url = `${baseURL}/groups/leaveGroup/${groupID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

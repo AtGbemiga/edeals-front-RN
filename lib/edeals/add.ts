@@ -1,6 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { OneDeal } from "../../types/edeals/resGetDeals";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function addDealFn({
   need,
@@ -21,7 +22,7 @@ async function addDealFn({
     }>
   >;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/add`;
+  const url = `${baseURL}/edeals/add`;
 
   const token = await SecureStore.getItemAsync("token");
 

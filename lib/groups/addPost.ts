@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function addGroupPostFn({
   formDataBody,
@@ -8,7 +9,7 @@ async function addGroupPostFn({
   formDataBody: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/groups/addGroupPost`;
+  const url = `${baseURL}/groups/addGroupPost`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

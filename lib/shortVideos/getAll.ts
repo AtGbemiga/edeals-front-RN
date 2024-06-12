@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResShortVideoFInfo } from "../../types/shortVideos/resFInfo";
+import { baseURL } from "../global/baseURL";
 
 async function getAllShortVidFn({
   id,
@@ -8,7 +9,7 @@ async function getAllShortVidFn({
   id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResShortVideoFInfo | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/shortVideos/getAllInfo?video_id=${id}`;
+  const url = `${baseURL}/shortVideos/getAllInfo?video_id=${id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

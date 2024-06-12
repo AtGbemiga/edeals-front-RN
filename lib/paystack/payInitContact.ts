@@ -1,6 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 export const payContactInitFn = async ({
   email,
@@ -11,7 +12,7 @@ export const payContactInitFn = async ({
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
   recipientID: number;
 }): Promise<ResPaystackPaymentInit | ResSuccess | undefined> => {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/paymentContact?email=${email}&recipientID=${recipientID}&amount=300000`;
+  const url = `${baseURL}/paystack/paymentContact?email=${email}&recipientID=${recipientID}&amount=300000`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

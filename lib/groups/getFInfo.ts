@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResGroupFInfo } from "../../types/groups/resGetFInfo";
+import { baseURL } from "../global/baseURL";
 
 async function getGroupFInfoFn({
   groupID,
@@ -8,7 +9,7 @@ async function getGroupFInfoFn({
   groupID: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGroupFInfo | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/groups/getGroupFInfo/${groupID}`;
+  const url = `${baseURL}/groups/getGroupFInfo/${groupID}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

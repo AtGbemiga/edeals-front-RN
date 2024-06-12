@@ -8,7 +8,7 @@
 //   groupPostID: number;
 //   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 // }): Promise<ResGroupPostComment | undefined> {
-//   const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/groups/getGroupComments/${groupPostID}`;
+//   const url = `${baseURL}/groups/getGroupComments/${groupPostID}`;
 
 //   const res = await fetch(url, {
 //     method: "GET",

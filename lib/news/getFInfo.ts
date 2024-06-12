@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResGetNewsFInfo } from "../../types/news/resGet";
+import { baseURL } from "../global/baseURL";
 
 async function getNewsFInfoFn({
   id,
@@ -8,7 +9,7 @@ async function getNewsFInfoFn({
   id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetNewsFInfo | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/news/getAll/${id}`;
+  const url = `${baseURL}/news/getAll/${id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

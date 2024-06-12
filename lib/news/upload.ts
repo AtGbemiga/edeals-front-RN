@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function uploadNewsFn({
   formData,
@@ -8,7 +9,7 @@ async function uploadNewsFn({
   formData: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/news/upload`;
+  const url = `${baseURL}/news/upload`;
 
   const token = await SecureStore.getItemAsync("token");
 

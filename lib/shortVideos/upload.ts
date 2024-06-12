@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function uploadShortVideoFn({
   formData,
@@ -8,7 +9,7 @@ async function uploadShortVideoFn({
   formData: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/shortVideos`;
+  const url = `${baseURL}/shortVideos`;
 
   const token = await SecureStore.getItemAsync("token");
 

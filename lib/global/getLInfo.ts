@@ -8,6 +8,7 @@ import {
 } from "../../types/products/resProducts";
 import { ResGetNews } from "../../types/news/resGet";
 import { ResShortVideoLInfo } from "../../types/shortVideos/resLInfo";
+import { baseURL } from "./baseURL";
 
 async function getLInfoFn({
   identifier,
@@ -29,19 +30,19 @@ async function getLInfoFn({
   let url;
 
   if (identifier === "products" && !subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}`;
+    url = `${baseURL}/global/getLInfo?identifier=${identifier}`;
   } else if (identifier === "similarProducts" && subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `${baseURL}/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "wishList" && subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
+    url = `${baseURL}/global/getLInfo?identifier=${identifier}&subIdentifier=${subIdentifier}`;
   } else if (identifier === "groups" && !subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=groups`;
+    url = `${baseURL}/global/getLInfo?identifier=groups`;
   } else if (identifier === "orders" && !subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=orders`;
+    url = `${baseURL}/global/getLInfo?identifier=orders`;
   } else if (identifier === "news" && !subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=news`;
+    url = `${baseURL}/global/getLInfo?identifier=news`;
   } else if (identifier === "shortVideos" && !subIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getLInfo?identifier=shortVideos`;
+    url = `${baseURL}/global/getLInfo?identifier=shortVideos`;
   } else {
     throw new Error("Invalid identifier or discountIdentifier");
   }

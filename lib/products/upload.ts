@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResAddToCart } from "../../types/products/resAddToCart";
+import { baseURL } from "../global/baseURL";
 
 async function uploadProductFn({
   formData,
@@ -8,7 +9,7 @@ async function uploadProductFn({
   formData: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }): Promise<ResAddToCart | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/upload`;
+  const url = `${baseURL}/products/upload`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

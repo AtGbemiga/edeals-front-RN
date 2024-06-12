@@ -1,6 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { Dispatch, SetStateAction } from "react";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function addDealTakerFn({
   deal_id,
@@ -11,7 +12,7 @@ async function addDealTakerFn({
   deal_taker_email: string;
   setErrMsg: Dispatch<SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/addDealTaker?fk_deal_id=${deal_id}`;
+  const url = `${baseURL}/edeals/addDealTaker?fk_deal_id=${deal_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

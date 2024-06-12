@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResAddToCart } from "../../types/products/resAddToCart";
+import { baseURL } from "../global/baseURL";
 
 async function addToCartFn({
   product_id,
@@ -16,7 +17,7 @@ async function addToCartFn({
   size: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResAddToCart | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addToCart`;
+  const url = `${baseURL}/products/addToCart`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

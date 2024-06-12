@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function changePasswordFn({
   oldPassword,
@@ -10,7 +11,7 @@ async function changePasswordFn({
   newPassword: string;
   setErrMsg: React.Dispatch<React.SetStateAction<{ changePassword: string }>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/change-password`;
+  const url = `${baseURL}/users/change-password`;
 
   const token = await SecureStore.getItemAsync("token");
 

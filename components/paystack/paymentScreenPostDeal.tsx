@@ -14,10 +14,8 @@ export const PaymentScreenPostDeal = ({ navigation, route }: Props) => {
 
   const webviewRef = useRef<WebView>(null); // Create a ref for the WebView component
 
-  const callback_url =
-    "https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/postdealc";
-  const cancel_url =
-    "https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/cancelurl";
+  const callback_url = "${baseURL}/paystack/postdealc";
+  const cancel_url = "${baseURL}/paystack/cancelurl";
 
   const onNavigationStateChange = (state: WebViewNavigation) => {
     const { url } = state;

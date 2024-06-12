@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../../types/global/resSuccess";
+import { baseURL } from "../../global/baseURL";
 
 async function updateProfileFn({
   formBody,
@@ -8,7 +9,7 @@ async function updateProfileFn({
   formBody: FormData;
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/updateProfile`;
+  const url = `${baseURL}/users/updateProfile`;
 
   const token = await SecureStore.getItemAsync("token");
   console.log({ formBody });

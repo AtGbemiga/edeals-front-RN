@@ -1,13 +1,14 @@
 import * as SecureStore from "expo-secure-store";
 import { ResNoticeByUserId } from "../../types/edeals/resNoticeByUserId";
-import { HomeErrs } from "../../components/home/home";
+import { Errs } from "../../components/edeals/notice";
+import { baseURL } from "../global/baseURL";
 
 async function getNoticeByUserIdFn({
   setErrMsg,
 }: {
-  setErrMsg: React.Dispatch<React.SetStateAction<HomeErrs>>;
+  setErrMsg: React.Dispatch<React.SetStateAction<Errs>>;
 }): Promise<ResNoticeByUserId | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/edeals/noticeByUserTag`;
+  const url = `${baseURL}/edeals/noticeByUserTag`;
 
   const token = await SecureStore.getItemAsync("token");
 

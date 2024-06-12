@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResGetProfile } from "../../../types/users/profile/resGetProfile";
+import { baseURL } from "../../global/baseURL";
 
 async function getProfileFn({
   acc_id,
@@ -8,7 +9,7 @@ async function getProfileFn({
   acc_id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResGetProfile | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/profile/${acc_id}`;
+  const url = `${baseURL}/users/profile/${acc_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

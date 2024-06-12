@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function addRatingAndReviewFn({
   product_id,
@@ -13,7 +14,7 @@ async function addRatingAndReviewFn({
 
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/addRatingAndReview/${product_id}`;
+  const url = `${baseURL}/products/addRatingAndReview/${product_id}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

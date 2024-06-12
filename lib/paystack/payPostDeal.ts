@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResPaystackPaymentInit } from "../../types/paystack/resPaymentInitialization";
+import { baseURL } from "../global/baseURL";
 
 export const payStackPostDealFn = async ({
   email,
@@ -10,7 +11,7 @@ export const payStackPostDealFn = async ({
   amount: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResPaystackPaymentInit | undefined> => {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/paystack/paymentPostDeal?amount=${amount}&email=${email}`;
+  const url = `${baseURL}/paystack/paymentPostDeal?amount=${amount}&email=${email}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

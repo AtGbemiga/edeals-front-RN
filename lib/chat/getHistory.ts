@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { Res4ChatHistory } from "../../types/chat/res4History";
+import { baseURL } from "../global/baseURL";
 
 async function getChatHistoryFn({
   fk_sender_id,
@@ -10,7 +11,7 @@ async function getChatHistoryFn({
   fk_recipient_id: number;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<Res4ChatHistory | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/chat?fk_sender_id=${fk_sender_id}&fk_recipient_id=${fk_recipient_id}`;
+  const url = `${baseURL}/chat?fk_sender_id=${fk_sender_id}&fk_recipient_id=${fk_recipient_id}`;
 
   const token = await SecureStore.getItemAsync("token");
 

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import backIcon from "../../assets/backIcon.png";
@@ -27,6 +28,8 @@ import { NewsCardLInfo } from "../news/newsCardLInfo";
 import { VideosFlatList } from "../shortVideos/videosCardLInfo";
 import { globalStyles } from "../style/global";
 import { CategoriesFlatList } from "./categories";
+import { State, getCitiesForState, ngStates } from "../global/ngLocations";
+import Autocomplete from "react-native-autocomplete-input";
 
 const screenWidth = Dimensions.get("window").width;
 // HSProducts = HomeScreenProducts
@@ -40,8 +43,9 @@ export const HSProducts = ({ navigation, route }: Props) => {
     products: "",
   });
   const [searchErrMsg, setSearchErrMsg] = useState("");
-  const [lgIdentifier, setLgIdentifier] = useState("");
-  const [stateIdentifier, setStateIdentifier] = useState("");
+  const [query, setQuery] = useState("");
+  const [cityQuery, setCityQuery] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<State | null>(null);
 
   useEffect(() => {
     try {
@@ -70,6 +74,8 @@ export const HSProducts = ({ navigation, route }: Props) => {
           identifier: "products",
           searchValue: searchValue,
           setErrMsg: setSearchErrMsg,
+          lgIdentifier: cityQuery,
+          stateIdentifier: selectedState?.value || "",
         });
         if (
           res &&
@@ -83,6 +89,18 @@ export const HSProducts = ({ navigation, route }: Props) => {
       // disable empty object error
     }
   }
+
+  const filteredStates = query
+    ? ngStates.filter((state) =>
+        state.label.toLowerCase().includes(query.toLowerCase())
+      )
+    : [];
+
+  const filteredCities = cityQuery
+    ? getCitiesForState(selectedState?.value || "").filter((city) =>
+        city.label.toLowerCase().includes(cityQuery.toLowerCase())
+      )
+    : getCitiesForState(selectedState?.value || "");
 
   return (
     <View style={styles.container}>
@@ -125,24 +143,52 @@ export const HSProducts = ({ navigation, route }: Props) => {
           />
         </Pressable>
       </View>
-      <View style={{ flexDirection: "column", rowGap: 5 }}>
-        <TextInput
-          placeholder="search for city"
-          value={lgIdentifier}
-          onChangeText={(newText) => {
-            setLgIdentifier(newText);
-            console.log(newText);
+      <View>
+        <Text>State</Text>
+        <Autocomplete
+          data={
+            filteredStates.length === 1 && filteredStates[0].label === query
+              ? []
+              : filteredStates
+          }
+          defaultValue={query}
+          onChangeText={(text) => setQuery(text)}
+          placeholder="Type to search..."
+          flatListProps={{
+            keyExtractor: (item) => item.value,
+            renderItem: ({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setQuery(item.label);
+                  setSelectedState(item);
+                  setCityQuery(""); // Reset city query when a new state is selected
+                }}
+              >
+                <Text>{item.label}</Text>
+              </TouchableOpacity>
+            ),
           }}
-          style={styles.textInput}
         />
-        <TextInput
-          placeholder="search for state"
-          value={stateIdentifier}
-          onChangeText={(newText) => {
-            setStateIdentifier(newText);
-            console.log(newText);
+      </View>
+      <View>
+        <Text>City</Text>
+        <Autocomplete
+          data={
+            filteredCities.length === 1 && filteredCities[0].label === cityQuery
+              ? []
+              : filteredCities
+          }
+          defaultValue={cityQuery}
+          onChangeText={(text) => setCityQuery(text)}
+          placeholder="Type to search..."
+          flatListProps={{
+            keyExtractor: (item) => item.value,
+            renderItem: ({ item }) => (
+              <TouchableOpacity onPress={() => setCityQuery(item.label)}>
+                <Text>{item.label}</Text>
+              </TouchableOpacity>
+            ),
           }}
-          style={styles.textInput}
         />
       </View>
       {resSearch && resSearch.productSearchData.length > 0 ? (

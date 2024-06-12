@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResAuth } from "../types/users/resAuth";
+import { baseURL } from "./global/baseURL";
 
 async function loginSignupFn({
   account_name,
@@ -19,7 +20,7 @@ async function loginSignupFn({
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }) {
   if (identifier === "login") {
-    const url = "https://eager-hardly-gator.ngrok-free.app/api/v1/users/login";
+    const url = `${baseURL}/users/login`;
 
     const res = await fetch(url, {
       method: "POST",
@@ -63,7 +64,7 @@ async function loginSignupFn({
 
     return data.message;
   } else if (identifier === "signup") {
-    const url = "https://eager-hardly-gator.ngrok-free.app/api/v1/users";
+    const url = "${baseURL}/users";
 
     const res = await fetch(url, {
       method: "POST",

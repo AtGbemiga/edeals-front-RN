@@ -1,12 +1,13 @@
 import * as SecureStore from "expo-secure-store";
 import { ResSuccess } from "../../types/global/resSuccess";
+import { baseURL } from "../global/baseURL";
 
 async function logOutFn({
   setErrMsg,
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }): Promise<ResSuccess | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/logout`;
+  const url = `${baseURL}/users/logout`;
 
   const token = await SecureStore.getItemAsync("token");
 

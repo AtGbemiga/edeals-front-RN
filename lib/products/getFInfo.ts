@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResProductFInfo } from "../../types/products/resProducts";
+import { baseURL } from "../global/baseURL";
 
 async function getFInfoFn({
   product_id,
@@ -8,7 +9,7 @@ async function getFInfoFn({
   product_id: string;
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResProductFInfo | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/products/getFInfo/${product_id}`;
+  const url = `${baseURL}/products/getFInfo/${product_id}`;
   const token = await SecureStore.getItemAsync("token");
 
   const res = await fetch(url, {

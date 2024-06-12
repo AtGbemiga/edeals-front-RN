@@ -1,6 +1,7 @@
 import { ResGroupSearch } from "../../types/groups/resGroupSearch";
 import { ResSearchLInfo } from "../../types/products/resProducts";
 import { ResSearchServices } from "../../types/services/resSearch";
+import { baseURL } from "./baseURL";
 
 type Props = {
   identifier: "products" | "groups" | "services";
@@ -28,13 +29,13 @@ async function globalSearchFn({
   let url;
 
   if (identifier === "products" && !lgIdentifier && !stateIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=products&searchValue=${searchValue}`;
+    url = `${baseURL}/global/search?identifier=products&searchValue=${searchValue}`;
   } else if (identifier === "products" && lgIdentifier && stateIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=products&searchValue=${searchValue}&lgIdentifier=${lgIdentifier}&stateIdentifier=${stateIdentifier}`;
+    url = `${baseURL}/global/search?identifier=products&searchValue=${searchValue}&lgIdentifier=${lgIdentifier}&stateIdentifier=${stateIdentifier}`;
   } else if (identifier === "groups" && !lgIdentifier && !stateIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=groups&searchValue=${searchValue}`;
+    url = `${baseURL}/global/search?identifier=groups&searchValue=${searchValue}`;
   } else if (identifier === "services" && !lgIdentifier && !stateIdentifier) {
-    url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/search?identifier=services&searchValue=${searchValue}`;
+    url = `${baseURL}/global/search?identifier=services&searchValue=${searchValue}`;
   } else {
     throw new Error("Invalid identifier");
   }

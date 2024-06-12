@@ -1,12 +1,13 @@
 import * as SecureStore from "expo-secure-store";
 import { ResAccName } from "../../../types/users/profile/resAccName";
+import { baseURL } from "../../global/baseURL";
 
 async function getAccNameFn({
   setErrMsg,
 }: {
   setErrMsg: React.Dispatch<React.SetStateAction<string>>;
 }): Promise<ResAccName | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/users/getAccName`;
+  const url = `${baseURL}/users/getAccName`;
 
   const token = await SecureStore.getItemAsync("token");
 

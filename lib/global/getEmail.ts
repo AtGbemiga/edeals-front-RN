@@ -1,5 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { ResGetAccOwnerEmail } from "../../types/groups/resGetAccOwnerEmail";
+import { baseURL } from "./baseURL";
 
 async function getAccOwnerEmail({
   setNewErrMsg,
@@ -10,7 +11,7 @@ async function getAccOwnerEmail({
     }>
   >;
 }): Promise<ResGetAccOwnerEmail | undefined> {
-  const url = `https://eager-hardly-gator.ngrok-free.app/api/v1/global/getAccOwnerEmail`;
+  const url = `${baseURL}/global/getAccOwnerEmail`;
 
   const token = await SecureStore.getItemAsync("token");
 
