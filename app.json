@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "e-deals frontend",
-    "slug": "e-deals frontend",
+    "slug": "e_deals frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
