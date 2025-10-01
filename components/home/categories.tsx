@@ -9,11 +9,11 @@ import {
   Text,
   View,
 } from "react-native";
-import Logo2 from "../../assets/Eggs.png";
-import Logo1 from "../../assets/Group.png";
-import Logo4 from "../../assets/Groupg.png";
-import Logo3 from "../../assets/Meat.png";
-import Logo0 from "../../assets/Vegetable 1.png";
+import Logo2 from "../../assets/icon.png";
+import Logo1 from "../../assets/icon.png";
+import Logo4 from "../../assets/icon.png";
+import Logo3 from "../../assets/icon.png";
+import Logo0 from "../../assets/icon.png";
 import { RootStackParamList } from "../../types/global/root";
 
 interface CATEGORIES_DATAProps {

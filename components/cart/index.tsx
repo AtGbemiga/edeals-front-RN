@@ -12,7 +12,7 @@ import {
   Text,
   View,
 } from "react-native";
-import backIcon from "../../assets/backIcon.png";
+import backIcon from "../../assets/icon.png";
 import { RootStackParamList } from "../../types/global/root";
 import { CartItemsFlatList } from "./cartItems";
 import { BellIcon } from "../edeals/notice";

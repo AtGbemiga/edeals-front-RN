@@ -13,7 +13,7 @@ import {
   Text,
   View,
 } from "react-native";
-import backIcon from "../../../assets/backIcon.png";
+import backIcon from "../../../assets/icon.png";
 import addToCartFn from "../../../lib/products/addToCart";
 import getFInfoFn from "../../../lib/products/getFInfo";
 import { RootStackParamList } from "../../../types/global/root";

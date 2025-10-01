@@ -3,11 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native";
 import FlashMessage from "react-native-flash-message";
-import SellIcon from "./assets/Vector (1).png";
-import CartIcon from "./assets/Vector.png";
-import HomeIcon from "./assets/home.png";
-import moreIcon from "./assets/more.png";
-import ProfileIcon from "./assets/profile.png";
+// import SellIcon from "./assets/icon.png";
+// import CartIcon from "./assets/icon.png";
+// import HomeIcon from "./assets/icon.png";
+// import moreIcon from "./assets/icon.png";
+// import ProfileIcon from "./assets/icon.png";
 import { CartIndex } from "./components/cart";
 import { GroupsIndex } from "./components/dynamic/groups";
 import { GroupFullInfo } from "./components/dynamic/groups/gFullInfo";
@@ -103,15 +103,15 @@ export default function App() {
                 name="Home"
                 component={Home}
                 options={{
-                  tabBarIcon: ({ focused }) => (
-                    <Image
-                      source={HomeIcon}
-                      style={{
-                        width: focused ? 20 : 15,
-                        height: focused ? 20 : 15,
-                      }}
-                    />
-                  ),
+                  // tabBarIcon: ({ focused }) => (
+                  //   <Image
+                  //     source={HomeIcon}
+                  //     style={{
+                  //       width: focused ? 20 : 15,
+                  //       height: focused ? 20 : 15,
+                  //     }}
+                  //   />
+                  // ),
                   headerShown: false,
                 }}
               />
@@ -119,15 +119,15 @@ export default function App() {
                 name="Cart"
                 component={CartIndex}
                 options={{
-                  tabBarIcon: ({ focused }) => (
-                    <Image
-                      source={CartIcon}
-                      style={{
-                        width: focused ? 20 : 15,
-                        height: focused ? 20 : 15,
-                      }}
-                    />
-                  ),
+                  // tabBarIcon: ({ focused }) => (
+                    // <Image
+                    //   source={CartIcon}
+                    //   style={{
+                    //     width: focused ? 20 : 15,
+                    //     height: focused ? 20 : 15,
+                    //   }}
+                    // />
+                  // ),
                   headerShown: false,
                 }}
               />
@@ -135,15 +135,15 @@ export default function App() {
                 name="Sell"
                 component={SellIndex}
                 options={{
-                  tabBarIcon: ({ focused }) => (
-                    <Image
-                      source={SellIcon}
-                      style={{
-                        width: focused ? 20 : 15,
-                        height: focused ? 20 : 15,
-                      }}
-                    />
-                  ),
+                  // tabBarIcon: ({ focused }) => (
+                  //   <Image
+                  //     source={SellIcon}
+                  //     style={{
+                  //       width: focused ? 20 : 15,
+                  //       height: focused ? 20 : 15,
+                  //     }}
+                  //   />
+                  // ),
                   headerShown: false,
                 }}
               />
@@ -151,15 +151,15 @@ export default function App() {
                 name="Profile"
                 component={ProfileIndex}
                 options={{
-                  tabBarIcon: ({ focused }) => (
-                    <Image
-                      source={ProfileIcon}
-                      style={{
-                        width: focused ? 20 : 15,
-                        height: focused ? 20 : 15,
-                      }}
-                    />
-                  ),
+                  // tabBarIcon: ({ focused }) => (
+                  //   <Image
+                  //     source={ProfileIcon}
+                  //     style={{
+                  //       width: focused ? 20 : 15,
+                  //       height: focused ? 20 : 15,
+                  //     }}
+                  //   />
+                  // ),
                   headerShown: false,
                 }}
               />
@@ -167,15 +167,15 @@ export default function App() {
                 name="More"
                 component={More}
                 options={{
-                  tabBarIcon: ({ focused }) => (
-                    <Image
-                      source={moreIcon}
-                      style={{
-                        width: focused ? 20 : 15,
-                        height: focused ? 20 : 15,
-                      }}
-                    />
-                  ),
+                  // tabBarIcon: ({ focused }) => (
+                  //   <Image
+                  //     source={moreIcon}
+                  //     style={{
+                  //       width: focused ? 20 : 15,
+                  //       height: focused ? 20 : 15,
+                  //     }}
+                  //   />
+                  // ),
                   headerShown: false,
                 }}
               />

@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import backIcon from "../../assets/backIcon.png";
+import backIcon from "../../assets/icon.png";
 import getLInfoFn from "../../lib/global/getLInfo";
 import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
@@ -246,7 +246,7 @@ export const HSProducts = ({ navigation, route }: Props) => {
             <Pressable
               onPress={() => navigation.navigate("Dynamic Product", { id: 6 })}
             >
-              <Image source={require("../../assets/Banner default.png")} />
+              <Image source={require("../../assets/icon.png")} />
             </Pressable>
           </View>
           <View>

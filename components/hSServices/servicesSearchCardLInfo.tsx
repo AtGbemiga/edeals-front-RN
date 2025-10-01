@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { VerifiedIcon } from "../../assets/verifiedIcon.png";
+import { VerifiedIcon } from "../../assets/icon.png";
 import { RootStackParamList } from "../../types/global/root";
 import {
   OneSearchService,

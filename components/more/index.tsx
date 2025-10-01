@@ -8,11 +8,11 @@ import {
   Text,
   View,
 } from "react-native";
-import backIcon from "../../assets/backIcon.png";
-import blackListIcon from "../../assets/blackListIcon.png";
-import privacyIcon from "../../assets/privacyIcon.png";
-import settingsIcon from "../../assets/settingsIcon.png";
-import supportIcon from "../../assets/supportIcon.png";
+import backIcon from "../../assets/icon.png";
+import blackListIcon from "../../assets/icon.png";
+import privacyIcon from "../../assets/icon.png";
+import settingsIcon from "../../assets/icon.png";
+import supportIcon from "../../assets/icon.png";
 import { RootStackParamList } from "../../types/global/root";
 
 type Props = NativeStackScreenProps<RootStackParamList>;

@@ -11,8 +11,8 @@ import {
   Text,
   View,
 } from "react-native";
-import Logo from "../assets/Ellipse_Ten.png";
-import Img from "../assets/undraw_interview_re_e5jn 1.png";
+import Logo from "../assets/icon.png";
+import Img from "../assets/icon.png";
 import booleanTokenCheck from "../lib/booleanTokenCheck";
 
 export default function Start({

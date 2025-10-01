@@ -1,5 +1,5 @@
 import { Image, View } from "react-native";
-import verifiedIcon from "../../assets/verifiedIcon.png";
+import verifiedIcon from "../../assets/icon.png";
 
 type Props = {
   w: number;

@@ -9,9 +9,9 @@ import {
   Text,
   View,
 } from "react-native";
-import Logo from "../../assets/Ellipse_Ten.png";
-import Img from "../../assets/undraw_successful_purchase_re_mpig 1.png";
-import ChevronLeft from "../../assets/chevron-left.png";
+import Logo from "../../assets/icon.png";
+import Img from "../../assets/icon.png";
+import ChevronLeft from "../../assets/icon.png";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ParamListBase } from "@react-navigation/native";
 import booleanTokenCheck from "../../lib/booleanTokenCheck";

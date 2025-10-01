@@ -13,10 +13,10 @@ import { ResMyProfile } from "../../types/users/profile/resGetProfile";
 import getMyProfileFn from "../../lib/users/profile/getMyProfile";
 import { StaticInlineNotice } from "../global/inlineNotice";
 import { MyLinks } from "./myLinks";
-import uploadIcon from "../../assets/uploadIcon.png";
+import uploadIcon from "../../assets/icon.png";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
-import backIcon from "../../assets/backIcon.png";
+import backIcon from "../../assets/icon.png";
 import { BellIcon } from "../edeals/notice";
 
 type Props = NativeStackScreenProps<RootStackParamList>;

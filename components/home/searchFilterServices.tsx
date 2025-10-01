@@ -13,7 +13,7 @@ import {
   View,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import backIcon from "../../assets/backIcon.png";
+import backIcon from "../../assets/icon.png";
 import globalSearchFn from "../../lib/global/search";
 import { RootStackParamList } from "../../types/global/root";
 import { ResSearchServices } from "../../types/services/resSearch";

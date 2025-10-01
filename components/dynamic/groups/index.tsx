@@ -17,7 +17,7 @@ import { RootStackParamList } from "../../../types/global/root";
 import { OneGroup, ResGetGroups } from "../../../types/groups/resGetGroups";
 import { ResGroupSearch } from "../../../types/groups/resGroupSearch";
 import globalSearchFn from "../../../lib/global/search";
-import backIcon from "../../../assets/backIcon.png";
+// import backIcon from "../../../assets/icon.png";
 import { StaticInlineNotice } from "../../global/inlineNotice";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -126,7 +126,7 @@ export const GroupsIndex = ({ navigation }: Props) => {
           }}
           style={{ padding: 5 }}
         >
-          <Image source={backIcon} />
+          {/* <Image source={backIcon} /> */}
         </Pressable>
       </View>
       <View style={styles.searchContainer}>

@@ -8,16 +8,16 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import BannerFour from "../../assets/serviceBanner4.jpg";
-import BannerFive from "../../assets/serviceBanner6.jpg";
-import BannerOne from "../../assets/seviceBanner1.jpg";
+import BannerFour from "../../assets/icon.png";
+// import BannerFive from "../../assets/icon.png";
+// import BannerOne from "../../assets/seviceBanner1.jpg";
 import { RootStackParamList } from "../../types/global/root";
 
 const screenWidth = Dimensions.get("window").width;
 const DATA = [
   {
     id: 6,
-    first_img: BannerOne,
+    first_img: BannerFour,
   },
   {
     id: 7,
@@ -25,7 +25,7 @@ const DATA = [
   },
   {
     id: 8,
-    first_img: BannerFive,
+    first_img: BannerFour,
   },
 ];
 

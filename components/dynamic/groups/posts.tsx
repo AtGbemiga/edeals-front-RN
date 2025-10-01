@@ -8,8 +8,8 @@ import {
   View,
 } from "react-native";
 import { showMessage } from "react-native-flash-message";
-import unlikedIcon from "../../../assets/bx_like.png";
-import likedIcon from "../../../assets/likeRed.png";
+import unlikedIcon from "../../../assets/icon.png";
+import likedIcon from "../../../assets/icon.png";
 import addGroupPostFn from "../../../lib/groups/addPost";
 import getGroupPostFn from "../../../lib/groups/getPosts";
 import { ResGetPosts } from "../../../types/groups/resGetPost";

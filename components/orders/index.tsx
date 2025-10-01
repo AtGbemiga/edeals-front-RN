@@ -13,7 +13,7 @@ import {
 import getLInfoFn from "../../lib/global/getLInfo";
 import { OneOrder, ResGetOrders } from "../../types/orders/resGetOrders";
 import { StaticInlineNotice } from "../global/inlineNotice";
-import backIcon from "../../assets/backIcon.png";
+import backIcon from "../../assets/icon.png";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../types/global/root";
 import { formatDate } from "../global/formatTimeDiff";

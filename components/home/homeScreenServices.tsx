@@ -9,8 +9,8 @@ import {
   TextInput,
   View,
 } from "react-native";
-import backIcon from "../../assets/backIcon.png";
-import CutCostBanner from "../../assets/hServicesCutCost.png";
+import backIcon from "../../assets/icon.png";
+import CutCostBanner from "../../assets/icon.png";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import globalSearchFn from "../../lib/global/search";

@@ -1,9 +1,9 @@
-import Repairers from "../../assets/repairers.png";
-import MakeUp from "../../assets/makeupArtise.png";
-import Plumber from "../../assets/plumber.png";
-import Electrician from "../../assets/Electrician-bro.png";
-import Mechanic from "../../assets/mechanic.png";
-import Hairdresser from "../../assets/hairdresser.png";
+import Repairers from "../../assets/icon.png";
+import MakeUp from "../../assets/icon.png";
+import Plumber from "../../assets/icon.png";
+import Electrician from "../../assets/icon.png";
+import Mechanic from "../../assets/icon.png";
+import Hairdresser from "../../assets/icon.png";
 import {
   Image,
   ImageSourcePropType,
